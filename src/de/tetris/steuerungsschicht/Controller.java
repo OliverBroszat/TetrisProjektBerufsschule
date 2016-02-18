@@ -1,10 +1,10 @@
 package de.tetris.steuerungsschicht;
 
-public class Game {
+public class Controller {
 	private Thread thread;
 	private boolean gameRunning;
 	
-	public Game() {
+	public Controller() {
 		thread = new Thread();
 		gameRunning = true;
 	}
