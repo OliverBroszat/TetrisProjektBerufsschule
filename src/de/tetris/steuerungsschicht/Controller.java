@@ -1,8 +1,20 @@
 package de.tetris.steuerungsschicht;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.tetris.darstellungsschicht.Frame;
+import de.tetris.datenschicht.PersistanceStore;
+
 public class Controller {
 	private Thread thread;
 	private boolean gameRunning;
+	
+	private Rotator rotator;
+	private XMLSerializer xmlSerializer;
+	private List<Form> formList = new ArrayList<Form>();
+	private Frame frame;
+	private PersistanceStore persistancestore;
 	
 	public Controller() {
 		thread = new Thread();
