@@ -19,13 +19,27 @@ public class Controller implements Runnable {
 	public Controller() {
 		startGame();
 	}
-
+	
+	/**
+	 * Startet das Spiel und die dazugehörigen Threads
+	 * Soll es ermöglichen, mehrere Spiele starten zu können
+	 */
 	public void startGame() {
 		thread = new Thread(this);
 		gameRunning = true;
 		thread.start();
 	}
+	
+	//TODO Oliver
+	public void stopGame(){
+		gameRunning = false;
+	}
 
+	/**
+	 * Wird solange das Spiel läuft 60 mal pro Sekunde aufgerufen werden
+	 * und das Spielfeld rendern
+	 * und die gamelogik aufrufen
+	 */
 	public void gameLoop() {
 		long lastLoopTime = System.nanoTime();
 		final int TARGET_FPS = 60;
@@ -38,9 +52,9 @@ public class Controller implements Runnable {
 			if (now >= OPTIMAL_TIME) {
 				lastLoopTime = System.nanoTime();
 
-				// TODO mach dat
+				// TODO Oliver
 				// render();
-System.out.println("loop");
+					System.out.println("loop");
 				// gamelogic();
 			}
 		}
