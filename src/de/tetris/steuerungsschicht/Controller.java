@@ -23,10 +23,11 @@ public class Controller {
 	      
 	      if(now >= OPTIMAL_TIME){
 	    	  lastLoopTime = System.nanoTime();
+	    	
+	    	  //TODO mach dat
+	    	  	//render();
 	    	  
-	    	  render();
-	    	  
-	    	  gamelogic();
+	    	  	//gamelogic();
 	      }
 	   }
 	}
