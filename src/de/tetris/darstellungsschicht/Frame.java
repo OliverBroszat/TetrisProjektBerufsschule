@@ -30,7 +30,7 @@ public class Frame extends GUI{
 	}
 
 	private Panel addLoginScreen(){
-		FrameLoginScreen frameLoginScreen = new FrameLoginScreen();
+		FrameHauptmenue frameLoginScreen = new FrameHauptmenue();
 		return frameLoginScreen;
 	}
 

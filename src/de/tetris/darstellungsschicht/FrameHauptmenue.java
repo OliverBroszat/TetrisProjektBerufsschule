@@ -6,13 +6,13 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-public class FrameLoginScreen extends Panel{
+public class FrameHauptmenue extends Panel{
 
 	private JButton loginButton = new JButton();
 	private JButton highScoreButton = new JButton();
 	private JLabel titelLabel = new JLabel("Der Tetris");
 
-	public FrameLoginScreen() {
+	public FrameHauptmenue() {
 	    setLayout(null);
 	    setBackground(Color.gray);
 	    
