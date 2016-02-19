@@ -47,19 +47,14 @@ public class Controller implements Runnable {
 				"ON p.schwierigkeit = s.schwierigkeit " +
 				"ORDER BY (p.punkte * s.faktor) DESC";
 		
-		ArrayList<ArrayList<String>> data1 = persistancestore.select("SELECT Password FROM tetrisuser");
+		ArrayList<ArrayList<String>> data1 = persistancestore.select("SELECT * FROM tetrisuser");
 		
-		persistancestore.update("UPDATE tetrisuser SET Nickname='ANDERS' WHERE Nickname='pro'");
+		//persistancestore.update("UPDATE tetrisuser SET Nickname='ANDERS' WHERE Nickname='pro'");
 		
-		persistancestore.delete("DELETE FROM tetrisuser WHERE Nickname='ANDERS'");
-		
-		for (ArrayList<String> resultSet : data1) {
-	    	System.out.println();
-			for (String item : resultSet) {
-				System.out.print(item + " ");
-			}
-		}
-	
+		//persistancestore.delete("DELETE FROM tetrisuser WHERE Nickname='ANDERS'");
+			
+		//persistancestore.insert("INSERT INTO tetrisuser (nickname, password, letzerSpielstand)" +
+		//"VALUES ('Gollum','ABCDEFG112', '[0,1,2,3,4,5,6,7,10,[0,0,0]][0,1,2,3,4,5,6,7,10,[0,0,0]]')");
 	}
 	
 	//TODO Oliver
