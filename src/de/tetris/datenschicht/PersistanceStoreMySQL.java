@@ -19,8 +19,11 @@ import de.tetris.steuerungsschicht.Controller;
 public class PersistanceStoreMySQL extends PersistanceStore{
 	private Controller controller;
 	
-	private BestenlisteHandler bestenlisteHandler;
-	private UserHandler userHandler;
+	// Handler
+	private BasicHandler bestenlisteHandler;
+	private BasicHandler userHandler;
+	
+	
 	private Connection connection;
 
 	private String hostaddress;
@@ -28,27 +31,16 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 	private String database;
 	private String username = "root";
 	private Statement stmt;
-	
-	public BestenlisteHandler getBestenlisteHandler() {
+
+	public BasicHandler getBestenlisteHandler() {
 		return bestenlisteHandler;
 	}
 
 
-	public void setBestenlisteHandler(BestenlisteHandler bestenlisteHandler) {
-		this.bestenlisteHandler = bestenlisteHandler;
-	}
-
-
-	public UserHandler getUserHandler() {
+	public BasicHandler getUserHandler() {
 		return userHandler;
 	}
-
-
-	public void setUserHandler(UserHandler userHandler) {
-		this.userHandler = userHandler;
-	}
-
-
+	
 	public String getUsername() {
 		return username;
 	}
@@ -90,6 +82,10 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 	public PersistanceStoreMySQL() {
 			this.connection = null;
 			super.connectionStatus = false;
+			
+			this.userHandler = new UserHandler();
+			this.bestenlisteHandler = new BestenlisteHandler();
+			
 			try {
 				Class.forName("com.mysql.jdbc.Driver").newInstance();
 				System.out.println("INFO: Driver set");
@@ -120,6 +116,7 @@ public class PersistanceStoreMySQL extends PersistanceStore{
                                 , this.username, "");
 			this.connectionStatus = true;
 			System.out.println("INFO: Database connection etablished");
+			BasicHandler.conn = this.connection;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -129,66 +126,10 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 	}
 	
 	public void test(){
-		try {
-			String stmt = "SELECT Nickname FROM tetrisuser";
-			String stmt2 = "SELECT * FROM tetrisuser";
-			String stmt4 = "SELECT * FROm tetrisuser WHERE Nickname = 'Zeyos'";
-			
-			String stmt3 = "SELECT (p.punkte * s.faktor) AS 'Highscores' " +
-			", u.nickname, s.schwierigkeit " +
-			"FROM tetrisuser u " +
-			"JOIN punktestaende p " +
-			"ON u.userID = p.userID " +
-			"JOIN schwierigkeitsgrad s " +
-			"ON p.schwierigkeit = s.schwierigkeit " +
-			"ORDER BY (p.punkte * s.faktor) DESC";
-			
-			Statement sql = this.connection.createStatement();
-			ResultSet results = sql.executeQuery(stmt4);
-			evaluateStatement(results);
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-	
-	private ArrayList<ArrayList<String>> evaluateStatement(ResultSet results) throws SQLException{
-		ResultSetMetaData rsmd = results.getMetaData();
-		ArrayList<String> cols = new ArrayList<String>();
-		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
+		String stmt = "SELECT Nickname FROM tetrisuser";
+		String stmt2 = "SELECT * FROM tetrisuser";
+		String stmt4 = "SELECT * FROm tetrisuser WHERE Nickname = 'Zeyos'";
 		
-		this.getColumnNamesAsList(cols, rsmd);
-		this.iterateOverResultSet(results, data, cols);
-
-	    for (ArrayList<String> resultSet : data) {
-	    	System.out.println();
-			for (String item : resultSet) {
-				System.out.print(item + " ");
-			}
-		}
 		
-	    return data;
-	}	
-	
-	private void iterateOverResultSet(ResultSet results, ArrayList<ArrayList<String>> data, 
-			ArrayList<String> col_list) throws SQLException{
-		int y = 0;
-		while(results.next()){
-			data.add(new ArrayList<String>());
-			for (String col : col_list) {
-				data.get(y).add(results.getString(col));
-			}
-			y++;
-		}	
-	}
-	
-	private void getColumnNamesAsList(ArrayList<String> col_list, ResultSetMetaData rsmd) throws SQLException{
-		int i = 1;	
-		while(i <= rsmd.getColumnCount()){
-			col_list.add(rsmd.getColumnName(i));
-			i++;
-		}
 	}
 }

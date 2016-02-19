@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.tetris.darstellungsschicht.Frame;
+import de.tetris.datenschicht.BasicHandler;
 import de.tetris.datenschicht.PersistanceStore;
 import de.tetris.datenschicht.PersistanceStoreMySQL;
 
@@ -19,6 +20,7 @@ public class Controller implements Runnable {
 
 	public Controller() {
 		persistancestore = new PersistanceStoreMySQL();
+		
 		startGame();
 	}
 	
@@ -33,10 +35,26 @@ public class Controller implements Runnable {
 	}
 	
 	public void etablishConnection(){
-		
 		this.persistancestore.setInfo("localhost", "3306");
 		this.persistancestore.createConnection("Tetris");
-		this.persistancestore.test();
+		
+		String stmt3 = "SELECT (p.punkte * s.faktor) AS 'Highscores' " +
+				", u.nickname, s.schwierigkeit " +
+				"FROM tetrisuser u " +
+				"JOIN punktestaende p " +
+				"ON u.userID = p.userID " +
+				"JOIN schwierigkeitsgrad s " +
+				"ON p.schwierigkeit = s.schwierigkeit " +
+				"ORDER BY (p.punkte * s.faktor) DESC";
+		
+		ArrayList<ArrayList<String>> data = persistancestore.getUserHandler().select("SELECT Password FROM tetrisuser");
+		
+		for (ArrayList<String> resultSet : data) {
+	    	System.out.println();
+			for (String item : resultSet) {
+				System.out.print(item + " ");
+			}
+		}
 	}
 	
 	//TODO Oliver
@@ -72,8 +90,6 @@ public class Controller implements Runnable {
 	@Override
 	public void run() {
 		etablishConnection();
-		
-		
 		gameLoop();
 	}
 }
