@@ -47,14 +47,17 @@ public class Controller implements Runnable {
 				"ON p.schwierigkeit = s.schwierigkeit " +
 				"ORDER BY (p.punkte * s.faktor) DESC";
 		
-		ArrayList<ArrayList<String>> data = persistancestore.getUserHandler().select("SELECT Password FROM tetrisuser");
+		ArrayList<ArrayList<String>> data1 = persistancestore.select("SELECT Password FROM tetrisuser");
+		persistancestore.update("UPDATE tetrisuser SET Nickname='ANDERS' WHERE Nickname='pro'");
 		
-		for (ArrayList<String> resultSet : data) {
+		
+		for (ArrayList<String> resultSet : data1) {
 	    	System.out.println();
 			for (String item : resultSet) {
 				System.out.print(item + " ");
 			}
 		}
+	
 	}
 	
 	//TODO Oliver

@@ -2,27 +2,14 @@ package de.tetris.datenschicht;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import com.mysql.jdbc.PreparedStatement;
-
-import de.tetris.steuerungsschicht.Controller;
-
 
 public class PersistanceStoreMySQL extends PersistanceStore{
-	private Controller controller;
 	
 	// Handler
-	private BasicHandler bestenlisteHandler;
-	private BasicHandler userHandler;
-	
+	private SelectHandler selectHandler;
+	private UpdateHandler updateHandler;
 	
 	private Connection connection;
 
@@ -30,16 +17,19 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 	private String port = "3306";
 	private String database;
 	private String username = "root";
-	private Statement stmt;
-
-	public BasicHandler getBestenlisteHandler() {
-		return bestenlisteHandler;
+	
+	public SelectHandler getSelectHandler() {
+		return selectHandler;
+	}
+	
+	public ArrayList<ArrayList<String>> select(String statement){
+		return this.selectHandler.select(statement);
+	}
+	
+	public void update(String statement){
+		this.updateHandler.update(statement);
 	}
 
-
-	public BasicHandler getUserHandler() {
-		return userHandler;
-	}
 	
 	public String getUsername() {
 		return username;
@@ -59,7 +49,6 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 		this.hostaddress = hostaddress;
 	}
 
-
 	public String getPort() {
 		return port;
 	}
@@ -69,11 +58,9 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 		this.port = port;
 	}
 
-
 	public String getDatabase() {
 		return database;
 	}
-
 
 	public void setDatabase(String database) {
 		this.database = database;
@@ -83,8 +70,8 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 			this.connection = null;
 			super.connectionStatus = false;
 			
-			this.userHandler = new UserHandler();
-			this.bestenlisteHandler = new BestenlisteHandler();
+			this.selectHandler = new SelectHandler();
+			this.updateHandler = new UpdateHandler();
 			
 			try {
 				Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -94,7 +81,7 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 				e.printStackTrace();
 			}
 	}
-	
+
 	public void setInfo(String hostaddress,String port, String database){ 
 	     this.hostaddress = hostaddress;
 	     this.port = port;
@@ -123,13 +110,5 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 		}
 		
 		return this.connectionStatus;
-	}
-	
-	public void test(){
-		String stmt = "SELECT Nickname FROM tetrisuser";
-		String stmt2 = "SELECT * FROM tetrisuser";
-		String stmt4 = "SELECT * FROm tetrisuser WHERE Nickname = 'Zeyos'";
-		
-		
 	}
 }
