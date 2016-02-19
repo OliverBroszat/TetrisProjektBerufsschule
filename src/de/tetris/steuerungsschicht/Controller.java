@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.tetris.darstellungsschicht.Frame;
 import de.tetris.datenschicht.PersistanceStore;
+import de.tetris.datenschicht.PersistanceStoreMySQL;
 
 public class Controller implements Runnable {
 	private Thread thread;
@@ -14,9 +15,10 @@ public class Controller implements Runnable {
 	private XMLSerializer xmlSerializer;
 	private List<Form> formList = new ArrayList<Form>();
 	private Frame frame;
-	private PersistanceStore persistancestore;
+	private PersistanceStoreMySQL persistancestore;
 
 	public Controller() {
+		persistancestore = new PersistanceStoreMySQL();
 		startGame();
 	}
 	
@@ -28,6 +30,13 @@ public class Controller implements Runnable {
 		thread = new Thread(this);
 		gameRunning = true;
 		thread.start();
+	}
+	
+	public void etablishConnection(){
+		
+		this.persistancestore.setInfo("localhost", "3306");
+		this.persistancestore.createConnection("Tetris");
+		this.persistancestore.test();
 	}
 	
 	//TODO Oliver
@@ -54,7 +63,7 @@ public class Controller implements Runnable {
 
 				// TODO Oliver
 				// render();
-					System.out.println("loop");
+					//System.out.println("loop");
 				// gamelogic();
 			}
 		}
@@ -62,6 +71,9 @@ public class Controller implements Runnable {
 
 	@Override
 	public void run() {
+		etablishConnection();
+		
+		
 		gameLoop();
 	}
 }
