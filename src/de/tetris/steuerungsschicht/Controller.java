@@ -17,6 +17,7 @@ public class Controller implements Runnable {
 	private PersistanceStore persistancestore;
 
 	public Controller() {
+		Form form = new FormNormalMode();
 		startGame();
 	}
 	
