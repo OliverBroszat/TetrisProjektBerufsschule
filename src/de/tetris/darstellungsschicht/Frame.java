@@ -15,8 +15,8 @@ public class Frame extends GUI{
 		
 		setLayout(cardLayout);
 
-	//	add(addSpielfeld());
 		add(addLoginScreen());
+	//	add(addSpielfeld());
 		
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -33,5 +33,4 @@ public class Frame extends GUI{
 		FrameHauptmenue frameLoginScreen = new FrameHauptmenue();
 		return frameLoginScreen;
 	}
-
 }
