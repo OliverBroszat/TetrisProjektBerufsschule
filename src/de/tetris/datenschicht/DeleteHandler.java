@@ -1,9 +1,8 @@
 package de.tetris.datenschicht;
 
-import java.util.ArrayList;
-
-public class DeleteHandler {
-	public void select(String statement) {
-		
+public class DeleteHandler extends BasicHandler{
+	public void delete(String statement) {
+		System.out.println("INFO: " + statement);
+		super.createUpdateStatement(statement);
 	}
 }

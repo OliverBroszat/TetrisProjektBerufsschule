@@ -10,6 +10,7 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 	// Handler
 	private SelectHandler selectHandler;
 	private UpdateHandler updateHandler;
+	private DeleteHandler deleteHandler;
 	
 	private Connection connection;
 
@@ -28,6 +29,10 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 	
 	public void update(String statement){
 		this.updateHandler.update(statement);
+	}
+	
+	public void delete(String statement){
+		this.deleteHandler.delete(statement);
 	}
 
 	
@@ -72,6 +77,7 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 			
 			this.selectHandler = new SelectHandler();
 			this.updateHandler = new UpdateHandler();
+			this.deleteHandler = new DeleteHandler();
 			
 			try {
 				Class.forName("com.mysql.jdbc.Driver").newInstance();

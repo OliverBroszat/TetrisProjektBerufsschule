@@ -48,8 +48,10 @@ public class Controller implements Runnable {
 				"ORDER BY (p.punkte * s.faktor) DESC";
 		
 		ArrayList<ArrayList<String>> data1 = persistancestore.select("SELECT Password FROM tetrisuser");
+		
 		persistancestore.update("UPDATE tetrisuser SET Nickname='ANDERS' WHERE Nickname='pro'");
 		
+		persistancestore.delete("DELETE FROM tetrisuser WHERE Nickname='ANDERS'");
 		
 		for (ArrayList<String> resultSet : data1) {
 	    	System.out.println();
