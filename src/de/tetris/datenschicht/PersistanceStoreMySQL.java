@@ -20,7 +20,7 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 	private Controller controller;
 	
 	private BestenlisteHandler bestenlisteHandler;
-	private UserHander userHandler;
+	private UserHandler userHandler;
 	private Connection connection;
 
 	private String hostaddress;
@@ -39,12 +39,12 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 	}
 
 
-	public UserHander getUserHandler() {
+	public UserHandler getUserHandler() {
 		return userHandler;
 	}
 
 
-	public void setUserHandler(UserHander userHandler) {
+	public void setUserHandler(UserHandler userHandler) {
 		this.userHandler = userHandler;
 	}
 
