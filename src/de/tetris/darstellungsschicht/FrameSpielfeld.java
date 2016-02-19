@@ -7,13 +7,13 @@ import javax.swing.JLabel;
 
 public class FrameSpielfeld extends Panel{
 	
-	
 	private Panel panelSpielfeld = new Panel();
 	private Panel panelNaechsterBlock = new Panel();
 	private JLabel scoreLabel = new JLabel("Score: ");
 
 	public FrameSpielfeld() {
 	    setLayout(null);
+	    setBackground(Color.gray);
 	    
 	    panelSpielfeld.setBackground(Color.white);
 	    panelNaechsterBlock.setBackground(Color.blue);

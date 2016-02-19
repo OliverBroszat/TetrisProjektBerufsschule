@@ -4,19 +4,20 @@ import java.awt.CardLayout;
 import java.awt.Color;
 
 public class Frame extends GUI{
-	private static final int HÖHE = 800;
-	private static final int BREITE = HÖHE;
+	private static final int HOEHE = 800;
+	private static final int BREITE = HOEHE;
 	private CardLayout cardLayout = new CardLayout();
 	
 	public Frame() {
 		super("Tetriges Tetris");
-		setSize(BREITE, HÖHE);
+		setSize(BREITE, HOEHE);
 		setBackground(Color.gray);
 		
 		setLayout(cardLayout);
-		
-		add(addSpielfeld());
+
+	//	add(addSpielfeld());
 		add(addLoginScreen());
+		
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setResizable(false);
@@ -29,10 +30,8 @@ public class Frame extends GUI{
 	}
 
 	private Panel addLoginScreen(){
-		Panel tPanel = new Panel();
-		tPanel.setSize(BREITE,HÖHE);
-
-		return tPanel;
+		FrameLoginScreen frameLoginScreen = new FrameLoginScreen();
+		return frameLoginScreen;
 	}
 
 }
