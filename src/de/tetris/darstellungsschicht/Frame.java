@@ -24,13 +24,18 @@ public class Frame extends GUI{
 //		add(addLoginScreen());
 //		add(addSpielfeld());
 //		add(addFrameLoginScreen());
-		add(addFrameLoginScreen());
+//		add(addFrameLoginScreen());
+		add(addFramePauseMenue());
 		
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+	}
+	private Panel addFramePauseMenue() {
+		FramePauseMenue panelPauseMenue = new FramePauseMenue();
+		return panelPauseMenue;
 	}
 	//TODO Marvin ActionListener
 	private Panel addFrameLoginScreen() {
@@ -56,5 +61,11 @@ public class Frame extends GUI{
 
 	public void setController(Controller controller) {
 		this.controller = controller;
+	}
+	public CardLayout getCardLayout() {
+		return cardLayout;
+	}
+	public void setCardLayout(CardLayout cardLayout) {
+		this.cardLayout = cardLayout;
 	}
 }
