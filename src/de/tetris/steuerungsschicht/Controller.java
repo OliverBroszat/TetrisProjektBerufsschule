@@ -26,7 +26,7 @@ public class Controller implements Runnable {
 
 	public Controller() {
 		Form form = new FormNormalMode();
-		// Frame frame = new Frame();
+		Frame frame = new Frame(this);
 		persistancestore = new PersistanceStoreMySQL();
 		startGame();
 	}

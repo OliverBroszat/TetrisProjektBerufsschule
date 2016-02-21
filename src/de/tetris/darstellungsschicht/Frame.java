@@ -19,7 +19,9 @@ public class Frame extends GUI{
 		
 		setLayout(cardLayout);
 
-	//	add(addLoginScreen());
+		this.controller = controller;
+
+		//	add(addLoginScreen());
 		add(addSpielfeld());
 //		add(addFrameLoginScreen());
 		
@@ -28,7 +30,6 @@ public class Frame extends GUI{
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		this.controller = controller;
 	}
 	
 	private Panel addFrameLoginScreen() {
