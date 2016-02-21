@@ -21,9 +21,10 @@ public class Frame extends GUI{
 
 		this.controller = controller;
 
-		//	add(addLoginScreen());
-		add(addSpielfeld());
+//		add(addLoginScreen());
+//		add(addSpielfeld());
 //		add(addFrameLoginScreen());
+		add(addFrameLoginScreen());
 		
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -31,7 +32,7 @@ public class Frame extends GUI{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 	}
-	
+	//TODO Marvin ActionListener
 	private Panel addFrameLoginScreen() {
 		FrameLoginScreen frameLoginScreen = new FrameLoginScreen();
 		return frameLoginScreen;
