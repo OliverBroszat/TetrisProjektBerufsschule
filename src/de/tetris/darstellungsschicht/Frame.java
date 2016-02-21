@@ -20,8 +20,8 @@ public class Frame extends GUI{
 		setLayout(cardLayout);
 
 	//	add(addLoginScreen());
-//		add(addSpielfeld());
-		add(addFrameLoginScreen());
+		add(addSpielfeld());
+//		add(addFrameLoginScreen());
 		
 		setLocationRelativeTo(null);
 		setVisible(true);
