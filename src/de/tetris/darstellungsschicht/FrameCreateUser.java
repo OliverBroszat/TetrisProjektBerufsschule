@@ -34,8 +34,6 @@ public class FrameCreateUser extends Panel{
 	    newUserButton.setFont(super.font);
 	    
 	    centerPanel.setLayout(new GridLayout(3,2));
-	    centerPanel.setAlignmentX(20);
-	    centerPanel.setAlignmentY(20);
 	    centerPanel.setBackground(Color.lightGray);
 	    
 	    centerPanel.setBounds(200,250,400,270);
