@@ -1,13 +1,16 @@
 package de.tetris.steuerungsschicht;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
 
 import de.tetris.darstellungsschicht.Frame;
+import de.tetris.darstellungsschicht.FrameBasicFrame;
 import de.tetris.darstellungsschicht.FrameHauptmenue;
+import de.tetris.darstellungsschicht.FrameLoginScreen;
 import de.tetris.darstellungsschicht.FrameSpielfeld;
 import de.tetris.datenschicht.PersistanceStore;
 import de.tetris.datenschicht.PersistanceStoreMySQL;
@@ -26,7 +29,7 @@ public class Controller implements Runnable {
 
 	public Controller() {
 		Form form = new FormNormalMode();
-		// Frame frame = new Frame();
+		Frame frame = new Frame(this);
 		persistancestore = new PersistanceStoreMySQL();
 		startGame();
 	}
@@ -81,7 +84,6 @@ public class Controller implements Runnable {
 		// keep looping round until the game ends
 		while (gameRunning) {
 			long now = System.nanoTime() - lastLoopTime;
-
 			if (now >= OPTIMAL_TIME) {
 				lastLoopTime = System.nanoTime();
 
@@ -95,23 +97,28 @@ public class Controller implements Runnable {
 
 	@Override
 	public void run() {
-		etablishConnection();
+		//etablishConnection();
 		gameLoop();
 	}
 	
 	public void createListener(JPanel panel) {
-		ActionListener listener;
+		ActionListener aListener;
 		if(panel instanceof FrameHauptmenue) {
-			listener = new HauptmenueListener();
-			((FrameHauptmenue) panel).getLoginButton().addActionListener(listener);
-			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(listener); 
+			aListener = new HauptmenueListener();
+			((FrameHauptmenue) panel).getLoginButton().addActionListener(aListener);
+			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(aListener); 
+		} else if (panel instanceof FrameLoginScreen) {
+			aListener = new LoginScreenListener();
+			// Buttons hinzufügen
+		} else if (panel instanceof FrameBasicFrame) {
+			aListener = new BasicFrameListener();
+			// Buttons hinzufügen
 		} else if (panel instanceof FrameSpielfeld) {
-			listener = new SpielfeldListener();
-			// Buttons ActionListener hinzufügen
+			aListener = null;
+			KeyListener kListener = new SpielfeldListener();
+			panel.addKeyListener(kListener);
 		} else {
-			// Fehlerausgabe
+			//Fehler
 		}
-		
-		// noch nicht alle Screens berücksichtigt
 	}
 }

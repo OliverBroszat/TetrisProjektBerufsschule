@@ -19,20 +19,23 @@ public class Frame extends GUI{
 		
 		setLayout(cardLayout);
 
+		this.controller = controller;
+		
 	//	add(addLoginScreen());
-//		add(addSpielfeld());
-		add(addFrameLoginScreen());
+		add(addSpielfeld());
+	//	add(addFrameLoginScreen());
 		
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		this.controller = controller;
+		
 	}
 	
 	private Panel addFrameLoginScreen() {
 		FrameLoginScreen frameLoginScreen = new FrameLoginScreen();
+		controller.createListener(frameLoginScreen);
 		return frameLoginScreen;
 	}
 
