@@ -13,6 +13,11 @@ import de.tetris.darstellungsschicht.FrameHauptmenue;
 import de.tetris.darstellungsschicht.FrameLoginScreen;
 import de.tetris.darstellungsschicht.FrameSpielfeld;
 import de.tetris.datenschicht.PersistanceStoreMySQL;
+import de.tetris.steuerungsschicht.Listener.BasicFrameListener;
+import de.tetris.steuerungsschicht.Listener.CreateUserListener;
+import de.tetris.steuerungsschicht.Listener.HauptmenueListener;
+import de.tetris.steuerungsschicht.Listener.LoginScreenListener;
+import de.tetris.steuerungsschicht.Listener.SpielfeldListener;
 
 public class Controller implements Runnable {
 	private Thread thread;
@@ -114,6 +119,8 @@ public class Controller implements Runnable {
 		ActionListener aListener;
 		if(panel instanceof FrameLoginScreen) {
 			aListener = new LoginScreenListener(frame);
+			((FrameLoginScreen) panel).getSubmitButton().addActionListener(aListener);
+			((FrameLoginScreen) panel).getNewUserButton().addActionListener(aListener);
 			
 		} else if (panel instanceof FrameHauptmenue) {
 			System.out.println("cont: " + frame);
@@ -127,7 +134,7 @@ public class Controller implements Runnable {
 			KeyListener kListener = new SpielfeldListener(frame);
 			panel.addKeyListener(kListener);
 		} else if (panel instanceof FrameCreateUser) {
-			aListener = new CreateUserListener();
+			aListener = new CreateUserListener(frame);
 			((FrameCreateUser) panel).getNewUserButton().addActionListener(aListener);
 		} else {
 			// Fehler

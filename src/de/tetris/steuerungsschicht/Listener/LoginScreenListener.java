@@ -1,13 +1,10 @@
-package de.tetris.steuerungsschicht;
+package de.tetris.steuerungsschicht.Listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
-import javax.swing.JPanel;
-
 import de.tetris.darstellungsschicht.Frame;
-import de.tetris.darstellungsschicht.FrameLoginScreen;
+
 
 public class LoginScreenListener implements ActionListener{
 
@@ -21,10 +18,10 @@ public class LoginScreenListener implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() instanceof JButton) {
 			if(((JButton) e.getSource()).getText().equals("Submit")) {
-				// Funktion hinzufügen
+				frame.getCardLayout().show(frame.getBackgroundFrame(), "HauptMenue");
 			}
-			if(((JButton) e.getSource()).getText().equals("User anlgegen")) {
-				// Funktion hinzufügen
+			if(((JButton) e.getSource()).getText().equals("User anlegen")) {
+				frame.getCardLayout().show(frame.getBackgroundFrame(), "CreateUser");
 			}
 		}
 	}
