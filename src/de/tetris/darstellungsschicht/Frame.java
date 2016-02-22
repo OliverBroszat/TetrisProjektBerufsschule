@@ -110,4 +110,8 @@ public class Frame extends GUI {
 	public void setBackgroundFrame(JPanel backgroundFrame) {
 		this.backgroundFrame = backgroundFrame;
 	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
 }

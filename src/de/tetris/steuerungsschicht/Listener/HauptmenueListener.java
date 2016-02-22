@@ -2,13 +2,9 @@ package de.tetris.steuerungsschicht.Listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javafx.geometry.HPos;
-
 import javax.swing.JButton;
-
 import de.tetris.darstellungsschicht.Frame;
-import de.tetris.darstellungsschicht.FrameHauptmenue;
+
 
 public class HauptmenueListener implements ActionListener{
 	private Frame frame;
@@ -28,6 +24,7 @@ public class HauptmenueListener implements ActionListener{
 			}
 			else if(((JButton) e.getSource()).getText().equals("Spiel starten")) {
 				frame.getCardLayout().show(frame.getBackgroundFrame(), "Spielfeld");
+				frame.getController().spielfedRequestFocus(frame.getPanel());
 			}
 		}
 	}
