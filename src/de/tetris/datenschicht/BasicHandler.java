@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.jasypt.util.password.BasicPasswordEncryptor;
+
 public abstract class BasicHandler {
 	protected static Connection conn;
 	

@@ -15,6 +15,8 @@ public class Controller implements Runnable {
 	private List<Form> formList = new ArrayList<Form>();
 	private Frame frame;
 	private PersistanceStoreMySQL persistancestore;
+	private String user = "default";
+	private ArrayList<String> userData;
 
 	public Controller() {
 		persistancestore = new PersistanceStoreMySQL();
@@ -38,24 +40,20 @@ public class Controller implements Runnable {
 		
 		// Name der Datenbank auf welche eine Verbindung aufgebaut werden soll.
 		this.persistancestore.createConnection("Tetris");
+
+		// DUMMY ABFRAGEN
+		// create default user
+		this.persistancestore.createUser("default", "default");
+		this.userData = this.persistancestore.logIn("default", "default");
 		
-		String stmt3 = "SELECT (p.punkte * s.faktor) AS 'Highscores' " +
-				", u.nickname, s.schwierigkeit " +
-				"FROM tetrisuser u " +
-				"JOIN punktestaende p " +
-				"ON u.userID = p.userID " +
-				"JOIN schwierigkeitsgrad s " +
-				"ON p.schwierigkeit = s.schwierigkeit " +
-				"ORDER BY (p.punkte * s.faktor) DESC";
+		System.out.println("LOGGED IS : " + userData.get(0) + " MESSAGE " + userData.get(1));
 		
-		ArrayList<ArrayList<String>> data1 = persistancestore.select("SELECT * FROM tetrisuser");
-		
-		persistancestore.update("UPDATE tetrisuser SET Nickname=' +  + ' WHERE Nickname='pro'");
+		//persistancestore.update("UPDATE tetrisuser SET Nickname=' +  + ' WHERE Nickname='pro'");
 		
 		//persistancestore.delete("DELETE FROM tetrisuser WHERE Nickname='ANDERS'");
 			
-		persistancestore.insert("INSERT INTO tetrisuser (nickname, password, letzerSpielstand)" +
-		"VALUES ('Gollum','ABCDEFG112', '[0,1,2,3,4,5,6,7,10,[0,0,0]][0,1,2,3,4,5,6,7,10,[0,0,0]]')");
+		//persistancestore.insert("INSERT INTO tetrisuser (nickname, password, letzerSpielstand)" +
+		//"VALUES ('Gollum','ABCDEFG112', '[0,1,2,3,4,5,6,7,10,[0,0,0]][0,1,2,3,4,5,6,7,10,[0,0,0]]')");
 	}
 	
 	//TODO Oliver

@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import org.jasypt.util.password.BasicPasswordEncryptor;
 
 public class PersistanceStoreMySQL extends PersistanceStore{
@@ -40,10 +42,51 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 		return data;
 	}
 	
-	public void logIn(String password, String user){
-		ArrayList<ArrayList<String>> user = this.select("SELECT * FROM tetrisuser WHERE Nickname='" + user + "';");
+	public ArrayList<String> logIn(String user,String password){
+		String loggedUser = "NO user";
+		String message = "No message";
+		ArrayList<String> data = new ArrayList<String>();
 		
-		passwordHandler.checkPassword(password, encryptedPassword)
+		ArrayList<ArrayList<String>> userList = this.select("SELECT Nickname, Password FROM tetrisuser "
+				+ "WHERE Nickname = '" + user + "'");
+		
+		if(userList.size() > 0){
+			if(passwordHandler.checkPassword(password, userList.get(0).get(1))){
+				System.out.println("Logged In.");
+				loggedUser = user;
+			}else{
+				message = "Password Wrong!";
+			}
+		}else{
+			message = "User Wrong!";
+		}
+		
+		data.add(loggedUser);
+		data.add(message);
+		
+		return data;
+	}
+	
+	public String createUser(String Nickname, String Password){
+		String encrypedPassword = passwordHandler.encryptPassword(Password);
+		boolean foundUser = false;
+		
+		ArrayList<ArrayList<String>> user = this.selectHandler.select("SELECT * FROM tetrisuser");
+		
+		for (ArrayList<String> item : user) {
+			if(item.contains(Nickname)){
+				System.out.println(Nickname + " matches " + item.get(1));
+				foundUser = true;
+			}else{
+				System.out.println(Nickname + " not matches " + item.get(1));
+			}
+		}
+		if(!foundUser){
+			this.insert("INSERT INTO tetrisuser (Nickname, Password) VALUES ('"+ Nickname + "','" + encrypedPassword + "')");
+			this.logIn(Nickname, encrypedPassword);
+		}
+		
+		return Nickname;
 	}
 	
 	public void update(String statement){
@@ -134,6 +177,7 @@ public class PersistanceStoreMySQL extends PersistanceStore{
                                 , this.username, "");
 			this.connectionStatus = true;
 			System.out.println("INFO: Database connection etablished");
+			
 			BasicHandler.conn = this.connection;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
