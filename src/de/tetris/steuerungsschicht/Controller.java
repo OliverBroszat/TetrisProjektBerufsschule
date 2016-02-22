@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.tetris.darstellungsschicht.Frame;
-import de.tetris.datenschicht.BasicHandler;
-import de.tetris.datenschicht.PersistanceStore;
 import de.tetris.datenschicht.PersistanceStoreMySQL;
 
 public class Controller implements Runnable {

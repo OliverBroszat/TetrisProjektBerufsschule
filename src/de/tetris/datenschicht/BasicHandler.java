@@ -2,10 +2,8 @@ package de.tetris.datenschicht;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 public abstract class BasicHandler {
 	protected static Connection conn;
