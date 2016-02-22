@@ -16,10 +16,10 @@ public class FrameHauptmenue extends Panel{
 	    setLayout(null);
 	    setBackground(Color.gray);
 	    
-	    titelLabel.setFont(new Font("Arial", Font.BOLD, 46));
+	    titelLabel.setFont(super.HeadlineFont);
 	    titelLabel.setForeground(Color.BLUE);
-	    highScoreButton.setFont(new Font("Arial", Font.BOLD, 14));
-	    loginButton.setFont(new Font("Arial", Font.BOLD, 14));
+	    highScoreButton.setFont(super.font);
+	    loginButton.setFont(super.font);
 	    
 	    loginButton.setText("Login");
 	    highScoreButton.setText("Highscore");
