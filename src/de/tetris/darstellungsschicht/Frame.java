@@ -2,6 +2,7 @@ package de.tetris.darstellungsschicht;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 
 import de.tetris.steuerungsschicht.Controller;
 
@@ -18,8 +19,9 @@ public class Frame extends GUI{
 		
 		setLayout(cardLayout);
 
-		add(addLoginScreen());
-	//	add(addSpielfeld());
+	//	add(addLoginScreen());
+//		add(addSpielfeld());
+		add(addFrameLoginScreen());
 		
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -29,6 +31,11 @@ public class Frame extends GUI{
 		this.controller = controller;
 	}
 	
+	private Panel addFrameLoginScreen() {
+		FrameLoginScreen frameLoginScreen = new FrameLoginScreen();
+		return frameLoginScreen;
+	}
+
 	private Panel addSpielfeld() {
 		FrameSpielfeld frameSpielfeld = new FrameSpielfeld();
 		controller.createListener(frameSpielfeld);
