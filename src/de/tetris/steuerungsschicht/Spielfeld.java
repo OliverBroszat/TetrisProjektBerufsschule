@@ -70,7 +70,11 @@ public class Spielfeld {
 		
 		this.cubes[this.getStartY()][this.getStartX()] = this.centerBlock;
 		this.setMovingBlocks(this.centerBlock, this.getStartY(), this.getStartX());
-		//this.move("down");
+		this.move("down");
+		Form rotated = this.rotator.starteRotieren(formList.get(0));
+		System.out.println("ROTEDED SIZE: " + rotated.blockList.size());
+		this.centerBlock = rotated.blockList.get(0);
+		this.drawCubes(offsetY, offsetX);
 		//this.move("right");
 		//this.move("left");
 	}

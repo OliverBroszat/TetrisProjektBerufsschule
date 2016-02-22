@@ -1,7 +1,7 @@
 package de.tetris.steuerungsschicht;
 
 public class FormNormalMode extends Form{
-
+	
 	@Override
 	public void formeBlock() {
 			Block startBlock = new Block();

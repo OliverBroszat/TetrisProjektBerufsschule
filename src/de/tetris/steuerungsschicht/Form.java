@@ -7,10 +7,12 @@ public abstract class Form {
 	protected List<Block> blockList = new ArrayList<Block>();
 	private int anzahlBloecke;
 	
-	
 	public Form() {
-		super();
 		formeBlock();
+	}
+	
+	protected void emptyList(){
+		this.blockList.clear();
 	}
 
 	public abstract void formeBlock();
