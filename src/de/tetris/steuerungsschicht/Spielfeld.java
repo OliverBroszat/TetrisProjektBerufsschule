@@ -71,8 +71,8 @@ public class Spielfeld {
 		this.cubes[this.getStartY()][this.getStartX()] = this.centerBlock;
 		this.setMovingBlocks(this.centerBlock, this.getStartY(), this.getStartX());
 		this.move("down");
-		this.move("down");
-		this.move("down");
+		this.move("right");
+		this.move("left");
 	}
 	
 	public void move(String direction){
@@ -97,18 +97,21 @@ public class Spielfeld {
 			break;
 		case "right":
 				if(!borderCollisionRight){
+					this.delete();
 					this.offsetX++;
 					this.move();
 				}
 			 break;
 		case "left":
 				if(!borderCollisionLeft){
+					this.delete();
 					this.offsetX--;
 					this.move();
 				}
 			 break;
 		case "up":
 				if(!borderCollisionUp){
+					this.delete();
 					this.offsetY--;
 					this.move();
 				}
