@@ -74,7 +74,7 @@ public class Spielfeld {
 		Form rotated = this.rotator.starteRotieren(formList.get(0));
 		System.out.println("ROTEDED SIZE: " + rotated.blockList.size());
 		this.centerBlock = rotated.blockList.get(0);
-		this.drawCubes(offsetY, offsetX);
+		//this.move("down");
 		//this.move("right");
 		//this.move("left");
 	}
