@@ -2,13 +2,6 @@ package de.tetris.darstellungsschicht;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
-
-import de.tetris.steuerungsschicht.Controller;
-
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
 
 import javax.swing.JPanel;
 
@@ -20,7 +13,7 @@ public class Frame extends GUI {
 	private CardLayout cardLayout = new CardLayout();
 	private Controller controller;
 	private JPanel backgroundFrame = new JPanel();
-	private JPanel panel;
+	private FrameSpielfeld panelSpielfeld;
 
 	public Frame(Controller controller) {
 		super("Tetriges Tetris");
@@ -47,7 +40,7 @@ public class Frame extends GUI {
 		backgroundFrame.add(addFrameHighscore(), "Highscore");
 		backgroundFrame.add(addFrameCreateUser(), "CreateUser");
 		
-		controller.spielfedRequestFocus(panel);
+		controller.spielfedRequestFocus(panelSpielfeld);
 	}
 
 	private Panel addFrameCreateUser() {
@@ -75,10 +68,9 @@ public class Frame extends GUI {
 	}
 
 	private Panel addSpielfeld() {
-		FrameSpielfeld frameSpielfeld = new FrameSpielfeld();
-		panel = frameSpielfeld;
-		controller.createListener(frameSpielfeld);
-		return frameSpielfeld;
+		panelSpielfeld = new FrameSpielfeld();;
+		controller.createListener(panelSpielfeld);
+		return panelSpielfeld;
 	}
 
 	private Panel addHauptmenue() {
@@ -111,7 +103,7 @@ public class Frame extends GUI {
 		this.backgroundFrame = backgroundFrame;
 	}
 
-	public JPanel getPanel() {
-		return panel;
+	public FrameSpielfeld getPanelSpielfeld() {
+		return panelSpielfeld;
 	}
 }

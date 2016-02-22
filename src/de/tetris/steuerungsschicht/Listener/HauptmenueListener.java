@@ -24,7 +24,7 @@ public class HauptmenueListener implements ActionListener{
 			}
 			else if(((JButton) e.getSource()).getText().equals("Spiel starten")) {
 				frame.getCardLayout().show(frame.getBackgroundFrame(), "Spielfeld");
-				frame.getController().spielfedRequestFocus(frame.getPanel());
+				frame.getController().spielfedRequestFocus(frame.getPanelSpielfeld());
 			}
 		}
 	}
