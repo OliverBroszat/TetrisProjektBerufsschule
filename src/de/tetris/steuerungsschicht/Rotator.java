@@ -12,10 +12,10 @@ public class Rotator implements Rotatable{
 		this.rotateCount = rotateCount;
 	}
 	
-	public void starteRotieren(Block startBlock)
+	public Form starteRotieren(FormNormalMode formToRotate)
 	{
 		rotateCount = 0;
-		rotieren(startBlock);
+		rotieren(formToRotate.blockList.get(0));
 	}
 	
 	protected void rotieren(Block startBlock)
@@ -24,6 +24,7 @@ public class Rotator implements Rotatable{
 		{
 			if(startBlock.getNachbarRechts() != null)
 			{
+				System.out.println("rotate right");
 				startBlock.setNachbarUnten(startBlock.getNachbarRechts());
 				rotateCount = rotateCount + 1;
 				rotieren(startBlock.getNachbarUnten());

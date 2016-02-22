@@ -56,6 +56,7 @@ public class Spielfeld {
 	}
 
 	public Spielfeld() {
+		this.rotator = new Rotator();
 		initNormalMode();
 	}
 
