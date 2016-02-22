@@ -32,4 +32,20 @@ public class FrameHauptmenue extends Panel{
 	    add(highScoreButton);
 	    add(loginButton);
 	}
+
+	public JButton getLoginButton() {
+		return loginButton;
+	}
+
+	public void setLoginButton(JButton loginButton) {
+		this.loginButton = loginButton;
+	}
+
+	public JButton getHighScoreButton() {
+		return highScoreButton;
+	}
+
+	public void setHighScoreButton(JButton highScoreButton) {
+		this.highScoreButton = highScoreButton;
+	}
 }

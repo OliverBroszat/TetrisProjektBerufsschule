@@ -1,9 +1,14 @@
 package de.tetris.steuerungsschicht;
 
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JPanel;
+
 import de.tetris.darstellungsschicht.Frame;
+import de.tetris.darstellungsschicht.FrameHauptmenue;
+import de.tetris.darstellungsschicht.FrameSpielfeld;
 import de.tetris.datenschicht.PersistanceStore;
 
 public class Controller implements Runnable {
@@ -18,6 +23,7 @@ public class Controller implements Runnable {
 
 	public Controller() {
 		Form form = new FormNormalMode();
+		// Frame frame = new Frame();
 		startGame();
 	}
 	
@@ -64,5 +70,21 @@ public class Controller implements Runnable {
 	@Override
 	public void run() {
 		gameLoop();
+	}
+	
+	public void createListener(JPanel panel) {
+		ActionListener listener;
+		if(panel instanceof FrameHauptmenue) {
+			listener = new HauptmenueListener();
+			((FrameHauptmenue) panel).getLoginButton().addActionListener(listener);
+			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(listener); 
+		} else if (panel instanceof FrameSpielfeld) {
+			listener = new SpielfeldListener();
+			// Buttons ActionListener hinzufügen
+		} else {
+			// Fehlerausgabe
+		}
+		
+		// noch nicht alle Screens berücksichtigt
 	}
 }

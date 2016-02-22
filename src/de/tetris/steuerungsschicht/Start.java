@@ -7,7 +7,7 @@ public class Start {
 		Controller game = new Controller();
 	
 		System.out.println("Programm hat gestartet.");
+
 		
-		new Frame();
 	}
 }
