@@ -3,6 +3,7 @@ package de.tetris.steuerungsschicht;
 public class Rotator implements Rotatable{
 
 	private int rotateCount = 0;
+	private Form copyForm = new FormNormalMode();
 	
 	public int getRotateCount() {
 		return rotateCount;
@@ -15,13 +16,12 @@ public class Rotator implements Rotatable{
 	public Form starteRotieren(Form formToRotate)
 	{
 		rotateCount = 0;
-		Form newForm = new FormNormalMode();
-		newForm.emptyList();
-		newForm = rotieren(newForm, formToRotate.blockList.get(0));
-		return newForm;
+		this.copyForm.emptyList();
+		rotieren(formToRotate.blockList.get(0));
+		return this.copyForm;
 	}
 	
-	protected Form rotieren(Form form, Block currBlock)
+	private void rotieren(Block currBlock)
 	{
 			if(currBlock.getNachbarRechts() != null)
 			{
@@ -34,8 +34,9 @@ public class Rotator implements Rotatable{
 					currBlock.setNachbarUnten(nextBlock);
 				}else{
 					rotateCount = rotateCount + 1;
-					form.blockList.add(currBlock.getNachbarUnten());
-					form = rotieren(form, currBlock.getNachbarUnten());
+					System.out.println("add: one block");
+					copyForm.blockList.add(currBlock.getNachbarUnten());
+					rotieren(currBlock.getNachbarUnten());
 				}
 				rotateCount = rotateCount + 1;
 			}
@@ -52,8 +53,8 @@ public class Rotator implements Rotatable{
 				}else{
 					rotateCount = rotateCount + 1;
 					System.out.println("add: one block");
-					form.blockList.add(currBlock.getNachbarOben());
-					form = rotieren(form, currBlock.getNachbarOben());
+					copyForm.blockList.add(currBlock.getNachbarOben());
+					rotieren(currBlock.getNachbarOben());	
 				}
 			}
 			
@@ -67,8 +68,9 @@ public class Rotator implements Rotatable{
 					currBlock.setNachbarLinks(nextBlock);
 				}else{
 					rotateCount = rotateCount + 1;
-					form.blockList.add(currBlock.getNachbarLinks());
-					form = rotieren(form, currBlock.getNachbarLinks());
+					System.out.println("add: one block");
+					copyForm.blockList.add(currBlock.getNachbarLinks());
+					rotieren(currBlock.getNachbarLinks());
 				}
 			}
 			
@@ -82,11 +84,11 @@ public class Rotator implements Rotatable{
 					currBlock.setNachbarRechts(nextBlock);
 				}else{
 					rotateCount = rotateCount + 1;
-					form.blockList.add(currBlock.getNachbarRechts());
-					form = rotieren(form, currBlock.getNachbarRechts());
+					System.out.println("add: one block");
+					copyForm.blockList.add(currBlock.getNachbarRechts());
+					rotieren(currBlock.getNachbarRechts());
 				}
 			}
-		System.out.println("FORM SIZE: " + form.blockList.size());
-		return form;
+		System.out.println("FORM SIZE: " + copyForm.blockList.size());
 	}
 }
