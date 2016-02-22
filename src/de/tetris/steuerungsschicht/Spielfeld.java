@@ -20,54 +20,54 @@ public class Spielfeld {
 		formList.add(new FormNormalMode());
 		formList.add(new FormNormalMode());
 		
-		formList.get(0).blockList.get(0).getNachbarLinks();	
-		
 		System.out.println("FORMLIST SIZE:"  + this.formList.size());
 		
 		Block startBlock = formList.get(0).blockList.get(0);
-		System.out.println(formList.get(0).blockList.size());
 		
-		this.setBlocks(startBlock, 2, 4);
+		System.out.println(formList.get(0).blockList.get(0));
 		
-		
+		this.setBlocks(startBlock);
 	}
 	
 	public void drawCubes(){
-		int row = cubes.length;
-		int col = cubes[0].length;
+		int rows = cubes.length;
+		int cols = cubes[0].length;
 		
-		for (int i = 0; i < cubes.length; i++) {
-			System.out.println("DIM " + i);
-			for (int j = 0; j < cubes[0].length; j++) {
+		for (int i = 0; i < rows; i++) {
+			System.out.println("");
+			for (int j = 0; j < cols; j++) {
 				if(cubes[i][j] != null){
 					System.out.print(" " + cubes[i][j].getClass().getSimpleName());
 				}else{
-					System.out.print("  " + cubes[i][j]);
+					System.out.print("   " + cubes[i][j]);
 				}
 			}
 		}
 	}
 	
-	private Block setBlocks(Block startBlock,int x,int y){
+	private Block setBlocks(Block currBlock){	
+		int x = 2;
+		int y = 4;
+		cubes[x][y] = currBlock;
 		
-		
-		cubes[x][y] = startBlock;
-		if(startBlock.getNachbarLinks() != null){
+		if(currBlock.getNachbarLinks() != null){
 			System.out.println("Hat links!");
-			cubes[2][3] = startBlock.getNachbarLinks();
-			this.setBlocks(cubes[2][3]);
-		}else if(startBlock.getNachbarRechts() != null){
+			cubes[y][x - 1] = currBlock.getNachbarLinks();
+			this.setBlocks(cubes[y][x - 1]);
+		}else if(currBlock.getNachbarRechts() != null){
 			System.out.println("Hat rechts!");
-			cubes[2][5] = startBlock.getNachbarRechts();
-			this.setBlocks(cubes[2][5]);
-		}else if(startBlock.getNachbarOben() != null){
+			cubes[y][x + 1] = currBlock.getNachbarRechts();
+			this.setBlocks(cubes[y][x + 1]);
+		}else if(currBlock.getNachbarOben() != null){
 			System.out.println("Hat oben!");
-			cubes[1][4] = startBlock.getNachbarRechts();
-			this.setBlocks(cubes[1][4]);
-		}else if(startBlock.getNachbarUnten() != null){
+			cubes[y-1][x] = currBlock.getNachbarOben();
+			this.setBlocks(cubes[y-1][x]);
+		}else if(currBlock.getNachbarUnten() != null){
 			System.out.println("Hat unten!");
-			cubes[3][4] = startBlock.getNachbarUnten();
-			this.setBlocks(cubes[3][4]);
+			cubes[y+1][x] = currBlock.getNachbarUnten();
+			this.setBlocks(cubes[y+1][x]);
+		}else{
+			
 		}
 		
 		drawCubes();
