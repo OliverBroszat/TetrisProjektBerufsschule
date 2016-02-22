@@ -41,7 +41,7 @@ public class Controller implements Runnable {
 		thread.start();
 	}
 	
-	public void etablishConnection(){
+	public void establishConnection(){
 		// Setzen der AccountInformationen
 		this.persistancestore.setInfo("localhost", "3306");
 		
@@ -95,7 +95,7 @@ public class Controller implements Runnable {
 
 	@Override
 	public void run() {
-		etablishConnection();
+//		establishConnection();
 		gameLoop();
 	}
 	
