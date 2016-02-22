@@ -17,7 +17,6 @@ public class Spielfeld {
 
 	private Rotator rotator;
 	private Block centerBlock = null;
-	private Block deleteBlock = null;
 
 	private int startX = START_X;
 	private int startY = START_Y;
@@ -70,9 +69,9 @@ public class Spielfeld {
 		
 		this.cubes[this.getStartY()][this.getStartX()] = this.centerBlock;
 		this.setMovingBlocks(this.centerBlock, this.getStartY(), this.getStartX());
-		this.move("down");
-		this.move("right");
-		this.move("left");
+		//this.move("down");
+		//this.move("right");
+		//this.move("left");
 	}
 	
 	public void move(String direction){
