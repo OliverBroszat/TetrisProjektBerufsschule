@@ -33,7 +33,10 @@ public class Controller implements Runnable {
 	}
 	
 	public void etablishConnection(){
+		// Setzen der AccountInformationen
 		this.persistancestore.setInfo("localhost", "3306");
+		
+		// Name der Datenbank auf welche eine Verbindung aufgebaut werden soll.
 		this.persistancestore.createConnection("Tetris");
 		
 		String stmt3 = "SELECT (p.punkte * s.faktor) AS 'Highscores' " +
@@ -47,12 +50,12 @@ public class Controller implements Runnable {
 		
 		ArrayList<ArrayList<String>> data1 = persistancestore.select("SELECT * FROM tetrisuser");
 		
-		//persistancestore.update("UPDATE tetrisuser SET Nickname='ANDERS' WHERE Nickname='pro'");
+		persistancestore.update("UPDATE tetrisuser SET Nickname=' +  + ' WHERE Nickname='pro'");
 		
 		//persistancestore.delete("DELETE FROM tetrisuser WHERE Nickname='ANDERS'");
 			
-		//persistancestore.insert("INSERT INTO tetrisuser (nickname, password, letzerSpielstand)" +
-		//"VALUES ('Gollum','ABCDEFG112', '[0,1,2,3,4,5,6,7,10,[0,0,0]][0,1,2,3,4,5,6,7,10,[0,0,0]]')");
+		persistancestore.insert("INSERT INTO tetrisuser (nickname, password, letzerSpielstand)" +
+		"VALUES ('Gollum','ABCDEFG112', '[0,1,2,3,4,5,6,7,10,[0,0,0]][0,1,2,3,4,5,6,7,10,[0,0,0]]')");
 	}
 	
 	//TODO Oliver

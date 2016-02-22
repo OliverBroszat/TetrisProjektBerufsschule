@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.jasypt.util.password.BasicPasswordEncryptor;
+
 public class PersistanceStoreMySQL extends PersistanceStore{
 	
 	// Handler
@@ -12,6 +14,7 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 	private UpdateHandler updateHandler;
 	private DeleteHandler deleteHandler;
 	private InsertHandler insertHandler;
+	private BasicPasswordEncryptor passwordHandler;
 	
 	private Connection connection;
 
@@ -35,6 +38,12 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 		}
 		
 		return data;
+	}
+	
+	public void logIn(String password, String user){
+		ArrayList<ArrayList<String>> user = this.select("SELECT * FROM tetrisuser WHERE Nickname='" + user + "';");
+		
+		passwordHandler.checkPassword(password, encryptedPassword)
 	}
 	
 	public void update(String statement){
@@ -93,6 +102,7 @@ public class PersistanceStoreMySQL extends PersistanceStore{
 			this.updateHandler = new UpdateHandler();
 			this.deleteHandler = new DeleteHandler();
 			this.insertHandler = new InsertHandler();
+			this.passwordHandler = new BasicPasswordEncryptor();
 			
 			try {
 				Class.forName("com.mysql.jdbc.Driver").newInstance();
