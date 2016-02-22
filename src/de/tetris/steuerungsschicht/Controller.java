@@ -10,6 +10,7 @@ import de.tetris.darstellungsschicht.Frame;
 import de.tetris.darstellungsschicht.FrameHauptmenue;
 import de.tetris.darstellungsschicht.FrameSpielfeld;
 import de.tetris.datenschicht.PersistanceStore;
+import de.tetris.datenschicht.PersistanceStoreMySQL;
 
 public class Controller implements Runnable {
 	private Thread thread;
@@ -19,11 +20,14 @@ public class Controller implements Runnable {
 	private XMLSerializer xmlSerializer;
 	private List<Form> formList = new ArrayList<Form>();
 	private Frame frame;
-	private PersistanceStore persistancestore;
+	private PersistanceStoreMySQL persistancestore;
+	private String user = "default";
+	private ArrayList<String> userData;
 
 	public Controller() {
 		Form form = new FormNormalMode();
 		// Frame frame = new Frame();
+		persistancestore = new PersistanceStoreMySQL();
 		startGame();
 	}
 	
@@ -35,6 +39,28 @@ public class Controller implements Runnable {
 		thread = new Thread(this);
 		gameRunning = true;
 		thread.start();
+	}
+	
+	public void etablishConnection(){
+		// Setzen der AccountInformationen
+		this.persistancestore.setInfo("localhost", "3306");
+		
+		// Name der Datenbank auf welche eine Verbindung aufgebaut werden soll.
+		this.persistancestore.createConnection("Tetris");
+
+		// DUMMY ABFRAGEN
+		// create default user
+		this.persistancestore.createUser("default", "default");
+		this.userData = this.persistancestore.logIn("default", "default");
+		
+		System.out.println("LOGGED IS : " + userData.get(0) + " MESSAGE " + userData.get(1));
+		
+		//persistancestore.update("UPDATE tetrisuser SET Nickname=' +  + ' WHERE Nickname='pro'");
+		
+		//persistancestore.delete("DELETE FROM tetrisuser WHERE Nickname='ANDERS'");
+			
+		//persistancestore.insert("INSERT INTO tetrisuser (nickname, password, letzerSpielstand)" +
+		//"VALUES ('Gollum','ABCDEFG112', '[0,1,2,3,4,5,6,7,10,[0,0,0]][0,1,2,3,4,5,6,7,10,[0,0,0]]')");
 	}
 	
 	//TODO Oliver
@@ -61,7 +87,7 @@ public class Controller implements Runnable {
 
 				// TODO Oliver
 				// render();
-					System.out.println("loop");
+					//System.out.println("loop");
 				// gamelogic();
 			}
 		}
@@ -69,6 +95,7 @@ public class Controller implements Runnable {
 
 	@Override
 	public void run() {
+		etablishConnection();
 		gameLoop();
 	}
 	

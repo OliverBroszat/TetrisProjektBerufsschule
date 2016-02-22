@@ -1,6 +1,189 @@
 package de.tetris.datenschicht;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
+import org.jasypt.util.password.BasicPasswordEncryptor;
+
 public class PersistanceStoreMySQL extends PersistanceStore{
-	private BestenlisteHandler bestenlisteHandler;
-	private UserHander userHandler;
+	
+	// Handler
+	private SelectHandler selectHandler;
+	private UpdateHandler updateHandler;
+	private DeleteHandler deleteHandler;
+	private InsertHandler insertHandler;
+	private BasicPasswordEncryptor passwordHandler;
+	
+	private Connection connection;
+
+	private String hostaddress;
+	private String port = "3306";
+	private String database;
+	private String username = "root";
+	
+	public SelectHandler getSelectHandler() {
+		return selectHandler;
+	}
+	
+	public ArrayList<ArrayList<String>> select(String statement){
+		ArrayList<ArrayList<String>> data = this.selectHandler.select(statement);
+
+		for (ArrayList<String> resultSet : data) {
+	    	System.out.println();
+			for (String item : resultSet) {
+				System.out.print(item + " ");
+			}
+		}
+		
+		return data;
+	}
+	
+	public ArrayList<String> logIn(String user,String password){
+		String loggedUser = "NO user";
+		String message = "No message";
+		ArrayList<String> data = new ArrayList<String>();
+		
+		ArrayList<ArrayList<String>> userList = this.select("SELECT Nickname, Password FROM tetrisuser "
+				+ "WHERE Nickname = '" + user + "'");
+		
+		if(userList.size() > 0){
+			if(passwordHandler.checkPassword(password, userList.get(0).get(1))){
+				System.out.println("Logged In.");
+				loggedUser = user;
+			}else{
+				message = "Password Wrong!";
+			}
+		}else{
+			message = "User Wrong!";
+		}
+		
+		data.add(loggedUser);
+		data.add(message);
+		
+		return data;
+	}
+	
+	public String createUser(String Nickname, String Password){
+		String encrypedPassword = passwordHandler.encryptPassword(Password);
+		boolean foundUser = false;
+		
+		ArrayList<ArrayList<String>> user = this.selectHandler.select("SELECT * FROM tetrisuser");
+		
+		for (ArrayList<String> item : user) {
+			if(item.contains(Nickname)){
+				System.out.println(Nickname + " matches " + item.get(1));
+				foundUser = true;
+			}else{
+				System.out.println(Nickname + " not matches " + item.get(1));
+			}
+		}
+		if(!foundUser){
+			this.insert("INSERT INTO tetrisuser (Nickname, Password) VALUES ('"+ Nickname + "','" + encrypedPassword + "')");
+			this.logIn(Nickname, encrypedPassword);
+		}
+		
+		return Nickname;
+	}
+	
+	public void update(String statement){
+		this.updateHandler.update(statement);
+	}
+	
+	public void delete(String statement){
+		this.deleteHandler.delete(statement);
+	}
+	
+	public void insert(String statement){
+		this.insertHandler.insert(statement);
+	}
+
+	
+	public String getUsername() {
+		return username;
+	}
+
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public String getHostaddress() {
+		return hostaddress;
+	}
+
+
+	public void setHostaddress(String hostaddress) {
+		this.hostaddress = hostaddress;
+	}
+
+	public String getPort() {
+		return port;
+	}
+
+
+	public void setPort(String port) {
+		this.port = port;
+	}
+
+	public String getDatabase() {
+		return database;
+	}
+
+	public void setDatabase(String database) {
+		this.database = database;
+	}
+	
+	public PersistanceStoreMySQL() {
+			this.connection = null;
+			super.connectionStatus = false;
+			
+			this.selectHandler = new SelectHandler();
+			this.updateHandler = new UpdateHandler();
+			this.deleteHandler = new DeleteHandler();
+			this.insertHandler = new InsertHandler();
+			this.passwordHandler = new BasicPasswordEncryptor();
+			
+			try {
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
+				System.out.println("INFO: Driver set");
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+
+	public void setInfo(String hostaddress,String port, String database){ 
+	     this.hostaddress = hostaddress;
+	     this.port = port;
+	     this.database = database;
+	}
+	
+	public void setInfo(String hostaddress ,String port){
+		 System.out.println("INFO: Settings set");
+	     this.hostaddress = hostaddress;
+	     this.port = port;
+	}
+	
+	@Override
+	public boolean createConnection(String database) {
+		
+		try {
+			this.connection = DriverManager.
+			            getConnection("jdbc:mysql://" + this.hostaddress + ":" + this.port + "/" + database
+                                , this.username, "");
+			this.connectionStatus = true;
+			System.out.println("INFO: Database connection etablished");
+			
+			BasicHandler.conn = this.connection;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return this.connectionStatus;
+	}
 }
