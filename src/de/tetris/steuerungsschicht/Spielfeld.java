@@ -56,18 +56,12 @@ public class Spielfeld {
 		this.move("down");
 		this.move("down");
 		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
+		this.move("left");
+		this.move("left");
+		this.move("Right");
+		this.move("Right");
+		this.move("up");
+		this.move("up");
 	}
 	
 	public void move(String direction){
@@ -91,16 +85,17 @@ public class Spielfeld {
 				clearAllCubes();
 				collision = false;
 
-				int offsetY = this.getStartY() + moveSpeed;
+				int offsetY = this.getStartY();
 				int offsetX = this.getStartX();
 				checkCollision(this.centerBlock, offsetY, offsetX);
 				
 				if(!collision){
 					System.out.println("NO COLLIDITION!");
+					offsetY += 1;
 					this.cubes[offsetY][offsetX] = this.centerBlock;
 					this.setMovingBlocks(this.centerBlock, offsetY, offsetX);
-						this.setStartX(offsetY);
-						this.setStartY(offsetX);
+						this.setStartX(offsetX);
+						this.setStartY(offsetY);
 						this.drawCubes(offsetY, offsetX);		
 				}else{
 					System.out.println("COLLISOITJN!");
@@ -151,8 +146,6 @@ public class Spielfeld {
 	public boolean isOutOfBounce(int curY, int curX){
 		int rows = cubes.length;
 		int cols = cubes[0].length;
-		System.out.println("rows" + cubes.length);
-		System.out.println("cols" + cubes[0].length);
 		boolean status = false;
 		
 		System.out.println("VERGLEICHE [" + curY + "] mit [ " + rows + "]");
