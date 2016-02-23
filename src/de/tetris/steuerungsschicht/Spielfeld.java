@@ -1,14 +1,15 @@
 package de.tetris.steuerungsschicht;
 
+import java.awt.Component;
 import java.util.ArrayList;
 
 public class Spielfeld {
-	private static final int FIELD_WIDTH = 24;
-	private static final int FIELD_HEIGHT = FIELD_WIDTH / 2;
+	private static final int FIELD_WIDTH = 20;
+	private static final int FIELD_HEIGHT = 12;
 	private Block[][] cubes = new Block[FIELD_WIDTH][FIELD_HEIGHT];
 	private ArrayList<Form> formList = new ArrayList<Form>();
-	private static final int START_X = 4;
-	private static final int START_Y = 3;
+	private static final int START_Y = 1;
+	private static final int START_X = 5;
 	
 	private boolean borderCollisionLeft = false;
 	private boolean borderCollisionRight = false;
@@ -173,6 +174,7 @@ public class Spielfeld {
 		this.setBlockStartY(offsetY);
 	}
 	
+	//Testmethode not in use 
 	public void drawCubes(int offsetY,int offsetX) {
 		int rows = cubes.length;
 		int cols = cubes[0].length;
@@ -283,6 +285,7 @@ public class Spielfeld {
 		
 		if(this.isOutOfBounce(curY + 1, curX)){
 			System.out.println("check block Unten");
+			this.centerBlock = null;
 			borderCollisionDown = true;
 		}else{
 			if(currBlock.getNachbarUnten() != null){
@@ -290,7 +293,6 @@ public class Spielfeld {
 			}
 		}
 	}
-	
 
 	private Block setMovingBlocks(Block currBlock, int curY, int curX){	
 			int x = curX;
@@ -368,5 +370,4 @@ public class Spielfeld {
 		//System.out.println("STACK ENDE");
 		return null;
 	}
-
 }

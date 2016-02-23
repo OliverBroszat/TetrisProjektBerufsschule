@@ -1,17 +1,23 @@
 package de.tetris.steuerungsschicht;
 
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JPanel;
 
 import de.tetris.darstellungsschicht.Frame;
+import de.tetris.darstellungsschicht.FrameCreateUser;
 import de.tetris.darstellungsschicht.FrameHauptmenue;
+import de.tetris.darstellungsschicht.FrameLoginScreen;
 import de.tetris.darstellungsschicht.FrameSpielfeld;
-import de.tetris.datenschicht.PersistanceStore;
 import de.tetris.datenschicht.PersistanceStoreMySQL;
+import de.tetris.steuerungsschicht.Listener.BasicFrameListener;
+import de.tetris.steuerungsschicht.Listener.CreateUserListener;
+import de.tetris.steuerungsschicht.Listener.HauptmenueListener;
+import de.tetris.steuerungsschicht.Listener.LoginScreenListener;
+import de.tetris.steuerungsschicht.Listener.SpielfeldListener;
 
 public class Controller implements Runnable {
 	private Thread thread;
@@ -24,29 +30,33 @@ public class Controller implements Runnable {
 	private String user = "default";
 	private ArrayList<String> userData;
 	private Spielfeld spielfeld;
-
+	private RenderClass renderClass;
 
 	public Controller() {
+		this.spielfeld = new Spielfeld();
+		frame = new Frame(this);
+		frame.addFrames();
+
 		Form form = new FormNormalMode();
-		// Frame frame = new Frame();
+		// formList.add(form);
 		persistancestore = new PersistanceStoreMySQL();
 		startGame();
 	}
-	
+
 	/**
-	 * Startet das Spiel und die dazugehörigen Threads
-	 * Soll es ermöglichen, mehrere Spiele starten zu können
+	 * Startet das Spiel und die dazugehörigen Threads Soll es ermöglichen,
+	 * mehrere Spiele starten zu können
 	 */
 	public void startGame() {
 		thread = new Thread(this);
 		gameRunning = true;
 		thread.start();
 	}
-	
-	public void establishConnection(){
+
+	public void establishConnection() {
 		// Setzen der AccountInformationen
 		this.persistancestore.setInfo("localhost", "3306");
-		
+
 		// Name der Datenbank auf welche eine Verbindung aufgebaut werden soll.
 		this.persistancestore.createConnection("Tetris");
 
@@ -54,26 +64,35 @@ public class Controller implements Runnable {
 		// create default user
 		this.persistancestore.createUser("default", "default");
 		this.userData = this.persistancestore.logIn("default", "default");
-		
+
 		System.out.println("LOGGED IS : " + userData.get(0) + " MESSAGE " + userData.get(1));
-		
-		//persistancestore.update("UPDATE tetrisuser SET Nickname=' +  + ' WHERE Nickname='pro'");
-		
-		//persistancestore.delete("DELETE FROM tetrisuser WHERE Nickname='ANDERS'");
-			
-		//persistancestore.insert("INSERT INTO tetrisuser (nickname, password, letzerSpielstand)" +
-		//"VALUES ('Gollum','ABCDEFG112', '[0,1,2,3,4,5,6,7,10,[0,0,0]][0,1,2,3,4,5,6,7,10,[0,0,0]]')");
+
+		// persistancestore.update("UPDATE tetrisuser SET Nickname=' + + ' WHERE
+		// Nickname='pro'");
+
+		// persistancestore.delete("DELETE FROM tetrisuser WHERE
+		// Nickname='ANDERS'");
+
+		// persistancestore.insert("INSERT INTO tetrisuser (nickname, password,
+		// letzerSpielstand)" +
+		// "VALUES ('Gollum','ABCDEFG112',
+		// '[0,1,2,3,4,5,6,7,10,[0,0,0]][0,1,2,3,4,5,6,7,10,[0,0,0]]')");
 	}
-	
-	//TODO Oliver
-	public void stopGame(){
+
+	// TODO Oliver
+	public void stopGame() {
 		gameRunning = false;
+		renderClass = null;
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * Wird solange das Spiel läuft 60 mal pro Sekunde aufgerufen werden
-	 * und das Spielfeld rendern
-	 * und die gamelogik aufrufen
+	 * Wird solange das Spiel läuft 60 mal pro Sekunde aufgerufen werden und das
+	 * Spielfeld rendern und die gamelogik aufrufen
 	 */
 	public void gameLoop() {
 		long lastLoopTime = System.nanoTime();
@@ -86,10 +105,10 @@ public class Controller implements Runnable {
 
 			if (now >= OPTIMAL_TIME) {
 				lastLoopTime = System.nanoTime();
-				
+
 				// TODO Oliver
-				// render();
-					//System.out.println("loop");
+				renderClass.render();
+
 				// gamelogic();
 			}
 		}
@@ -97,24 +116,40 @@ public class Controller implements Runnable {
 
 	@Override
 	public void run() {
-//		establishConnection();
-		this.spielfeld = new Spielfeld();
+		//TODO Michael was macht das hier?
+		// establishConnection();
+		renderClass = new RenderClass(frame.getPanelSpielfeld().getCanvas(), spielfeld.getCubes());
+		
 		gameLoop();
 	}
-	
+
+	public void spielfedRequestFocus(JPanel panel) {
+		panel.requestFocusInWindow();
+	}
+
 	public void createListener(JPanel panel) {
-		ActionListener listener;
-		if(panel instanceof FrameHauptmenue) {
-			listener = new HauptmenueListener();
-			((FrameHauptmenue) panel).getLoginButton().addActionListener(listener);
-			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(listener); 
+		ActionListener aListener;
+		if (panel instanceof FrameLoginScreen) {
+			aListener = new LoginScreenListener(frame);
+			((FrameLoginScreen) panel).getSubmitButton().addActionListener(aListener);
+			((FrameLoginScreen) panel).getNewUserButton().addActionListener(aListener);
+
+		} else if (panel instanceof FrameHauptmenue) {
+			System.out.println("cont: " + frame);
+			aListener = new HauptmenueListener(frame);
+			((FrameHauptmenue) panel).getLoginButton().addActionListener(aListener);
+			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(aListener);
+			((FrameHauptmenue) panel).getStartenButton().addActionListener(aListener);
+
 		} else if (panel instanceof FrameSpielfeld) {
-			listener = new SpielfeldListener();
-			// Buttons ActionListener hinzufügen
+			aListener = new BasicFrameListener(frame);
+			KeyListener kListener = new SpielfeldListener(frame, spielfeld);
+			panel.addKeyListener(kListener);
+		} else if (panel instanceof FrameCreateUser) {
+			aListener = new CreateUserListener(frame);
+			((FrameCreateUser) panel).getNewUserButton().addActionListener(aListener);
 		} else {
-			// Fehlerausgabe
+			// Fehler
 		}
-		
-		// noch nicht alle Screens berücksichtigt
 	}
 }
