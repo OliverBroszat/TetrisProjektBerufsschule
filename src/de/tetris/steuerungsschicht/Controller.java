@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import de.tetris.darstellungsschicht.Frame;
+import de.tetris.darstellungsschicht.FrameCreateUser;
 import de.tetris.darstellungsschicht.FrameHauptmenue;
 import de.tetris.darstellungsschicht.FrameLoginScreen;
 import de.tetris.darstellungsschicht.FrameSpielfeld;
@@ -104,7 +105,7 @@ public class Controller implements Runnable {
 	public void spielfedRequestFocus(JPanel panel) {
 		panel.requestFocusInWindow();
 	}
-	
+
 	public void createListener(JPanel panel) {
 		ActionListener aListener;
 		if(panel instanceof FrameLoginScreen) {
@@ -117,6 +118,9 @@ public class Controller implements Runnable {
 			aListener = new BasicFrameListener();
 			KeyListener kListener = new SpielfeldListener();
 			panel.addKeyListener(kListener);
+		} else if (panel instanceof FrameCreateUser) {
+			aListener = new CreateUserListener();
+			((FrameCreateUser) panel).getNewUserButton().addActionListener(aListener);
 		} else {
 			// Fehler
 		}

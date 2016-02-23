@@ -53,4 +53,12 @@ public class FrameCreateUser extends Panel{
 	    add(newUserButton);
 	    add(centerPanel);
 	}
+
+	public JButton getNewUserButton() {
+		return newUserButton;
+	}
+
+	public void setNewUserButton(JButton newUserButton) {
+		this.newUserButton = newUserButton;
+	}
 }

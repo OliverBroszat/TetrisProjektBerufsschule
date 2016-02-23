@@ -42,6 +42,12 @@ public class Frame extends GUI{
 		controller.spielfedRequestFocus(panel);
 	}
 	
+	private Panel addCreateUserScreen() {
+		FrameCreateUser frameCreateUser = new FrameCreateUser();
+		controller.createListener(frameCreateUser);
+		return frameCreateUser;
+	}
+	
 	private Panel addFrameLoginScreen() {
 		FrameLoginScreen frameLoginScreen = new FrameLoginScreen();
 		controller.createListener(frameLoginScreen);
