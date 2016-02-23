@@ -37,8 +37,8 @@ public class Controller implements Runnable {
 
 	public Controller() {
 		frame = new Frame(this);
+		this.spielfeld = new Spielfeld();
 		frame.addFrames();
-
 		Form form = new FormNormalMode();
 		// formList.add(form);
 		persistancestore = new PersistanceStoreMySQL();
@@ -49,7 +49,6 @@ public class Controller implements Runnable {
 	 * mehrere Spiele starten zu können
 	 */
 	public void startGame() {
-		this.spielfeld = new Spielfeld();
 		thread = new Thread(this);
 		thread.start();
 	}
