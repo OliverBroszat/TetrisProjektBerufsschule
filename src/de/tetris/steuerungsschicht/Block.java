@@ -1,8 +1,9 @@
 package de.tetris.steuerungsschicht;
 
 import java.awt.Color;
+import java.io.Serializable;
 
-public class Block {
+public class Block implements Serializable{
 
 	private Block nachbarOben;
 	private Block nachbarRechts;

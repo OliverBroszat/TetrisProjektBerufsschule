@@ -1,15 +1,16 @@
 package de.tetris.steuerungsschicht;
 
-import java.awt.Component;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Spielfeld {
+public class Spielfeld implements Serializable{
 	private static final int FIELD_WIDTH = 20;
 	private static final int FIELD_HEIGHT = 12;
 	private Block[][] cubes = new Block[FIELD_WIDTH][FIELD_HEIGHT];
 	private ArrayList<Form> formList = new ArrayList<Form>();
 	private static final int START_Y = 1;
 	private static final int START_X = 5;
+	private Serializer basicSerializer = new BasicSerializer();
 	
 	private boolean borderCollisionLeft = false;
 	private boolean borderCollisionRight = false;
@@ -389,5 +390,22 @@ public class Spielfeld {
 		
 		//System.out.println("STACK ENDE");
 		return null;
+	}
+	
+	public void rewriteCubes(Block[][] tmp){
+		for (int i = 0; i < tmp.length; i++) {
+			for (int j = 0; j < tmp[i].length; j++) {
+				cubes[i][j] = tmp[i][j];
+			}
+		}
+	}
+
+	public void serialize() {
+		delete();
+		basicSerializer.serialize(cubes);
+	}
+	
+	public void deSerialize(){
+		rewriteCubes(basicSerializer.deSerialize());
 	}
 }

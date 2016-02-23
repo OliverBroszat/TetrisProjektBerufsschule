@@ -1,5 +1,8 @@
 package de.tetris.steuerungsschicht;
 
-public interface Serializer {
+import java.io.Serializable;
 
+public abstract class Serializer implements Serializable{
+	public abstract void serialize(Block[][] serializeField);
+	public abstract Block[][] deSerialize();
 }

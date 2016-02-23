@@ -29,7 +29,6 @@ public class Controller implements Runnable {
 	private boolean gameRunning;
 	private boolean pause = false;
 	private Rotator rotator;
-	private XMLSerializer xmlSerializer;
 	private Frame frame;
 	private PersistanceStoreMySQL persistancestore;
 	private String user = "default";
@@ -187,6 +186,9 @@ public class Controller implements Runnable {
 		
 	public Thread getThread() {
 		return thread;
-
+	}
+	
+	public Spielfeld getSpielfeld(){
+		return spielfeld;
 	}
 }
