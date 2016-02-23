@@ -9,13 +9,35 @@ public class Spielfeld {
 	private ArrayList<Form> formList = new ArrayList<Form>();
 	private static final int START_X = 4;
 	private static final int START_Y = 3;
-	private boolean collision = false;
 	
+	private boolean borderCollisionLeft = false;
+	private boolean borderCollisionRight = false;
+	private boolean borderCollisionUp = false;
+	private boolean borderCollisionDown = false;
+
+	private Rotator rotator;
 	private Block centerBlock = null;
+
+	private int startX = START_X;
+	private int startY = START_Y;
+	private int offsetY;
+	private int offsetX;
 	
-	private int moveSpeed = 1;
-	private int startX = 0;
-	private int startY = 0;
+	public int getOffsetY() {
+		return offsetY;
+	}
+
+	public void setOffsetY(int offsetY) {
+		this.offsetY = offsetY;
+	}
+
+	public int getOffsetX() {
+		return offsetX;
+	}
+
+	public void setOffsetX(int offsetX) {
+		this.offsetX = offsetX;
+	}
 	
 	public int getStartX() {
 		return startX;
@@ -32,8 +54,6 @@ public class Spielfeld {
 	public void setStartY(int startY) {
 		this.startY = startY;
 	}
-
-	private Rotator rotator;
 
 	public Spielfeld() {
 		initNormalMode();
@@ -53,62 +73,73 @@ public class Spielfeld {
 		this.cubes[this.getStartY()][this.getStartX()] = this.centerBlock;
 
 		
+		this.move("right");
+		this.move("right");
+		this.move("right");
+		this.move("right");
+		this.move("right");
+		this.move("right");
+		this.move("right");
+		this.move("right");
 		this.move("down");
 		this.move("down");
 		this.move("down");
-		this.move("left");
-		this.move("left");
-		this.move("Right");
-		this.move("Right");
-		this.move("up");
-		this.move("up");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
 	}
 	
 	public void move(String direction){
+		clearAllCubes();
+		
+		borderCollisionLeft = false;
+		borderCollisionRight = false;
+		borderCollisionUp = false;
+		borderCollisionDown = false;
+	
+		offsetY = this.getStartY();
+		offsetX = this.getStartX();
+	
+		this.checkCollision(this.centerBlock, offsetY, offsetX);
 		switch(direction){
 		case "down": 
-//				clearAllCubes();
-//
-//				int offsetY = this.getStartY();
-//				int offsetX = this.getStartX();
-//				
-//				this.cubes[offsetY][offsetX] = this.centerBlock;
-//				if(!checkCollision(this.centerBlock, offsetY, offsetX)){
-//					offsetY += moveSpeed;
-//					
-//					this.setMovingBlocks(this.centerBlock, offsetY, offsetX);
-//					this.setStartX(offsetY);
-//					this.setStartY(offsetX);
-//					this.drawCubes(offsetY, offsetX);
-//				};
-				
-				clearAllCubes();
-				collision = false;
-
-				int offsetY = this.getStartY();
-				int offsetX = this.getStartX();
-				checkCollision(this.centerBlock, offsetY, offsetX);
-				
-				if(!collision){
-					System.out.println("NO COLLIDITION!");
-					offsetY += 1;
-					this.cubes[offsetY][offsetX] = this.centerBlock;
-					this.setMovingBlocks(this.centerBlock, offsetY, offsetX);
-						this.setStartX(offsetX);
-						this.setStartY(offsetY);
-						this.drawCubes(offsetY, offsetX);		
-				}else{
-					System.out.println("COLLISOITJN!");
+				if(!borderCollisionDown){
+					this.offsetY++;
+					this.move();
 				}
 			break;
 		case "right":
-			 //Form newBlock = this.rotator.starteRotieren(this.centerBlock);
-			 //this.centerBlock = newBlock.blockList.get(0);
-			 //this.setMovingBlocks(this.centerBlock, curY, curX)
-			 
+				if(!borderCollisionRight){
+					this.offsetX++;
+					this.move();
+				}
+			 break;
+		case "left":
+				if(!borderCollisionLeft){
+					this.offsetX--;
+					this.move();
+				}
+			 break;
+		case "up":
+				if(!borderCollisionUp){
+					this.offsetY--;
+					this.move();
+				}
 			 break;
 		default: break;
 		}
+	}
+	
+	private void move(){
+			this.cubes[offsetY][offsetX] = this.centerBlock;
+			this.setMovingBlocks(this.centerBlock, offsetY, offsetX);
+			this.setStartX(offsetX);
+			this.setStartY(offsetY);
+			this.drawCubes(offsetY, offsetX);		
 	}
 
 	private void clearAllCubes(){
@@ -177,7 +208,7 @@ public class Spielfeld {
 		if(currBlock.getNachbarLinks() != null){
 			System.out.println("check block links");
 			if(this.isOutOfBounce(curY, curX - 1)){
-				collision = true;
+				borderCollisionLeft = true;
 			}else{
 				this.checkCollision(currBlock.getNachbarLinks(), curY, curX - 1);	
 			}
@@ -186,7 +217,7 @@ public class Spielfeld {
 		if(currBlock.getNachbarRechts() != null){
 			System.out.println("check block Rechts");
 			if(this.isOutOfBounce(curY, curX + 1)){
-				collision = true;
+				borderCollisionRight = true;
 			}else{
 				this.checkCollision(currBlock.getNachbarRechts(), curY, curX + 1);
 			}
@@ -195,7 +226,7 @@ public class Spielfeld {
 		if(currBlock.getNachbarOben() != null){
 			System.out.println("check block Oben");
 			if(this.isOutOfBounce(curY - 1, curX)){
-				collision = true;
+				borderCollisionUp = true;
 			}else{
 				this.checkCollision(currBlock.getNachbarOben(), curY - 1, curX);
 			}
@@ -204,7 +235,7 @@ public class Spielfeld {
 		if(currBlock.getNachbarUnten() != null){
 			System.out.println("check block Unten");
 			if(this.isOutOfBounce(curY + 1, curX)){
-				collision = true;
+				borderCollisionDown = true;
 			}else{
 				this.checkCollision(currBlock.getNachbarUnten(), curY + 1, curX);
 			}
@@ -213,44 +244,44 @@ public class Spielfeld {
 	
 
 	private Block setMovingBlocks(Block currBlock, int curY, int curX){	
-		int x = curX;
-		int y = curY;
-		
-		if(currBlock.getNachbarLinks() != null){
-			//System.out.println("Setze block links");
+			int x = curX;
+			int y = curY;
 			
-			if(cubes[y][x - 1] == null){
-				cubes[y][x - 1] = currBlock.getNachbarLinks();
-				this.setMovingBlocks(currBlock.getNachbarLinks(), y, x - 1);
+			if(currBlock.getNachbarLinks() != null){
+				//System.out.println("Setze block links");
+				
+				if(cubes[y][x - 1] == null){
+					cubes[y][x - 1] = currBlock.getNachbarLinks();
+					this.setMovingBlocks(currBlock.getNachbarLinks(), y, x - 1);
+				}
 			}
-		}
-		
-		if(currBlock.getNachbarRechts() != null){
-			//System.out.println("Setze block Rechts");
-			if(cubes[y][x + 1] == null){
-				cubes[y][x + 1] = currBlock.getNachbarRechts();
-				this.setMovingBlocks(currBlock.getNachbarRechts(), y, x + 1);
+			
+			if(currBlock.getNachbarRechts() != null){
+				//System.out.println("Setze block Rechts");
+				if(cubes[y][x + 1] == null){
+					cubes[y][x + 1] = currBlock.getNachbarRechts();
+					this.setMovingBlocks(currBlock.getNachbarRechts(), y, x + 1);
+				}
 			}
-		}
-		
-		if(currBlock.getNachbarOben() != null){
-			//System.out.println("Setze block Oben");
-			if(cubes[y - 1][x] == null){
-				cubes[y - 1][x] = currBlock.getNachbarOben();
-				this.setMovingBlocks(currBlock.getNachbarOben(), y - 1, x);
+			
+			if(currBlock.getNachbarOben() != null){
+				//System.out.println("Setze block Oben");
+				if(cubes[y - 1][x] == null){
+					cubes[y - 1][x] = currBlock.getNachbarOben();
+					this.setMovingBlocks(currBlock.getNachbarOben(), y - 1, x);
+				}
 			}
-		}
-		
-		if(currBlock.getNachbarUnten() != null){
-			//System.out.println("Setze block Unten");
-			if(cubes[y + 1][x] == null){
-				cubes[y + 1][x] = currBlock.getNachbarUnten();
-				this.setMovingBlocks(currBlock.getNachbarUnten(), y + 1, x);
+			
+			if(currBlock.getNachbarUnten() != null){
+				//System.out.println("Setze block Unten");
+				if(cubes[y + 1][x] == null){
+					cubes[y + 1][x] = currBlock.getNachbarUnten();
+					this.setMovingBlocks(currBlock.getNachbarUnten(), y + 1, x);
+				}
 			}
-		}
-		
-		//System.out.println("STACK ENDE");
-		return null;
-}
+			
+			//System.out.println("STACK ENDE");
+			return null;
+	}
 
 }
