@@ -11,6 +11,7 @@ public class ControllerTests {
 	  public void threadAlive() {
 		 
 		 Controller control = new Controller();
+		 control.startGame();
 		  
 		  assertTrue(control.getThread().isAlive());
 
