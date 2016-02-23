@@ -25,6 +25,12 @@ public class Spielfeld {
 		drawCubes();
 
 	}
+	
+	public boolean isOutOfBounce(int curY, int curX){
+			if(cubes[curY + movementY][curX + movementX])
+		
+			return false;
+	}
 
 	public void drawCubes() {
 		int rows = cubes.length;
@@ -130,7 +136,7 @@ public class Spielfeld {
 		
 		//System.out.println("STACK ENDE");
 		return cubes[y + offsetY][x + offsetX];
-}
+	}
 
 }
 
