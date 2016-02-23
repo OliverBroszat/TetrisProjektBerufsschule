@@ -26,7 +26,7 @@ public class HauptmenueListener implements ActionListener{
 			else if(((JButton) e.getSource()).getText().equals("Highscore")) {
 				frame.getCardLayout().show(frame.getBackgroundFrame(), "Highscore");
 			}
-			else if(((JButton) e.getSource()).getText().equals("Spiel Starten")) {
+			else if(((JButton) e.getSource()).getText().equals("Spiel starten")) {
 				frame.getCardLayout().show(frame.getBackgroundFrame(), "Spielfeld");
 			}
 		}
