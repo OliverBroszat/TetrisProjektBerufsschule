@@ -10,12 +10,14 @@ import javax.swing.JPanel;
 import de.tetris.darstellungsschicht.Frame;
 import de.tetris.darstellungsschicht.FrameCreateUser;
 import de.tetris.darstellungsschicht.FrameHauptmenue;
+import de.tetris.darstellungsschicht.FrameHighscore;
 import de.tetris.darstellungsschicht.FrameLoginScreen;
 import de.tetris.darstellungsschicht.FrameSpielfeld;
 import de.tetris.datenschicht.PersistanceStoreMySQL;
 import de.tetris.steuerungsschicht.Listener.BasicFrameListener;
 import de.tetris.steuerungsschicht.Listener.CreateUserListener;
 import de.tetris.steuerungsschicht.Listener.HauptmenueListener;
+import de.tetris.steuerungsschicht.Listener.HighscoreListener;
 import de.tetris.steuerungsschicht.Listener.LoginScreenListener;
 import de.tetris.steuerungsschicht.Listener.SpielfeldListener;
 
@@ -148,7 +150,11 @@ public class Controller implements Runnable {
 		} else if (panel instanceof FrameCreateUser) {
 			aListener = new CreateUserListener(frame);
 			((FrameCreateUser) panel).getNewUserButton().addActionListener(aListener);
-		} else {
+
+		} else if (panel instanceof FrameHighscore) {
+			aListener =  new HighscoreListener(frame);
+			((FrameHighscore) panel).getZurueck().addActionListener(aListener);
+		}else{
 			// Fehler
 		}
 	}

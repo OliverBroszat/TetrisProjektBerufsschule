@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,59 +29,52 @@ public class FrameHighscore extends Panel {
 			{ "Italien", "220" ,"3"},{ "Oliver", "100", "1" }, { "USA", "240","2" },
 			{ "Italien", "220" ,"3"} };
 
-	String[] columnNames = { "User",
-			"Punkte","Rang" };
+	String[] columnNames = { "Rang",
+			"Punkte","User" };
 	
 	JPanel tabelle = new JPanel();
 
+	private JButton zurueck = new JButton();
+	
+
 	DefaultTableModel model = new DefaultTableModel(rowData,columnNames);
 	private JLabel titelLabel = new JLabel("Highscore");
+	
 	JTable tableLabel = new JTable(model);
-//
-//	private JTable tableLabel = new JTable(rowData, columnNames);
-//	private TableModel model = tableLabel.getModel();
-//	JTableHeader header = tableLabel.getTableHeader();
-//	JScrollPane scrollPane = new JScrollPane(tableLabel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 	public FrameHighscore() {
 		setLayout(null);
 
-
-		tableLabel.setPreferredScrollableViewportSize(new Dimension(350,400));
+		tableLabel.setPreferredScrollableViewportSize(new Dimension(350,350));
 		tableLabel.setFillsViewportHeight(true);
+		zurueck.setText("Zurück");
 
         JScrollPane scrollPane=new JScrollPane(tableLabel);
-       
 
+        setBackground(Color.gray);
+
+        titelLabel.setFont(super.HeadlineFont);
+        tableLabel.setFont(super.font);
+        zurueck.setFont(super.font);
 		
-		
-//		tableLabel.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);	
-//		scrollPane.setVisible(true);
-//		
-//		
-		setBackground(Color.gray);
-		tabelle.add(scrollPane);
-//
-		titelLabel.setFont(super.HeadlineFont);
-		tableLabel.setFont(super.font);
-//		
+        tabelle.add(scrollPane);
+	
 		titelLabel.setForeground(Color.BLUE);
 		titelLabel.setBounds(290, 100, 300, 70);
-//		tableLabel.setBounds(200, 190, 400, 400);
-		tabelle.setBounds(200, 190, 400, 400);
-//		header.setBounds(200,170,400,20);
-//		scrollPane.setBounds(600, 190, 15, 400);
-//
+		tabelle.setBounds(215, 190, 370, 380);
+		zurueck.setBounds(300,600,200,80); 
+
 		add(titelLabel);
 		add(tabelle);
-		 scrollPane.setVisible(true);
-//		add(tableLabel);
-//		add(scrollPane);
-//		add(header);
-		
+		add (zurueck);
 
-		// add(newUserButton);
-		// add(centerPanel);
+	}
+	public JButton getZurueck() {
+		return zurueck;
+	}
+	
+	public void setZurueck(JButton zurueck) {
+		this.zurueck = zurueck;
 	}
 
 }
