@@ -11,7 +11,6 @@ import de.tetris.darstellungsschicht.Frame;
 import de.tetris.darstellungsschicht.FrameHauptmenue;
 import de.tetris.darstellungsschicht.FrameLoginScreen;
 import de.tetris.darstellungsschicht.FrameSpielfeld;
-import de.tetris.datenschicht.PersistanceStore;
 import de.tetris.datenschicht.PersistanceStoreMySQL;
 
 public class Controller implements Runnable {
@@ -27,8 +26,11 @@ public class Controller implements Runnable {
 	private ArrayList<String> userData;
 
 	public Controller() {
+		frame = new Frame(this);
+		frame.addFrames();
+		
 		Form form = new FormNormalMode();
-		Frame frame = new Frame(this);
+		formList.add(form);
 		persistancestore = new PersistanceStoreMySQL();
 		startGame();
 	}
@@ -108,14 +110,18 @@ public class Controller implements Runnable {
 	public void createListener(JPanel panel) {
 		ActionListener aListener;
 		if(panel instanceof FrameLoginScreen) {
-			aListener = new LoginScreenListener();
+			aListener = new LoginScreenListener(frame);
+			
 		} else if (panel instanceof FrameHauptmenue) {
-			aListener = new HauptmenueListener();
+			System.out.println("cont: " + frame);
+			aListener = new HauptmenueListener(frame);
 			((FrameHauptmenue) panel).getLoginButton().addActionListener(aListener);
 			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(aListener);
+			((FrameHauptmenue) panel).getStartenButton().addActionListener(aListener);
+			
 		} else if (panel instanceof FrameSpielfeld) {
-			aListener = new BasicFrameListener();
-			KeyListener kListener = new SpielfeldListener();
+			aListener = new BasicFrameListener(frame);
+			KeyListener kListener = new SpielfeldListener(frame);
 			panel.addKeyListener(kListener);
 		} else {
 			// Fehler
