@@ -51,7 +51,6 @@ public class Controller implements Runnable {
 	public void startGame() {
 		this.spielfeld = new Spielfeld();
 		thread = new Thread(this);
-		gameRunning = true;
 		thread.start();
 	}
 
@@ -91,6 +90,7 @@ public class Controller implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		thread = null;
 	}
 
 	/**
@@ -132,9 +132,9 @@ public class Controller implements Runnable {
 	public void run() {
 		// TODO Michael was macht das hier?
 		// establishConnection();
+		gameRunning = true;
 		renderClass = new RenderClass(frame.getPanelSpielfeld().getCanvas(),
 				spielfeld.getCubes());
-
 		gameLoop();
 	}
 
