@@ -6,33 +6,59 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import de.tetris.darstellungsschicht.FrameBasicFrame;
+import de.tetris.darstellungsschicht.FrameSpielfeld;
 import de.tetris.steuerungsschicht.Listener.BasicFrameListener;
 
 public class RenderClass {
-	private Canvas canvas;
-	private BufferStrategy bufferstrategy;
+	private Canvas canvasSpielfeld;
+	private Canvas canvasNextBlock;
 	private Block[][] spielfeld;
+	private Block[][] nextBlock;
+	private BufferStrategy strategySpielfeld;
+	private BufferStrategy strategyNextBlock;
 
-	public RenderClass(Canvas canvas, Block[][] spielfeld) {
-		this.canvas = canvas;
-		this.spielfeld = spielfeld;
+	public RenderClass(FrameSpielfeld frameSpielfeld, Spielfeld spielfeld) {
+		this.canvasSpielfeld = frameSpielfeld.getCanvas();
+		this.canvasNextBlock = frameSpielfeld.getCanvasNaechsterBlock();
+		this.spielfeld = spielfeld.getCubes();
+		this.nextBlock = spielfeld.getNextCubes();
 	}
 
 	public void render() {
-		if (bufferstrategy == null) {
-			canvas.createBufferStrategy(2);
-			bufferstrategy = canvas.getBufferStrategy();
+		if (canvasSpielfeld.getBufferStrategy() == null) {
+			canvasSpielfeld.createBufferStrategy(2);
+			strategySpielfeld = canvasSpielfeld.getBufferStrategy();
 		}
+		if (canvasNextBlock.getBufferStrategy() == null) {
+			canvasNextBlock.createBufferStrategy(2);
+			strategyNextBlock = canvasNextBlock.getBufferStrategy();
+		}
+		
+		renderSpielfeld(strategySpielfeld.getDrawGraphics());
+		renderNextBlock(strategyNextBlock.getDrawGraphics());
 
-		Graphics g = bufferstrategy.getDrawGraphics();
-
-		renderBloecke(g);
-
-		g.dispose();
-		bufferstrategy.show();
+		strategySpielfeld.getDrawGraphics().dispose();
+		strategyNextBlock.getDrawGraphics();
+		strategyNextBlock.show();
+		strategySpielfeld.show();
 	}
 
-	private void renderBloecke(Graphics g) {
+	private void renderNextBlock(Graphics g) {
+		int size = 30;
+		
+		for (int i = 0; i < nextBlock.length; i++) {
+			for (int j = 0; j < nextBlock[i].length; j++) {
+				if (nextBlock[i][j] != null) {
+					g.setColor(nextBlock[i][j].getColor());
+				} else {
+					g.setColor(Color.white);
+				}
+				g.fillRect(j * size, i * size, size, size);
+			}
+		}
+	}
+
+	private void renderSpielfeld(Graphics g) {
 		int size = FrameBasicFrame.BLOCK_SIZE;
 		
 		for (int i = 0; i < spielfeld.length; i++) {

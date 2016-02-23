@@ -11,7 +11,7 @@ public class FrameBasicFrame extends Panel{
 	public static final int BLOCK_SIZE = 40;
 	private static final int FIELD_HEIGHT = 20;
 	private static final int FIELD_WIDTH = 12;
-	private Panel panelNaechsterBlock = new Panel();
+	private Canvas canvasNaechsterBlock = new Canvas();
 	private JLabel scoreLabel = new JLabel("Score: ");
 	private JButton pauseButton = new JButton("Pause");
 
@@ -20,18 +20,18 @@ public class FrameBasicFrame extends Panel{
 	    setBackground(Color.gray);
 	    
 	    
-	    panelNaechsterBlock.setBackground(Color.blue);
+	    canvasNaechsterBlock.setBackground(Color.white);
 	    
 	    pauseButton.setFont(super.font);
 	    scoreLabel.setFont(new Font("Arial", Font.BOLD, 14));
 		
-	    panelNaechsterBlock.setBounds(500,10,200,200);
-	    scoreLabel.setBounds(500,150,200,200);  
+	    canvasNaechsterBlock.setBounds(500,10,200,200);
+	    scoreLabel.setBounds(500,220,50,50);  
 	    pauseButton.setBounds(500,300,200,80);  
 
 	    add(pauseButton);
 	    add(scoreLabel);
-	    add(panelNaechsterBlock);
+	    add(canvasNaechsterBlock);
 	}
 	
 	public void setCenterFrame(Panel panel){
@@ -53,5 +53,9 @@ public class FrameBasicFrame extends Panel{
 
 	public JButton getPauseButton() {
 		return pauseButton;
+	}
+
+	public Canvas getCanvasNaechsterBlock() {
+		return canvasNaechsterBlock;
 	}
 }
