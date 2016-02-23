@@ -83,7 +83,7 @@ public class Spielfeld {
 	// Löscht alle Blöcke aus dem Spielfeld
 	private void clearAllCubes(){
 		for (int i = 0; i < cubes.length; i++) {
-			for (int j = 0; j < cubes.length; j++) {
+			for (int j = 0; j < cubes[0].length; j++) {
 				cubes[i][j] = null;
 			}
 		}
