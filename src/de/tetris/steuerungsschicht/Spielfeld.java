@@ -81,6 +81,35 @@ public class Spielfeld {
 		this.move("right");
 		this.move("right");
 		this.move("right");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
+		this.move("down");
 	}
 	
 	public void move(String direction){
