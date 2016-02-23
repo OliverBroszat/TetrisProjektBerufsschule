@@ -1,6 +1,7 @@
 package de.tetris.steuerungsschicht;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.swing.JPanel;
 
 import de.tetris.darstellungsschicht.Frame;
 import de.tetris.darstellungsschicht.FrameHauptmenue;
+import de.tetris.darstellungsschicht.FrameLoginScreen;
 import de.tetris.darstellungsschicht.FrameSpielfeld;
 import de.tetris.datenschicht.PersistanceStore;
 import de.tetris.datenschicht.PersistanceStoreMySQL;
@@ -99,19 +101,24 @@ public class Controller implements Runnable {
 		gameLoop();
 	}
 	
+	public void spielfedRequestFocus(JPanel panel) {
+		panel.requestFocusInWindow();
+	}
+	
 	public void createListener(JPanel panel) {
-		ActionListener listener;
-		if(panel instanceof FrameHauptmenue) {
-			listener = new HauptmenueListener();
-			((FrameHauptmenue) panel).getLoginButton().addActionListener(listener);
-			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(listener); 
+		ActionListener aListener;
+		if(panel instanceof FrameLoginScreen) {
+			aListener = new LoginScreenListener();
+		} else if (panel instanceof FrameHauptmenue) {
+			aListener = new HauptmenueListener();
+			((FrameHauptmenue) panel).getLoginButton().addActionListener(aListener);
+			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(aListener);
 		} else if (panel instanceof FrameSpielfeld) {
-			listener = new SpielfeldListener();
-			// Buttons ActionListener hinzufügen
+			aListener = new BasicFrameListener();
+			KeyListener kListener = new SpielfeldListener();
+			panel.addKeyListener(kListener);
 		} else {
-			// Fehlerausgabe
+			// Fehler
 		}
-		
-		// noch nicht alle Screens berücksichtigt
 	}
 }
