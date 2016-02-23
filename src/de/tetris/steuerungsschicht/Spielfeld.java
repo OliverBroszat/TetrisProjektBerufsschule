@@ -25,12 +25,6 @@ public class Spielfeld {
 		drawCubes();
 
 	}
-	
-	public boolean isOutOfBounce(int curY, int curX){
-			if(cubes[curY + movementY][curX + movementX])
-		
-			return false;
-	}
 
 	public void drawCubes() {
 		int rows = cubes.length;
@@ -50,6 +44,19 @@ public class Spielfeld {
 				}
 			}
 		}
+	}
+	
+	public boolean isOutOfBounce(int curY, int curX){
+		if(curX > cubes.length){
+			System.out.println(cubes.length);
+		}
+		
+		System.out.println("Vergleiche: " + curY + " ArrayLaenge: " + cubes.length);
+		if(curY > cubes.length){
+			System.out.println(cubes.length);
+		}
+		
+		return false;
 	}
 
 	private Block setBlocks(Block currBlock, int curY, int curX){	
