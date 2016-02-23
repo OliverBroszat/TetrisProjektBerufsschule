@@ -180,11 +180,13 @@ public class Spielfeld {
 	}
 
 	private void delete(){
+		System.out.println("DELETE");
 		this.deleteMovingBlocks(this.centerBlock, this.offsetY, this.offsetX);
 		this.cubes[this.offsetY][this.offsetX] = null;
 	}
 	
 	private void move(){
+		System.out.println("SET!");
 		this.cubes[offsetY][offsetX] = this.centerBlock;
 		this.setMovingBlocks(this.centerBlock, offsetY, offsetX);
 		this.setBlockStartX(offsetX);
