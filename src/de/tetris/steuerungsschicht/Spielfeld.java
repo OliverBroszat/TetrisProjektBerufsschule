@@ -75,6 +75,7 @@ public class Spielfeld {
 	}
 	
 	public void startSpiel(){
+		this.clearAllCubes();
 		this.centerBlock = null;
 		this.spawnBlock();
 	}
