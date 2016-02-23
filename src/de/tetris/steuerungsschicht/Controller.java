@@ -132,8 +132,8 @@ public class Controller implements Runnable {
 		// TODO Michael was macht das hier?
 		// establishConnection();
 		gameRunning = true;
-		renderClass = new RenderClass(frame.getPanelSpielfeld().getCanvas(),
-				spielfeld.getCubes());
+		spielfeld.startSpiel();
+		renderClass = new RenderClass(frame.getPanelSpielfeld().getCanvas(), spielfeld.getCubes());
 		gameLoop();
 	}
 

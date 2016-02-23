@@ -1,7 +1,7 @@
 package de.tetris.steuerungsschicht;
 
 public class FormNormalMode extends Form{
-
+	
 	@Override
 	public void formeBlock() {
 			Block startBlock = new Block();
@@ -12,7 +12,7 @@ public class FormNormalMode extends Form{
 			blockList.add(block2);
 			blockList.add(block3);
 			blockList.add(block4);
-			int zufall = (int)((Math.random()*7)+1);
+			int zufall =  (int)((Math.random()*7)+1);
 			switch (zufall) {
 			case 1	:	startBlock.setNachbarRechts(block2);
 						block2.setNachbarRechts(block3);

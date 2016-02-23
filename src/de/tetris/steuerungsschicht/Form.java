@@ -8,9 +8,8 @@ public abstract class Form {
 	protected List<Block> blockList = new ArrayList<Block>();
 	private int anzahlBloecke;
 	private Color color;
-
+	
 	public Form() {
-		super();
 		formeBlock();
 		color = generateColor();
 		setColors();
@@ -28,6 +27,10 @@ public abstract class Form {
 		for (int i = 0; i < blockList.size(); i++) {
 			blockList.get(i).setColor(color);
 		}
+	}
+	
+	protected void emptyList(){
+		this.blockList.clear();
 	}
 
 	public abstract void formeBlock();
