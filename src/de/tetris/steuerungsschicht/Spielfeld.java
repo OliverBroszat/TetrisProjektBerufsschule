@@ -81,16 +81,6 @@ public class Spielfeld {
 		this.move("right");
 		this.move("right");
 		this.move("right");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
-		this.move("down");
 	}
 	
 	public void move(String direction){
@@ -110,12 +100,16 @@ public class Spielfeld {
 				if(!borderCollisionDown){
 					this.offsetY++;
 					this.move();
+				}else{
+					System.out.println("COLLISION");
 				}
 			break;
 		case "right":
 				if(!borderCollisionRight){
 					this.offsetX++;
 					this.move();
+				}else{
+					System.out.println("COLLISION");
 				}
 			 break;
 		case "left":
@@ -179,14 +173,14 @@ public class Spielfeld {
 		int cols = cubes[0].length;
 		boolean status = false;
 		
-		System.out.println("VERGLEICHE [" + curY + "] mit [ " + rows + "]");
-		if(curY >= rows){
+		System.out.println("VERGLEICHE Y [" + curY + "] mit [ " + (rows-1) + "]");
+		if(curY >= rows - 1){
 			System.out.println("Unten Rand! ");
 			status = true;
 		}
 	
-		System.out.println("VERGLEICHE [" + curX + "] mit [ " + cols + "]");
-		if(curX >= cols){
+		System.out.println("VERGLEICHE X [" + curX + "] mit [ " + (cols - 1) + "]");
+		if(curX >= cols - 1){
 			System.out.println("Rechts Rand! ");
 			status = true;
 		}
