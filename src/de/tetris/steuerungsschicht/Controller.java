@@ -21,11 +21,12 @@ public class Controller implements Runnable {
 
 	private Rotator rotator;
 	private XMLSerializer xmlSerializer;
-	private List<Form> formList = new ArrayList<Form>();
 	private Frame frame;
 	private PersistanceStoreMySQL persistancestore;
 	private String user = "default";
 	private ArrayList<String> userData;
+	private Spielfeld spielfeld;
+
 
 	public Controller() {
 		Form form = new FormNormalMode();
@@ -87,7 +88,7 @@ public class Controller implements Runnable {
 
 			if (now >= OPTIMAL_TIME) {
 				lastLoopTime = System.nanoTime();
-
+				
 				// TODO Oliver
 				// render();
 					//System.out.println("loop");
@@ -99,6 +100,7 @@ public class Controller implements Runnable {
 	@Override
 	public void run() {
 //		establishConnection();
+		this.spielfeld = new Spielfeld();
 		gameLoop();
 	}
 	
