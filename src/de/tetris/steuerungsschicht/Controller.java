@@ -118,6 +118,7 @@ public class Controller implements Runnable {
 	public void run() {
 		//TODO Michael was macht das hier?
 		// establishConnection();
+		spielfeld.startSpiel();
 		renderClass = new RenderClass(frame.getPanelSpielfeld().getCanvas(), spielfeld.getCubes());
 		
 		gameLoop();

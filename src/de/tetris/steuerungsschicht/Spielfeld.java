@@ -72,15 +72,24 @@ public class Spielfeld {
 
 	public Spielfeld() {
 		this.rotator = new Rotator();
+	}
+	
+	public void startSpiel(){
+		this.centerBlock = null;
 		this.spawnBlock();
-		this.initNormalMode();
 	}
 
 	public void spawnBlock(){
+		System.out.println(" SPAWN BLOCK ");
+		this.rotatedForm = null;
 		this.rotatedForm = new FormNormalMode();
-		System.out.println("FORMLIST SIZE:" + this.formList.size());
 		this.centerBlock = rotatedForm.blockList.get(0);
+		
+		this.setBlockStartX(this.START_X);
+		this.setBlockStartY(this.START_Y);
+		
 		this.cubes[this.getBlockStartY()][this.getBlockStartX()] = this.centerBlock;
+		this.move("down");
 	}
 	
 	// testmethode not in use
@@ -92,16 +101,15 @@ public class Spielfeld {
 	
 	public void rotate(){
 		this.checkBorderCollision(this.centerBlock, offsetY, offsetX);
-		if(!borderCollisionDown || !borderCollisionLeft || !borderCollisionRight || !borderCollisionUp){
-			this.checkBlockCollision(centerBlock, offsetY, offsetX);
-			if(!blockCollsionDown || !blockCollsionLeft || !blockCollsionRight){
+		//if(!borderCollisionDown || !borderCollisionLeft || !borderCollisionRight || !borderCollisionUp){
+			//this.checkBlockCollision(centerBlock, offsetY, offsetX);
+			//if(!blockCollsionDown || !blockCollsionLeft || !blockCollsionRight){
 				this.delete();
 				rotatedForm = this.rotator.starteRotieren(rotatedForm);
 				this.centerBlock = rotatedForm.blockList.get(0);
 				System.out.println("ROTEDED SIZE: " + rotatedForm.blockList.size());
 				this.move();
-			}
-		}
+			//}
 	}
 
 	public void move(String direction){
@@ -119,12 +127,12 @@ public class Spielfeld {
 		case "down": 
 				if(!borderCollisionDown){	
 					
-					this.checkBlockCollision(this.centerBlock, offsetY, offsetX);
-					if(!blockCollsionDown){
+					//this.checkBlockCollision(this.centerBlock, offsetY, offsetX);
+					//if(!blockCollsionDown){
 						this.delete();
 						this.offsetY++;
 						this.move();
-					}
+					//}
 				}else{
 					this.spawnBlock();
 				}
@@ -139,6 +147,7 @@ public class Spielfeld {
 					}
 				}else{
 					this.spawnBlock();
+					this.drawCubes(offsetY, offsetX);
 				}
 			 break;
 		case "left":
@@ -261,7 +270,7 @@ public class Spielfeld {
 			borderCollisionLeft = true;
 		}else{
 			if(currBlock.getNachbarLinks() != null){
-			this.checkBorderCollision(currBlock.getNachbarLinks(), curY, curX - 1);	
+				this.checkBorderCollision(currBlock.getNachbarLinks(), curY, curX - 1);	
 			}
 		}
 		

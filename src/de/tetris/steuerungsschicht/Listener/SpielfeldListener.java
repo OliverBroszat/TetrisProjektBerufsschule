@@ -38,6 +38,7 @@ public class SpielfeldListener implements KeyListener{
 		}
 		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
 			System.out.println("PRESSED:     SPACE");
+			spielfeld.rotate();
 		}
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			System.out.println("PRESSED:     ESCAPE");
