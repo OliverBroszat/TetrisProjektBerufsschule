@@ -33,5 +33,9 @@ public abstract class Form {
 		this.blockList.clear();
 	}
 
+	public List<Block> getBlockList() {
+		return blockList;
+	}
+
 	public abstract void formeBlock();
 }

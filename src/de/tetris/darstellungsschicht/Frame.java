@@ -52,6 +52,7 @@ public class Frame extends GUI {
 	//TODO ActionListener Marvin/Oliver
 	private Panel addFrameHighscore() {
 		FrameHighscore frameHighscore = new FrameHighscore();
+		controller.createListener(frameHighscore);
 		return frameHighscore;
 	}
 
