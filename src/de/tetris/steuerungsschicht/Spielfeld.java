@@ -72,32 +72,27 @@ public class Spielfeld {
 	public Spielfeld() {
 		this.rotator = new Rotator();
 		this.spawnBlock();
-		
+		this.initNormalMode();
 	}
 
 	public void spawnBlock(){
-		
+		this.rotatedForm = new FormNormalMode();
+		System.out.println("FORMLIST SIZE:" + this.formList.size());
+		this.centerBlock = rotatedForm.blockList.get(0);
+		this.cubes[this.getBlockStartY()][this.getBlockStartX()] = this.centerBlock;
 	}
 	
 	// testmethode not in use
-	public void initNormalMode() {
-		formList.add(new FormNormalMode());
-		System.out.println("FORMLIST SIZE:" + this.formList.size());
-		
-		this.setBlockStartX(4);
-		this.setBlockStartY(3);
-		this.rotatedForm = formList.get(0);
-		this.centerBlock = rotatedForm.blockList.get(0);
-		this.cubes[this.getBlockStartY()][this.getBlockStartX()] = this.centerBlock;
-		
+	public void initNormalMode() {	
 		this.move("down");
-		this.rotate();
-		this.rotate();
-		this.rotate();
+		//this.rotate();
+		this.drawCubes(offsetY, offsetX);
 	}
 	
 	public void rotate(){
+		this.checkBorderCollision(this.centerBlock, offsetY, offsetX);
 		if(!borderCollisionDown || !borderCollisionLeft || !borderCollisionRight || !borderCollisionUp){
+			this.checkBlockCollision(centerBlock, offsetY, offsetX);
 			if(!blockCollsionDown || !blockCollsionLeft || !blockCollsionRight){
 				this.delete();
 				rotatedForm = this.rotator.starteRotieren(rotatedForm);
