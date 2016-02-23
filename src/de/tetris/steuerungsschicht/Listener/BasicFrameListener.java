@@ -2,20 +2,34 @@ package de.tetris.steuerungsschicht.Listener;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JButton;
+
 import de.tetris.darstellungsschicht.Frame;
 
-public class BasicFrameListener extends BasicActionListener{
+public class BasicFrameListener extends BasicActionListener {
 
 	public BasicFrameListener(Frame frame) {
 		super(frame);
 		// TODO Auto-generated constructor stub
 	}
 
-	//TODO Marvin/Oliver buttons/keys checken und implementieren
+	// TODO Marvin/Oliver buttons/keys checken und implementieren
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (e.getSource() instanceof JButton) {
+			if (((JButton) e.getSource()).getText().equals("Pause")) {
+				System.out.println("ist ne Pausenbutton");
+				if (frame.getController().getPause()) {
+					frame.getCardLayout().show(frame.getBackgroundFrame(),
+							"Spielfeld");
+					frame.getController().setPause(false);
+				} else {
+					frame.getCardLayout().show(frame.getBackgroundFrame(),
+							"PauseMenue");
+					frame.getController().setPause(true);
+				}
+			}
+		}
 	}
 
 }

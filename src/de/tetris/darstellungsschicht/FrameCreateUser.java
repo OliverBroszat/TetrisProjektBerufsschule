@@ -36,7 +36,7 @@ public class FrameCreateUser extends Panel{
 	    centerPanel.setLayout(new GridLayout(3,2));
 	    centerPanel.setBackground(Color.lightGray);
 	    
-	    centerPanel.setBounds(200,250,400,270);
+	    centerPanel.setBounds(160,250,400,270);
 	    centerPanel.add(nameLabel);
 	    centerPanel.add(nameTextField);
 	    centerPanel.add(passwortLabel);
@@ -45,9 +45,9 @@ public class FrameCreateUser extends Panel{
 	    centerPanel.add(checkPasswortField);
 	    
 	    titelLabel.setForeground(Color.BLUE);    
-	    titelLabel.setBounds(340,100,300,70);	   
-	    newUserButton.setBounds(400, 650, 200, 70);
-	    checkPasswortLabel.setBounds(400,500,200,70);
+	    titelLabel.setBounds(300,100,300,70);	   
+	    newUserButton.setBounds(360, 650, 200, 70);
+	    checkPasswortLabel.setBounds(360,500,200,70);
 	    
 	    add(titelLabel);
 	    add(newUserButton);

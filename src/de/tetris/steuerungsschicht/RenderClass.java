@@ -19,7 +19,7 @@ public class RenderClass {
 	}
 
 	public void render() {
-		if (canvas.getBufferStrategy() == null) {
+		if (bufferstrategy == null) {
 			canvas.createBufferStrategy(2);
 			bufferstrategy = canvas.getBufferStrategy();
 		}
@@ -38,7 +38,7 @@ public class RenderClass {
 		for (int i = 0; i < spielfeld.length; i++) {
 			for (int j = 0; j < spielfeld[i].length; j++) {
 				if (spielfeld[i][j] != null) {
-					g.setColor(Color.green);
+					g.setColor(spielfeld[i][j].getColor());
 				} else {
 					g.setColor(Color.white);
 				}

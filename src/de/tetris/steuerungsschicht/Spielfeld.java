@@ -75,7 +75,6 @@ public class Spielfeld {
 	}
 	
 	public void startSpiel(){
-		this.clearAllCubes();
 		this.centerBlock = null;
 		this.spawnBlock();
 	}
@@ -149,25 +148,24 @@ public class Spielfeld {
 			break;
 		case "right":
 				if(!borderCollisionRight){
-					this.checkBlockCollision(this.centerBlock, offsetY, offsetX);
-					if(!blockCollsionRight){
+					//this.checkBlockCollision(this.centerBlock, offsetY, offsetX);
+					//if(!blockCollsionRight){
 						this.delete();
 						this.offsetX++;
 						this.move();
-					}
+					//}
 				}else{
-					this.spawnBlock();
-					this.drawCubes(offsetY, offsetX);
+
 				}
 			 break;
 		case "left":
 				if(!borderCollisionLeft){
-					this.checkBlockCollision(this.centerBlock, offsetY, offsetX);
-					if(!blockCollsionLeft){
+					//this.checkBlockCollision(this.centerBlock, offsetY, offsetX);
+					//if(!blockCollsionLeft){
 						this.delete();
 						this.offsetX--;
 						this.move();
-					}
+					//}
 				}
 			 break;
 		case "up":
@@ -182,11 +180,13 @@ public class Spielfeld {
 	}
 
 	private void delete(){
+		System.out.println("DELETE");
 		this.deleteMovingBlocks(this.centerBlock, this.offsetY, this.offsetX);
 		this.cubes[this.offsetY][this.offsetX] = null;
 	}
 	
 	private void move(){
+		System.out.println("SET!");
 		this.cubes[offsetY][offsetX] = this.centerBlock;
 		this.setMovingBlocks(this.centerBlock, offsetY, offsetX);
 		this.setBlockStartX(offsetX);

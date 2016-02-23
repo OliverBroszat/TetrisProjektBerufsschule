@@ -8,21 +8,24 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import de.tetris.darstellungsschicht.Frame;
+import de.tetris.darstellungsschicht.FrameBasicFrame;
 import de.tetris.darstellungsschicht.FrameCreateUser;
 import de.tetris.darstellungsschicht.FrameHauptmenue;
 import de.tetris.darstellungsschicht.FrameLoginScreen;
+import de.tetris.darstellungsschicht.FramePauseMenue;
 import de.tetris.darstellungsschicht.FrameSpielfeld;
 import de.tetris.datenschicht.PersistanceStoreMySQL;
 import de.tetris.steuerungsschicht.Listener.BasicFrameListener;
 import de.tetris.steuerungsschicht.Listener.CreateUserListener;
 import de.tetris.steuerungsschicht.Listener.HauptmenueListener;
 import de.tetris.steuerungsschicht.Listener.LoginScreenListener;
+import de.tetris.steuerungsschicht.Listener.PausemenueListener;
 import de.tetris.steuerungsschicht.Listener.SpielfeldListener;
 
 public class Controller implements Runnable {
 	private Thread thread;
 	private boolean gameRunning;
-
+	private boolean pause = false;
 	private Rotator rotator;
 	private XMLSerializer xmlSerializer;
 	private Frame frame;
@@ -33,14 +36,12 @@ public class Controller implements Runnable {
 	private RenderClass renderClass;
 
 	public Controller() {
-		this.spielfeld = new Spielfeld();
 		frame = new Frame(this);
+		this.spielfeld = new Spielfeld();
 		frame.addFrames();
-
 		Form form = new FormNormalMode();
 		// formList.add(form);
 		persistancestore = new PersistanceStoreMySQL();
-		startGame();
 	}
 
 	/**
@@ -49,7 +50,6 @@ public class Controller implements Runnable {
 	 */
 	public void startGame() {
 		thread = new Thread(this);
-		gameRunning = true;
 		thread.start();
 	}
 
@@ -65,7 +65,8 @@ public class Controller implements Runnable {
 		this.persistancestore.createUser("default", "default");
 		this.userData = this.persistancestore.logIn("default", "default");
 
-		System.out.println("LOGGED IS : " + userData.get(0) + " MESSAGE " + userData.get(1));
+		System.out.println("LOGGED IS : " + userData.get(0) + " MESSAGE "
+				+ userData.get(1));
 
 		// persistancestore.update("UPDATE tetrisuser SET Nickname=' + + ' WHERE
 		// Nickname='pro'");
@@ -88,6 +89,7 @@ public class Controller implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		thread = null;
 	}
 
 	/**
@@ -98,29 +100,40 @@ public class Controller implements Runnable {
 		long lastLoopTime = System.nanoTime();
 		final int TARGET_FPS = 60;
 		final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
+		int anzahlDurchläufe = 0;
 
 		// keep looping round until the game ends
 		while (gameRunning) {
-			long now = System.nanoTime() - lastLoopTime;
+			while (!pause) {
+				long now = System.nanoTime() - lastLoopTime;
 
-			if (now >= OPTIMAL_TIME) {
-				lastLoopTime = System.nanoTime();
+				if (now >= OPTIMAL_TIME) {
+					lastLoopTime = System.nanoTime();
 
-				// TODO Oliver
-				renderClass.render();
+					// TODO Oliver
+					renderClass.render();
+					anzahlDurchläufe++;
 
-				// gamelogic();
+					if (anzahlDurchläufe >= 60) {
+						gamelogic();
+						anzahlDurchläufe = 0;
+					}
+				}
 			}
 		}
 	}
 
+	private void gamelogic() {
+		spielfeld.move("down");
+	}
+
 	@Override
 	public void run() {
-		//TODO Michael was macht das hier?
+		// TODO Michael was macht das hier?
 		// establishConnection();
+		gameRunning = true;
 		spielfeld.startSpiel();
 		renderClass = new RenderClass(frame.getPanelSpielfeld().getCanvas(), spielfeld.getCubes());
-		
 		gameLoop();
 	}
 
@@ -132,25 +145,48 @@ public class Controller implements Runnable {
 		ActionListener aListener;
 		if (panel instanceof FrameLoginScreen) {
 			aListener = new LoginScreenListener(frame);
-			((FrameLoginScreen) panel).getSubmitButton().addActionListener(aListener);
-			((FrameLoginScreen) panel).getNewUserButton().addActionListener(aListener);
+			((FrameLoginScreen) panel).getSubmitButton().addActionListener(
+					aListener);
+			((FrameLoginScreen) panel).getNewUserButton().addActionListener(
+					aListener);
 
 		} else if (panel instanceof FrameHauptmenue) {
 			System.out.println("cont: " + frame);
 			aListener = new HauptmenueListener(frame);
-			((FrameHauptmenue) panel).getLoginButton().addActionListener(aListener);
-			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(aListener);
-			((FrameHauptmenue) panel).getStartenButton().addActionListener(aListener);
+			((FrameHauptmenue) panel).getLoginButton().addActionListener(
+					aListener);
+			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(
+					aListener);
+			((FrameHauptmenue) panel).getStartenButton().addActionListener(
+					aListener);
 
 		} else if (panel instanceof FrameSpielfeld) {
-			aListener = new BasicFrameListener(frame);
 			KeyListener kListener = new SpielfeldListener(frame, spielfeld);
 			panel.addKeyListener(kListener);
 		} else if (panel instanceof FrameCreateUser) {
 			aListener = new CreateUserListener(frame);
-			((FrameCreateUser) panel).getNewUserButton().addActionListener(aListener);
-		} else {
-			// Fehler
+			((FrameCreateUser) panel).getNewUserButton().addActionListener(
+					aListener);
+		} else if (panel instanceof FramePauseMenue) {
+			aListener = new PausemenueListener(frame);
+			((FramePauseMenue) panel).getHauptmenueButton().addActionListener(
+					aListener);
+			((FramePauseMenue) panel).getSpeichernButton().addActionListener(
+					aListener);
 		}
+		if (panel instanceof FrameBasicFrame) {
+			// Fehler
+			aListener = new BasicFrameListener(frame);
+			((FrameBasicFrame) panel).getPauseButton().addActionListener(
+					aListener);
+		}
+	}
+
+	public void setPause(boolean pause) {
+		this.pause = pause;
+	}
+
+	public boolean getPause() {
+		return pause;
 	}
 }
