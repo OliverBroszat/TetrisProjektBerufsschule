@@ -127,4 +127,8 @@ public class Controller implements Runnable {
 			// Fehler
 		}
 	}
+
+	public Thread getThread() {
+		return thread;
+	}
 }

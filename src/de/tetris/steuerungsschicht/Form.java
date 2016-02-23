@@ -13,5 +13,9 @@ public abstract class Form {
 		formeBlock();
 	}
 
+	public List<Block> getBlockList() {
+		return blockList;
+	}
+
 	public abstract void formeBlock();
 }
