@@ -75,8 +75,18 @@ public class Spielfeld {
 	}
 	
 	public void startSpiel(){
+		this.clearAllCubes();
 		this.centerBlock = null;
 		this.spawnBlock();
+	}
+	
+	// Löscht alle Blöcke aus dem Spielfeld
+	private void clearAllCubes(){
+		for (int i = 0; i < cubes.length; i++) {
+			for (int j = 0; j < cubes.length; j++) {
+				cubes[i][j] = null;
+			}
+		}
 	}
 
 	public void spawnBlock(){
