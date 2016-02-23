@@ -30,5 +30,9 @@ public abstract class Form {
 		}
 	}
 
+	public List<Block> getBlockList() {
+		return blockList;
+	}
+
 	public abstract void formeBlock();
 }
