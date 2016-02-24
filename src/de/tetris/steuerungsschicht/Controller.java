@@ -36,7 +36,6 @@ public class Controller implements Runnable {
 	private RenderClass renderClass;
 
 	public Controller() {
-		this.spielfeld = new Spielfeld();
 		frame = new Frame(this);
 		frame.addFrames();
 
@@ -50,6 +49,7 @@ public class Controller implements Runnable {
 	 * mehrere Spiele starten zu können
 	 */
 	public void startGame() {
+		this.spielfeld = new Spielfeld();
 		thread = new Thread(this);
 		gameRunning = true;
 		thread.start();
