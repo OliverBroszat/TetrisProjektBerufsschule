@@ -11,30 +11,30 @@ import java.awt.event.KeyListener;
 import javax.swing.JOptionPane;
 
 import de.tetris.darstellungsschicht.Frame;
+import de.tetris.steuerungsschicht.Spielfeld;
 
 public class SpielfeldListener implements KeyListener{
 
 	private Frame frame;
+	private Spielfeld spielfeld;
 		
-	public SpielfeldListener(Frame frame) {
+	public SpielfeldListener(Frame frame, Spielfeld spielfeld) {
 		super();
 		this.frame = frame;
+		this.spielfeld = spielfeld;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
 		if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-			System.out.println("PRESSED:     LEFT");
+			spielfeld.move("left");
 		}
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			System.out.println("PRESSED:     RIGHT");
+			spielfeld.move("right");
 		}
 		if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-			System.out.println("PRESSED:     DOWN");
-		}
-		if(e.getKeyCode() == KeyEvent.VK_UP) {
-			System.out.println("PRESSED:     UP");
+			spielfeld.move("down");
 		}
 		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
 			System.out.println("PRESSED:     SPACE");

@@ -1,10 +1,11 @@
 package de.tetris.steuerungsschicht;
 
+import java.awt.Component;
 import java.util.ArrayList;
 
 public class Spielfeld {
-	private static final int FIELD_WIDTH = 24;
-	private static final int FIELD_HEIGHT = FIELD_WIDTH / 2;
+	private static final int FIELD_WIDTH = 20;
+	private static final int FIELD_HEIGHT = 12;
 	private Block[][] cubes = new Block[FIELD_WIDTH][FIELD_HEIGHT];
 	private ArrayList<Form> formList = new ArrayList<Form>();
 	private static final int START_X = 4;
@@ -297,4 +298,8 @@ public class Spielfeld {
 		return null;
 	}
 
+	public Block[][] getCubes() {
+		return cubes;
+	}
+	
 }

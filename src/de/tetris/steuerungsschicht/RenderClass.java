@@ -6,30 +6,45 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import de.tetris.darstellungsschicht.FrameBasicFrame;
+import de.tetris.steuerungsschicht.Listener.BasicFrameListener;
 
 public class RenderClass {
 	private Canvas canvas;
 	private BufferStrategy bufferstrategy;
-	
-	public RenderClass(Canvas canvas) {
+	private Block[][] spielfeld;
+
+	public RenderClass(Canvas canvas, Block[][] spielfeld) {
 		this.canvas = canvas;
+		this.spielfeld = spielfeld;
 	}
-	
-	public void render(){
-		if(canvas.getBufferStrategy() == null){
+
+	public void render() {
+		if (canvas.getBufferStrategy() == null) {
 			canvas.createBufferStrategy(2);
+			bufferstrategy = canvas.getBufferStrategy();
 		}
-		
-		Graphics g = canvas.getBufferStrategy().getDrawGraphics();
-		
+
+		Graphics g = bufferstrategy.getDrawGraphics();
+
 		renderBloecke(g);
-		
+
 		g.dispose();
-		canvas.getBufferStrategy().show();
+		bufferstrategy.show();
 	}
 
 	private void renderBloecke(Graphics g) {
-		g.setColor(Color.green);
-		g.fillRect(0, 0, FrameBasicFrame.BLOCK_SIZE, FrameBasicFrame.BLOCK_SIZE);
+		int size = FrameBasicFrame.BLOCK_SIZE;
+		
+		for (int i = 0; i < spielfeld.length; i++) {
+			for (int j = 0; j < spielfeld[i].length; j++) {
+				if (spielfeld[i][j] != null) {
+					g.setColor(Color.green);
+				} else {
+					g.setColor(Color.white);
+				}
+				g.fillRect(j * size, i * size, size, size);
+			}
+		}
+
 	}
 }

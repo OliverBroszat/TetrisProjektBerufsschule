@@ -33,6 +33,7 @@ public class Controller implements Runnable {
 	private RenderClass renderClass;
 
 	public Controller() {
+		this.spielfeld = new Spielfeld();
 		frame = new Frame(this);
 		frame.addFrames();
 
@@ -117,8 +118,7 @@ public class Controller implements Runnable {
 	public void run() {
 		//TODO Michael was macht das hier?
 		// establishConnection();
-		this.spielfeld = new Spielfeld();
-		renderClass = new RenderClass(frame.getPanelSpielfeld().getCanvas());
+		renderClass = new RenderClass(frame.getPanelSpielfeld().getCanvas(), spielfeld.getCubes());
 		
 		gameLoop();
 	}
@@ -143,7 +143,7 @@ public class Controller implements Runnable {
 
 		} else if (panel instanceof FrameSpielfeld) {
 			aListener = new BasicFrameListener(frame);
-			KeyListener kListener = new SpielfeldListener(frame);
+			KeyListener kListener = new SpielfeldListener(frame, spielfeld);
 			panel.addKeyListener(kListener);
 		} else if (panel instanceof FrameCreateUser) {
 			aListener = new CreateUserListener(frame);
