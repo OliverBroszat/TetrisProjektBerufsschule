@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 import de.tetris.steuerungsschicht.Controller;
 
 public class Frame extends GUI {
-	private static final int HOEHE = 800;
-	private static final int BREITE = HOEHE;
+	private static final int HOEHE = 850;
+	private static final int BREITE = 715;
 	private CardLayout cardLayout = new CardLayout();
 	private Controller controller;
 	private JPanel backgroundFrame = new JPanel();

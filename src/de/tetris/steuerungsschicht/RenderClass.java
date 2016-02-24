@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import de.tetris.darstellungsschicht.FrameBasicFrame;
+
 public class RenderClass {
 	private Canvas canvas;
 	private BufferStrategy bufferstrategy;
@@ -28,6 +30,6 @@ public class RenderClass {
 
 	private void renderBloecke(Graphics g) {
 		g.setColor(Color.green);
-		g.fillRect(0, 0, 100, 100);
+		g.fillRect(0, 0, FrameBasicFrame.BLOCK_SIZE, FrameBasicFrame.BLOCK_SIZE);
 	}
 }
