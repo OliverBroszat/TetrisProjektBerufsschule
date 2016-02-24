@@ -22,6 +22,7 @@ public class Spielfeld {
 	private int startY = START_Y;
 	private int offsetY;
 	private int offsetX;
+	private Form rotatedForm = null;
 	
 	public int getOffsetY() {
 		return offsetY;
@@ -63,24 +64,25 @@ public class Spielfeld {
 	public void initNormalMode() {
 		formList.add(new FormNormalMode());
 		System.out.println("FORMLIST SIZE:" + this.formList.size());
-		this.centerBlock = formList.get(0).blockList.get(0);
 		
 		this.setStartX(4);
 		this.setStartY(3);
-		
+		this.rotatedForm = formList.get(0);
+		this.centerBlock = rotatedForm.blockList.get(0);
 		this.cubes[this.getStartY()][this.getStartX()] = this.centerBlock;
-
-		//this.move("right");
-		//this.move("left");
+		
+		this.move("down");
+		this.rotate();
+		this.rotate();
+		this.rotate();
 	}
 	
 	public void rotate(){
-		this.move("down");
 		this.delete();
-		Form rotated = this.rotator.starteRotieren(formList.get(0));
-		System.out.println("ROTEDED SIZE: " + rotated.blockList.size());
-		this.centerBlock = rotated.blockList.get(0);
-		this.move("down");
+		rotatedForm = this.rotator.starteRotieren(rotatedForm);
+		this.centerBlock = rotatedForm.blockList.get(0);
+		System.out.println("ROTEDED SIZE: " + rotatedForm.blockList.size());
+		this.move();
 	}
 	
 	public void move(String direction){
@@ -134,11 +136,11 @@ public class Spielfeld {
 	}
 	
 	private void move(){
-			this.cubes[offsetY][offsetX] = this.centerBlock;
-			this.setMovingBlocks(this.centerBlock, offsetY, offsetX);
-			this.setStartX(offsetX);
-			this.setStartY(offsetY);
-			this.drawCubes(offsetY, offsetX);
+		this.cubes[offsetY][offsetX] = this.centerBlock;
+		this.setMovingBlocks(this.centerBlock, offsetY, offsetX);
+		this.setStartX(offsetX);
+		this.setStartY(offsetY);
+		this.drawCubes(offsetY, offsetX);
 	}
 	
 	public void drawCubes(int offsetY,int offsetX) {

@@ -3,7 +3,7 @@ package de.tetris.steuerungsschicht;
 public class Rotator implements Rotatable{
 
 	private int rotateCount = 0;
-	private Form copyForm = new FormNormalMode();
+	private Form copyForm = null;
 	
 	public int getRotateCount() {
 		return rotateCount;
@@ -15,68 +15,69 @@ public class Rotator implements Rotatable{
 	
 	public Form starteRotieren(Form formToRotate)
 	{
+		copyForm = new FormNormalMode();
+		copyForm.emptyList();
 		rotateCount = 0;
-		this.copyForm.emptyList();
-		this.copyForm.blockList.add(formToRotate.blockList.get(0));
-		rotieren(formToRotate.blockList.get(0), formToRotate.blockList.get(0));
-		return formToRotate;
+		Block startBlock = formToRotate.blockList.get(0);
+		Block targetStartBlock = new Block();
+		rotieren(startBlock, targetStartBlock, targetStartBlock);
+		return copyForm;
 	}
 	
-	private int rotieren(Block currBlock, Block parent)
+	private void rotieren(Block currBlock, Block targetBlock, Block targetBlockParent)
 	{
+		if(rotateCount == 0){
+			copyForm.blockList.add(targetBlock);
+		}
 		
-			if(currBlock.getNachbarLinks() != null){
-				System.out.print(" LINKS -> ");
-				rotieren(currBlock.getNachbarLinks(), currBlock);
-			}
-			if(currBlock.getNachbarUnten() != null){
-				System.out.print(" UNTEN -> ");
-				rotieren(currBlock.getNachbarUnten(), currBlock);
-			}
-			if(currBlock.getNachbarRechts() != null){
-				System.out.print(" RECHTS -> ");
-				rotieren(currBlock.getNachbarRechts(), currBlock);
-			}
-			
-			if(currBlock.getNachbarOben() != null){
-				System.out.print(" OBEN -> ");
-				rotieren(currBlock.getNachbarOben(), currBlock);
-			}
-			
-			if(rotateCount < 3){
-				if(parent.getNachbarOben() == null){
-					System.out.println("Parent setze Block Oben ");
-					parent.setNachbarOben(currBlock);
-					parent.setNachbarLinks(null);
-					rotateCount++;
-					return 0;
-				}
-		
-				if(parent.getNachbarRechts() == null){
-					System.out.println("Parent setze Block Rechts ");
-					parent.setNachbarRechts(currBlock);
-					parent.setNachbarOben(null);
-					rotateCount++;
-					return 0;
-				}
+		if(rotateCount <= 3){
+			if(currBlock.getNachbarLinks() != null)
+			{
+				Block tempBlock = new Block();
+				targetBlock.setNachbarOben(tempBlock);
+				copyForm.blockList.add(tempBlock);	
+				System.out.println("ADDED BLOCK OBEN");
+				rotateCount++;
 				
-				if(parent.getNachbarUnten() == null){
-					System.out.println("Parent setze Block Unten");
-					parent.setNachbarUnten(currBlock);
-					parent.setNachbarRechts(null);
-					rotateCount++;
-					return 0;
-				}
+				// richtig Original  | richtig copie | parent copie
+				rotieren(currBlock.getNachbarLinks(), targetBlock.getNachbarOben(), targetBlock);					
+			}
+	
+			if(currBlock.getNachbarUnten() != null)
+			{
+				Block tempBlock = new Block();
+				targetBlock.setNachbarLinks(tempBlock);
+				copyForm.blockList.add(tempBlock);
+				System.out.println("ADDED BLOCK LINKS");
+				rotateCount++;
 				
-				if(parent.getNachbarLinks() == null){
-					System.out.println("Parent setze Block Links ");
-					parent.setNachbarLinks(currBlock);
-					parent.setNachbarUnten(null);
-					rotateCount++;
-					return 0;
-				}
+				// richtig Original  | richtig copie | parent copie
+				rotieren(currBlock.getNachbarUnten(), targetBlock.getNachbarLinks(), targetBlock);					
 			}
 			
-			return 0;
+			if(currBlock.getNachbarRechts() != null)
+			{
+				Block tempBlock = new Block();
+				targetBlock.setNachbarUnten(tempBlock);
+				copyForm.blockList.add(tempBlock);
+				System.out.println("ADDED BLOCK UNTEN");
+				rotateCount++;
+				
+				// richtig Original  | richtig copie | parent copie
+				rotieren(currBlock.getNachbarRechts(), targetBlock.getNachbarUnten(), targetBlock);								
+			}
+			
+			if(currBlock.getNachbarOben() != null)
+			{
+				Block tempBlock = new Block();
+				targetBlock.setNachbarRechts(tempBlock);
+				copyForm.blockList.add(tempBlock);
+				System.out.println("ADDED BLOCK RECHTS");
+				rotateCount++;
+				
+				// richtig Original  | richtig copie | parent copie
+				rotieren(currBlock.getNachbarOben(), targetBlock.getNachbarRechts(), targetBlock);					
+			}
+		}
 	}
 }
