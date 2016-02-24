@@ -58,6 +58,7 @@ public class Frame extends GUI {
 	//TODO ActionListener Marvin/Oliver
 	private Panel addFramePauseMenue() {
 		FramePauseMenue panelPauseMenue = new FramePauseMenue();
+		controller.createListener(panelPauseMenue);
 		return panelPauseMenue;
 	}
 

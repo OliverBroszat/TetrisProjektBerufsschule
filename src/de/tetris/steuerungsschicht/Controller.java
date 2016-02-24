@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import de.tetris.darstellungsschicht.Frame;
+import de.tetris.darstellungsschicht.FrameBasicFrame;
 import de.tetris.darstellungsschicht.FrameCreateUser;
 import de.tetris.darstellungsschicht.FrameHauptmenue;
 import de.tetris.darstellungsschicht.FrameLoginScreen;
@@ -64,7 +65,8 @@ public class Controller implements Runnable {
 		this.persistancestore.createUser("default", "default");
 		this.userData = this.persistancestore.logIn("default", "default");
 
-		System.out.println("LOGGED IS : " + userData.get(0) + " MESSAGE " + userData.get(1));
+		System.out.println("LOGGED IS : " + userData.get(0) + " MESSAGE "
+				+ userData.get(1));
 
 		// persistancestore.update("UPDATE tetrisuser SET Nickname=' + + ' WHERE
 		// Nickname='pro'");
@@ -101,18 +103,20 @@ public class Controller implements Runnable {
 
 		// keep looping round until the game ends
 		while (gameRunning) {
-			long now = System.nanoTime() - lastLoopTime;
+			while (!pause) {
+				long now = System.nanoTime() - lastLoopTime;
 
-			if (now >= OPTIMAL_TIME) {
-				lastLoopTime = System.nanoTime();
+				if (now >= OPTIMAL_TIME) {
+					lastLoopTime = System.nanoTime();
 
-				// TODO Oliver
-				renderClass.render();
-				anzahlDurchläufe++;
-				
-				if(anzahlDurchläufe >= 60){
-				gamelogic();
-				anzahlDurchläufe = 0;
+					// TODO Oliver
+					renderClass.render();
+					anzahlDurchläufe++;
+
+					if (anzahlDurchläufe >= 60) {
+						gamelogic();
+						anzahlDurchläufe = 0;
+					}
 				}
 			}
 		}
@@ -124,10 +128,11 @@ public class Controller implements Runnable {
 
 	@Override
 	public void run() {
-		//TODO Michael was macht das hier?
+		// TODO Michael was macht das hier?
 		// establishConnection();
-		renderClass = new RenderClass(frame.getPanelSpielfeld().getCanvas(), spielfeld.getCubes());
-		
+		renderClass = new RenderClass(frame.getPanelSpielfeld().getCanvas(),
+				spielfeld.getCubes());
+
 		gameLoop();
 	}
 
@@ -139,29 +144,41 @@ public class Controller implements Runnable {
 		ActionListener aListener;
 		if (panel instanceof FrameLoginScreen) {
 			aListener = new LoginScreenListener(frame);
-			((FrameLoginScreen) panel).getSubmitButton().addActionListener(aListener);
-			((FrameLoginScreen) panel).getNewUserButton().addActionListener(aListener);
+			((FrameLoginScreen) panel).getSubmitButton().addActionListener(
+					aListener);
+			((FrameLoginScreen) panel).getNewUserButton().addActionListener(
+					aListener);
 
 		} else if (panel instanceof FrameHauptmenue) {
 			System.out.println("cont: " + frame);
 			aListener = new HauptmenueListener(frame);
-			((FrameHauptmenue) panel).getLoginButton().addActionListener(aListener);
-			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(aListener);
-			((FrameHauptmenue) panel).getStartenButton().addActionListener(aListener);
+			((FrameHauptmenue) panel).getLoginButton().addActionListener(
+					aListener);
+			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(
+					aListener);
+			((FrameHauptmenue) panel).getStartenButton().addActionListener(
+					aListener);
 
 		} else if (panel instanceof FrameSpielfeld) {
-			aListener = new BasicFrameListener(frame);
 			KeyListener kListener = new SpielfeldListener(frame, spielfeld);
 			panel.addKeyListener(kListener);
 		} else if (panel instanceof FrameCreateUser) {
 			aListener = new CreateUserListener(frame);
-			((FrameCreateUser) panel).getNewUserButton().addActionListener(aListener);
-		} else {
+			((FrameCreateUser) panel).getNewUserButton().addActionListener(
+					aListener);
+		} if (panel instanceof FrameBasicFrame){
 			// Fehler
+			aListener = new BasicFrameListener(frame);
+			((FrameBasicFrame) panel).getPauseButton().addActionListener(
+					aListener);
 		}
 	}
-	
-	public void setPause(boolean pause){
+
+	public void setPause(boolean pause) {
 		this.pause = pause;
+	}
+	
+	public boolean getPause(){
+		return pause;
 	}
 }

@@ -42,4 +42,16 @@ public class FrameBasicFrame extends Panel{
 		canvas.setBounds(10,10, BLOCK_SIZE * FIELD_WIDTH, BLOCK_SIZE * FIELD_HEIGHT);
 		add(canvas);
 	}
+
+	public JLabel getScoreLabel() {
+		return scoreLabel;
+	}
+
+	public void setScoreLabel(JLabel scoreLabel) {
+		this.scoreLabel = scoreLabel;
+	}
+
+	public JButton getPauseButton() {
+		return pauseButton;
+	}
 }
