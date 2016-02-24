@@ -8,8 +8,8 @@ public class Spielfeld {
 	private static final int FIELD_HEIGHT = 12;
 	private Block[][] cubes = new Block[FIELD_WIDTH][FIELD_HEIGHT];
 	private ArrayList<Form> formList = new ArrayList<Form>();
-	private static final int START_X = 4;
-	private static final int START_Y = 3;
+	private static final int START_Y = 1;
+	private static final int START_X = 5;
 	
 	private boolean borderCollisionLeft = false;
 	private boolean borderCollisionRight = false;
@@ -58,22 +58,16 @@ public class Spielfeld {
 	}
 
 	public Spielfeld() {
-		initNormalMode();
+		spawn();
 	}
 
-	public void initNormalMode() {
+	public void spawn() {
 		formList.add(new FormNormalMode());
-		System.out.println("FORMLIST SIZE:" + this.formList.size());
-		this.centerBlock = formList.get(0).blockList.get(0);
-		
-		this.setStartX(4);
-		this.setStartY(3);
-		
-		this.cubes[this.getStartY()][this.getStartX()] = this.centerBlock;
-		this.setMovingBlocks(this.centerBlock, this.getStartY(), this.getStartX());
+		this.centerBlock = formList.get(formList.size() - 1).blockList.get(0);
+		this.setOffsetX(0);
+		this.setOffsetY(0);
+		this.cubes[this.START_Y][this.START_X] = this.centerBlock;
 		this.move("down");
-		this.move("right");
-		this.move("left");
 	}
 	
 	public void move(String direction){
@@ -131,9 +125,9 @@ public class Spielfeld {
 			this.setMovingBlocks(this.centerBlock, offsetY, offsetX);
 			this.setStartX(offsetX);
 			this.setStartY(offsetY);
-			this.drawCubes(offsetY, offsetX);
 	}
 	
+	//Testmethode not in use 
 	public void drawCubes(int offsetY,int offsetX) {
 		int rows = cubes.length;
 		int cols = cubes[0].length;
@@ -212,6 +206,8 @@ public class Spielfeld {
 		
 		if(this.isOutOfBounce(curY + 1, curX)){
 			System.out.println("check block Unten");
+			this.centerBlock = null;
+			spawn();
 			borderCollisionDown = true;
 		}else{
 			if(currBlock.getNachbarUnten() != null){
@@ -219,7 +215,6 @@ public class Spielfeld {
 			}
 		}
 	}
-	
 
 	private Block setMovingBlocks(Block currBlock, int curY, int curX){	
 			int x = curX;
