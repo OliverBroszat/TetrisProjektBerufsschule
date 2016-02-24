@@ -12,12 +12,14 @@ import de.tetris.darstellungsschicht.FrameBasicFrame;
 import de.tetris.darstellungsschicht.FrameCreateUser;
 import de.tetris.darstellungsschicht.FrameHauptmenue;
 import de.tetris.darstellungsschicht.FrameLoginScreen;
+import de.tetris.darstellungsschicht.FramePauseMenue;
 import de.tetris.darstellungsschicht.FrameSpielfeld;
 import de.tetris.datenschicht.PersistanceStoreMySQL;
 import de.tetris.steuerungsschicht.Listener.BasicFrameListener;
 import de.tetris.steuerungsschicht.Listener.CreateUserListener;
 import de.tetris.steuerungsschicht.Listener.HauptmenueListener;
 import de.tetris.steuerungsschicht.Listener.LoginScreenListener;
+import de.tetris.steuerungsschicht.Listener.PausemenueListener;
 import de.tetris.steuerungsschicht.Listener.SpielfeldListener;
 
 public class Controller implements Runnable {
@@ -166,7 +168,14 @@ public class Controller implements Runnable {
 			aListener = new CreateUserListener(frame);
 			((FrameCreateUser) panel).getNewUserButton().addActionListener(
 					aListener);
-		} if (panel instanceof FrameBasicFrame){
+		} else if (panel instanceof FramePauseMenue) {
+			aListener = new PausemenueListener(frame);
+			((FramePauseMenue) panel).getHauptmenueButton().addActionListener(
+					aListener);
+			((FramePauseMenue) panel).getSpeichernButton().addActionListener(
+					aListener);
+		}
+		if (panel instanceof FrameBasicFrame) {
 			// Fehler
 			aListener = new BasicFrameListener(frame);
 			((FrameBasicFrame) panel).getPauseButton().addActionListener(
@@ -177,8 +186,8 @@ public class Controller implements Runnable {
 	public void setPause(boolean pause) {
 		this.pause = pause;
 	}
-	
-	public boolean getPause(){
+
+	public boolean getPause() {
 		return pause;
 	}
 }
