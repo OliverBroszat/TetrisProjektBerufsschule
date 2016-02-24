@@ -98,6 +98,7 @@ public class Controller implements Runnable {
 		long lastLoopTime = System.nanoTime();
 		final int TARGET_FPS = 60;
 		final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
+		int anzahlDurchläufe = 0;
 
 		// keep looping round until the game ends
 		while (gameRunning) {
@@ -108,10 +109,18 @@ public class Controller implements Runnable {
 
 				// TODO Oliver
 				renderClass.render();
-
-				// gamelogic();
+				anzahlDurchläufe++;
+				
+				if(anzahlDurchläufe >= 60){
+				gamelogic();
+				anzahlDurchläufe = 0;
+				}
 			}
 		}
+	}
+
+	private void gamelogic() {
+		spielfeld.move("down");
 	}
 
 	@Override
