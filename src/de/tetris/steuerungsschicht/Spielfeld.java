@@ -14,15 +14,20 @@ public class Spielfeld {
 	private boolean borderCollisionRight = false;
 	private boolean borderCollisionUp = false;
 	private boolean borderCollisionDown = false;
+	
+	private boolean blockCollsionLeft = false;
+	private boolean blockCollsionRight = false;
+	private boolean blockCollsionDown = false;
 
 	private Rotator rotator;
 	private Block centerBlock = null;
 
-	private int startX = START_X;
-	private int startY = START_Y;
+	private int blockStartX = START_X;
+	private int blockStartY = START_Y;
 	private int offsetY;
 	private int offsetX;
 	private Form rotatedForm = null;
+	
 	
 	public int getOffsetY() {
 		return offsetY;
@@ -40,36 +45,50 @@ public class Spielfeld {
 		this.offsetX = offsetX;
 	}
 	
-	public int getStartX() {
-		return startX;
+	public int getBlockStartX() {
+		return blockStartX;
 	}
 
-	public void setStartX(int startX) {
-		this.startX = startX;
+	public void setBlockStartX(int startX) {
+		this.blockStartX = startX;
 	}
 
-	public int getStartY() {
-		return startY;
+	public int getBlockStartY() {
+		return blockStartY;
 	}
 
-	public void setStartY(int startY) {
-		this.startY = startY;
+	public void setBlockStartY(int startY) {
+		this.blockStartY = startY;
+	}
+	
+	public Block[][] getCubes() {
+		return cubes;
+	}
+
+	public void setCubes(Block[][] cubes) {
+		this.cubes = cubes;
 	}
 
 	public Spielfeld() {
 		this.rotator = new Rotator();
-		initNormalMode();
+		this.spawnBlock();
+		
 	}
 
+	public void spawnBlock(){
+		
+	}
+	
+	// testmethode not in use
 	public void initNormalMode() {
 		formList.add(new FormNormalMode());
 		System.out.println("FORMLIST SIZE:" + this.formList.size());
 		
-		this.setStartX(4);
-		this.setStartY(3);
+		this.setBlockStartX(4);
+		this.setBlockStartY(3);
 		this.rotatedForm = formList.get(0);
 		this.centerBlock = rotatedForm.blockList.get(0);
-		this.cubes[this.getStartY()][this.getStartX()] = this.centerBlock;
+		this.cubes[this.getBlockStartY()][this.getBlockStartX()] = this.centerBlock;
 		
 		this.move("down");
 		this.rotate();
@@ -78,45 +97,62 @@ public class Spielfeld {
 	}
 	
 	public void rotate(){
-		this.delete();
-		rotatedForm = this.rotator.starteRotieren(rotatedForm);
-		this.centerBlock = rotatedForm.blockList.get(0);
-		System.out.println("ROTEDED SIZE: " + rotatedForm.blockList.size());
-		this.move();
+		if(!borderCollisionDown || !borderCollisionLeft || !borderCollisionRight || !borderCollisionUp){
+			if(!blockCollsionDown || !blockCollsionLeft || !blockCollsionRight){
+				this.delete();
+				rotatedForm = this.rotator.starteRotieren(rotatedForm);
+				this.centerBlock = rotatedForm.blockList.get(0);
+				System.out.println("ROTEDED SIZE: " + rotatedForm.blockList.size());
+				this.move();
+			}
+		}
 	}
-	
+
 	public void move(String direction){
 		borderCollisionLeft = false;
 		borderCollisionRight = false;
 		borderCollisionUp = false;
 		borderCollisionDown = false;
 	
-		offsetY = this.getStartY();
-		offsetX = this.getStartX();
+		offsetY = this.getBlockStartY();
+		offsetX = this.getBlockStartX();
 	
-		this.checkCollision(this.centerBlock, offsetY, offsetX);
+		this.checkBorderCollision(this.centerBlock, offsetY, offsetX);
+		
 		switch(direction){
 		case "down": 
 				if(!borderCollisionDown){	
-					this.delete();
-					this.offsetY++;
-					this.move();
+					
+					this.checkBlockCollision(this.centerBlock, offsetY, offsetX);
+					if(!blockCollsionDown){
+						this.delete();
+						this.offsetY++;
+						this.move();
+					}
 				}else{
-					System.out.println("reached end");
+					this.spawnBlock();
 				}
 			break;
 		case "right":
 				if(!borderCollisionRight){
-					this.delete();
-					this.offsetX++;
-					this.move();
+					this.checkBlockCollision(this.centerBlock, offsetY, offsetX);
+					if(!blockCollsionRight){
+						this.delete();
+						this.offsetX++;
+						this.move();
+					}
+				}else{
+					this.spawnBlock();
 				}
 			 break;
 		case "left":
 				if(!borderCollisionLeft){
-					this.delete();
-					this.offsetX--;
-					this.move();
+					this.checkBlockCollision(this.centerBlock, offsetY, offsetX);
+					if(!blockCollsionLeft){
+						this.delete();
+						this.offsetX--;
+						this.move();
+					}
 				}
 			 break;
 		case "up":
@@ -129,7 +165,7 @@ public class Spielfeld {
 		default: break;
 		}
 	}
-	
+
 	private void delete(){
 		this.deleteMovingBlocks(this.centerBlock, this.offsetY, this.offsetX);
 		this.cubes[this.offsetY][this.offsetX] = null;
@@ -138,9 +174,8 @@ public class Spielfeld {
 	private void move(){
 		this.cubes[offsetY][offsetX] = this.centerBlock;
 		this.setMovingBlocks(this.centerBlock, offsetY, offsetX);
-		this.setStartX(offsetX);
-		this.setStartY(offsetY);
-		this.drawCubes(offsetY, offsetX);
+		this.setBlockStartX(offsetX);
+		this.setBlockStartY(offsetY);
 	}
 	
 	public void drawCubes(int offsetY,int offsetX) {
@@ -191,13 +226,45 @@ public class Spielfeld {
 		return status;
 	}
 	
-	private void checkCollision(Block currBlock, int curY, int curX){
+	private void checkBlockCollision(Block currBlock, int curY,
+			int curX) {
+		// check ob der nächste cube leer ist
+		if(cubes[curY][curX - 1] != null){
+			System.out.println("block collision LEFT");
+			blockCollsionLeft = true;
+		}else{
+			if(currBlock.getNachbarLinks() != null){
+				this.checkBlockCollision(currBlock.getNachbarLinks(), curY, curX - 1);	
+			}
+		}
+		// check ob der nächste cube leer ist
+		if(cubes[curY][curX + 1] != null){
+			System.out.println("block collision RIGHT");
+			blockCollsionRight = true;
+		}else{
+			if(currBlock.getNachbarRechts() != null){
+				this.checkBlockCollision(currBlock.getNachbarRechts(), curY, curX + 1);
+			}
+		}
+		
+		// check ob der nächste cube leer ist
+		if(cubes[curY + 1][curX] != null){
+			System.out.println("block collision DOWN");
+			blockCollsionDown = true;
+		}else{
+			if(currBlock.getNachbarUnten() != null){
+				this.checkBorderCollision(currBlock.getNachbarUnten(), curY + 1, curX);
+			}
+		}
+	}
+	
+	private void checkBorderCollision(Block currBlock, int curY, int curX){
 		if(this.isOutOfBounce(curY, curX - 1)){
 			System.out.println("check block links");
 			borderCollisionLeft = true;
 		}else{
 			if(currBlock.getNachbarLinks() != null){
-			this.checkCollision(currBlock.getNachbarLinks(), curY, curX - 1);	
+			this.checkBorderCollision(currBlock.getNachbarLinks(), curY, curX - 1);	
 			}
 		}
 		
@@ -206,7 +273,7 @@ public class Spielfeld {
 			borderCollisionRight = true;
 		}else{
 			if(currBlock.getNachbarRechts() != null){
-				this.checkCollision(currBlock.getNachbarRechts(), curY, curX + 1);
+				this.checkBorderCollision(currBlock.getNachbarRechts(), curY, curX + 1);
 			}
 		}
 		
@@ -215,7 +282,7 @@ public class Spielfeld {
 			borderCollisionUp = true;
 		}else{
 			if(currBlock.getNachbarOben() != null){
-				this.checkCollision(currBlock.getNachbarOben(), curY - 1, curX);
+				this.checkBorderCollision(currBlock.getNachbarOben(), curY - 1, curX);
 			}
 		}
 		
@@ -224,7 +291,7 @@ public class Spielfeld {
 			borderCollisionDown = true;
 		}else{
 			if(currBlock.getNachbarUnten() != null){
-				this.checkCollision(currBlock.getNachbarUnten(), curY + 1, curX);
+				this.checkBorderCollision(currBlock.getNachbarUnten(), curY + 1, curX);
 			}
 		}
 	}
