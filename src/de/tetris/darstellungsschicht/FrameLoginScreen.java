@@ -33,20 +33,18 @@ public class FrameLoginScreen extends Panel{
 	    newUserButton.setFont(super.font);
 	    
 	    centerPanel.setLayout(new GridLayout(2,2));
-	    centerPanel.setAlignmentX(20);
-	    centerPanel.setAlignmentY(20);
 	    centerPanel.setBackground(Color.lightGray);
 	    
-	    centerPanel.setBounds(200,250,400,270);
+	    centerPanel.setBounds(160,250,400,270);
 	    centerPanel.add(nameLabel);
 	    centerPanel.add(nameTextField);
 	    centerPanel.add(passwortLabel);
 	    centerPanel.add(passwortField);
 	    
 	    titelLabel.setForeground(Color.BLUE);    
-	    titelLabel.setBounds(340,100,300,70);	   
-	    submitButton.setBounds(400,550,200,70);
-	    newUserButton.setBounds(200, 550, 200, 70);
+	    titelLabel.setBounds(300,100,300,70);	   
+	    submitButton.setBounds(360,550,200,70);
+	    newUserButton.setBounds(160, 550, 200, 70);
 	    
 
 	    add(titelLabel);

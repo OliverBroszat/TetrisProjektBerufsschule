@@ -26,10 +26,10 @@ public class FrameHauptmenue extends Panel{
 	    loginButton.setText("Login");
 	    highScoreButton.setText("Highscore");
 	    
-	    titelLabel.setBounds(295,100,300,70);
-	    highScoreButton.setBounds(260,200,300,70);
-	    loginButton.setBounds(260,300,300,70);
-	    startenButton.setBounds(260,400,300,70);
+	    titelLabel.setBounds(245,100,300,70);
+	    highScoreButton.setBounds(220,200,300,70);
+	    loginButton.setBounds(220,300,300,70);
+	    startenButton.setBounds(220,400,300,70);
 	    
 	    add(startenButton);
 	    add(titelLabel);
