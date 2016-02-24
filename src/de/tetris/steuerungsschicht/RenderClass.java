@@ -38,7 +38,8 @@ public class RenderClass {
 		for (int i = 0; i < spielfeld.length; i++) {
 			for (int j = 0; j < spielfeld[i].length; j++) {
 				if (spielfeld[i][j] != null) {
-					g.setColor(Color.green);
+					System.out.println("Color: " + spielfeld[i][j].getColor());
+					g.setColor(spielfeld[i][j].getColor());
 				} else {
 					g.setColor(Color.white);
 				}

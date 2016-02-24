@@ -1,11 +1,14 @@
 package de.tetris.steuerungsschicht;
 
+import java.awt.Color;
+
 public class Block {
 
 	private Block nachbarOben;
 	private Block nachbarRechts;
 	private Block nachbarUnten;
 	private Block nachbarLinks;
+	private Color color;
 	
 	/**
 	 * Überlegung ob Farbwahl in Form/Controller anstatt Attribut
@@ -41,5 +44,13 @@ public class Block {
 	
 	public void setNachbarLinks(Block nachbarLinks) {
 		this.nachbarLinks = nachbarLinks;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
+	public Color getColor(){
+		return color;
 	}
 }
