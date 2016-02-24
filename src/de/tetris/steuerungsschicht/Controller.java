@@ -22,7 +22,7 @@ import de.tetris.steuerungsschicht.Listener.SpielfeldListener;
 public class Controller implements Runnable {
 	private Thread thread;
 	private boolean gameRunning;
-
+	private boolean pause = false;
 	private Rotator rotator;
 	private XMLSerializer xmlSerializer;
 	private Frame frame;
@@ -40,7 +40,6 @@ public class Controller implements Runnable {
 		Form form = new FormNormalMode();
 		// formList.add(form);
 		persistancestore = new PersistanceStoreMySQL();
-		startGame();
 	}
 
 	/**
@@ -160,5 +159,9 @@ public class Controller implements Runnable {
 		} else {
 			// Fehler
 		}
+	}
+	
+	public void setPause(boolean pause){
+		this.pause = pause;
 	}
 }
