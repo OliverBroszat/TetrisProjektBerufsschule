@@ -14,17 +14,17 @@ public class FormNormalMode extends Form{
 			blockList.add(block4);
 			int zufall =  (int)((Math.random()*7)+1);
 			switch (zufall) {
-			case 1	:	startBlock.setNachbarRechts(block2);
-						block2.setNachbarRechts(block3);
+			case 1	:	startBlock.setNachbarLinks(block2);
+						startBlock.setNachbarRechts(block3);
 						block3.setNachbarRechts(block4);
 						break;
 			case 2	:	startBlock.setNachbarRechts(block2);
 						startBlock.setNachbarLinks(block3);
-						block3.setNachbarOben(block4);
+						block3.setNachbarUnten(block4);
 						break;
 			case 3	:	startBlock.setNachbarRechts(block2);
-						block2.setNachbarOben(block3);
 						startBlock.setNachbarLinks(block4);
+						block2.setNachbarUnten(block3);
 						break;
 			case 4	:	startBlock.setNachbarRechts(block2);
 						block2.setNachbarUnten(block3);
@@ -40,7 +40,7 @@ public class FormNormalMode extends Form{
 						break;
 			case 7	:	startBlock.setNachbarRechts(block2);
 						startBlock.setNachbarLinks(block3);
-						startBlock.setNachbarOben(block4);
+						startBlock.setNachbarUnten(block4);
 						break;
 			}
 		

@@ -7,8 +7,9 @@ public class Spielfeld implements Serializable{
 	private static final int FIELD_WIDTH = 20;
 	private static final int FIELD_HEIGHT = 12;
 	private Block[][] cubes = new Block[FIELD_WIDTH][FIELD_HEIGHT];
+	private Block[][] nextCubes = new Block[10][10];
 	private ArrayList<Form> formList = new ArrayList<Form>();
-	private static final int START_Y = 1;
+	private static final int START_Y = 0;
 	private static final int START_X = 5;
 	private Serializer basicSerializer = new BasicSerializer();
 	
@@ -29,6 +30,7 @@ public class Spielfeld implements Serializable{
 	private int offsetY;
 	private int offsetX;
 	private Form rotatedForm = null;
+	private Form nextForm = new FormNormalMode();
 	
 	
 	public int getOffsetY() {
@@ -71,18 +73,22 @@ public class Spielfeld implements Serializable{
 		this.cubes = cubes;
 	}
 
+	public Block[][] getNextCubes() {
+		return nextCubes;
+	}
+
 	public Spielfeld() {
 		this.rotator = new Rotator();
 	}
 	
 	public void startSpiel(){
-		this.clearAllCubes();
+		this.clearAllCubes(cubes);
 		this.centerBlock = null;
 		this.spawnBlock();
 	}
 	
 	// Löscht alle Blöcke aus dem Spielfeld
-	private void clearAllCubes(){
+	private void clearAllCubes(Block[][] cubes){
 		for (int i = 0; i < cubes.length; i++) {
 			for (int j = 0; j < cubes[0].length; j++) {
 				cubes[i][j] = null;
@@ -92,13 +98,16 @@ public class Spielfeld implements Serializable{
 
 	public void spawnBlock(){
 		System.out.println(" SPAWN BLOCK ");
-		this.rotatedForm = null;
-		this.rotatedForm = new FormNormalMode();
+		this.clearAllCubes(nextCubes);
+		this.rotatedForm = nextForm;
+		this.nextForm = new FormNormalMode();
 		this.centerBlock = rotatedForm.blockList.get(0);
 		
 		this.setBlockStartX(this.START_X);
 		this.setBlockStartY(this.START_Y);
 		
+		this.nextCubes[2][3] = nextForm.blockList.get(0);
+		this.setMovingBlocks(nextCubes[2][3], 2, 3, nextCubes);
 		this.cubes[this.getBlockStartY()][this.getBlockStartX()] = this.centerBlock;
 		this.move("down");
 	}
@@ -190,7 +199,7 @@ public class Spielfeld implements Serializable{
 	private void move(){
 		System.out.println("SET!");
 		this.cubes[offsetY][offsetX] = this.centerBlock;
-		this.setMovingBlocks(this.centerBlock, offsetY, offsetX);
+		this.setMovingBlocks(this.centerBlock, offsetY, offsetX, cubes);
 		this.setBlockStartX(offsetX);
 		this.setBlockStartY(offsetY);
 	}
@@ -315,7 +324,7 @@ public class Spielfeld implements Serializable{
 		}
 	}
 
-	private Block setMovingBlocks(Block currBlock, int curY, int curX){	
+	private Block setMovingBlocks(Block currBlock, int curY, int curX, Block[][] cubes){	
 			int x = curX;
 			int y = curY;
 			
@@ -324,7 +333,7 @@ public class Spielfeld implements Serializable{
 				
 				if(cubes[y][x - 1] == null){
 					cubes[y][x - 1] = currBlock.getNachbarLinks();
-					this.setMovingBlocks(currBlock.getNachbarLinks(), y, x - 1);
+					this.setMovingBlocks(currBlock.getNachbarLinks(), y, x - 1, cubes);
 				}
 			}
 			
@@ -332,7 +341,7 @@ public class Spielfeld implements Serializable{
 				//System.out.println("Setze block Rechts");
 				if(cubes[y][x + 1] == null){
 					cubes[y][x + 1] = currBlock.getNachbarRechts();
-					this.setMovingBlocks(currBlock.getNachbarRechts(), y, x + 1);
+					this.setMovingBlocks(currBlock.getNachbarRechts(), y, x + 1, cubes);
 				}
 			}
 			
@@ -340,7 +349,7 @@ public class Spielfeld implements Serializable{
 				//System.out.println("Setze block Oben");
 				if(cubes[y - 1][x] == null){
 					cubes[y - 1][x] = currBlock.getNachbarOben();
-					this.setMovingBlocks(currBlock.getNachbarOben(), y - 1, x);
+					this.setMovingBlocks(currBlock.getNachbarOben(), y - 1, x, cubes);
 				}
 			}
 			
@@ -348,7 +357,7 @@ public class Spielfeld implements Serializable{
 				//System.out.println("Setze block Unten");
 				if(cubes[y + 1][x] == null){
 					cubes[y + 1][x] = currBlock.getNachbarUnten();
-					this.setMovingBlocks(currBlock.getNachbarUnten(), y + 1, x);
+					this.setMovingBlocks(currBlock.getNachbarUnten(), y + 1, x, cubes);
 				}
 			}
 			

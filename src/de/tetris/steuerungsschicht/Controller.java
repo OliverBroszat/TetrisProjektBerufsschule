@@ -133,7 +133,7 @@ public class Controller implements Runnable {
 		// establishConnection();
 		gameRunning = true;
 		spielfeld.startSpiel();
-		renderClass = new RenderClass(frame.getPanelSpielfeld().getCanvas(), spielfeld.getCubes());
+		renderClass = new RenderClass(frame.getPanelSpielfeld(), spielfeld);
 		gameLoop();
 	}
 
