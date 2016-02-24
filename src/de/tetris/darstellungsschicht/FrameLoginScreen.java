@@ -17,7 +17,7 @@ public class FrameLoginScreen extends Panel{
 	private JLabel passwortLabel = new JLabel("Passwort: ");
 	private JPasswordField passwortField = new JPasswordField();	
 	private JButton submitButton = new JButton("Submit");
-	private JButton newUserButton = new JButton("User anlgegen");
+	private JButton newUserButton = new JButton("User anlegen");
 	
 	private JPanel centerPanel = new JPanel();
 
@@ -53,5 +53,13 @@ public class FrameLoginScreen extends Panel{
 	    add(submitButton);
 	    add(newUserButton);
 	    add(centerPanel);
+	}
+
+	public JButton getSubmitButton() {
+		return submitButton;
+	}
+
+	public JButton getNewUserButton() {
+		return newUserButton;
 	}
 }

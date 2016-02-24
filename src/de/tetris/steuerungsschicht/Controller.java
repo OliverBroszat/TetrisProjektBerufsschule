@@ -2,8 +2,8 @@ package de.tetris.steuerungsschicht;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -12,8 +12,12 @@ import de.tetris.darstellungsschicht.FrameCreateUser;
 import de.tetris.darstellungsschicht.FrameHauptmenue;
 import de.tetris.darstellungsschicht.FrameLoginScreen;
 import de.tetris.darstellungsschicht.FrameSpielfeld;
-import de.tetris.datenschicht.PersistanceStore;
 import de.tetris.datenschicht.PersistanceStoreMySQL;
+import de.tetris.steuerungsschicht.Listener.BasicFrameListener;
+import de.tetris.steuerungsschicht.Listener.CreateUserListener;
+import de.tetris.steuerungsschicht.Listener.HauptmenueListener;
+import de.tetris.steuerungsschicht.Listener.LoginScreenListener;
+import de.tetris.steuerungsschicht.Listener.SpielfeldListener;
 
 public class Controller implements Runnable {
 	private Thread thread;
@@ -26,29 +30,32 @@ public class Controller implements Runnable {
 	private String user = "default";
 	private ArrayList<String> userData;
 	private Spielfeld spielfeld;
-
+	private RenderClass renderClass;
 
 	public Controller() {
+		frame = new Frame(this);
+		frame.addFrames();
+
 		Form form = new FormNormalMode();
-		Frame frame = new Frame(this);
+		// formList.add(form);
 		persistancestore = new PersistanceStoreMySQL();
 		startGame();
 	}
-	
+
 	/**
-	 * Startet das Spiel und die dazugehörigen Threads
-	 * Soll es ermöglichen, mehrere Spiele starten zu können
+	 * Startet das Spiel und die dazugehörigen Threads Soll es ermöglichen,
+	 * mehrere Spiele starten zu können
 	 */
 	public void startGame() {
 		thread = new Thread(this);
 		gameRunning = true;
 		thread.start();
 	}
-	
-	public void establishConnection(){
+
+	public void establishConnection() {
 		// Setzen der AccountInformationen
 		this.persistancestore.setInfo("localhost", "3306");
-		
+
 		// Name der Datenbank auf welche eine Verbindung aufgebaut werden soll.
 		this.persistancestore.createConnection("Tetris");
 
@@ -56,26 +63,35 @@ public class Controller implements Runnable {
 		// create default user
 		this.persistancestore.createUser("default", "default");
 		this.userData = this.persistancestore.logIn("default", "default");
-		
+
 		System.out.println("LOGGED IS : " + userData.get(0) + " MESSAGE " + userData.get(1));
-		
-		//persistancestore.update("UPDATE tetrisuser SET Nickname=' +  + ' WHERE Nickname='pro'");
-		
-		//persistancestore.delete("DELETE FROM tetrisuser WHERE Nickname='ANDERS'");
-			
-		//persistancestore.insert("INSERT INTO tetrisuser (nickname, password, letzerSpielstand)" +
-		//"VALUES ('Gollum','ABCDEFG112', '[0,1,2,3,4,5,6,7,10,[0,0,0]][0,1,2,3,4,5,6,7,10,[0,0,0]]')");
+
+		// persistancestore.update("UPDATE tetrisuser SET Nickname=' + + ' WHERE
+		// Nickname='pro'");
+
+		// persistancestore.delete("DELETE FROM tetrisuser WHERE
+		// Nickname='ANDERS'");
+
+		// persistancestore.insert("INSERT INTO tetrisuser (nickname, password,
+		// letzerSpielstand)" +
+		// "VALUES ('Gollum','ABCDEFG112',
+		// '[0,1,2,3,4,5,6,7,10,[0,0,0]][0,1,2,3,4,5,6,7,10,[0,0,0]]')");
 	}
-	
-	//TODO Oliver
-	public void stopGame(){
+
+	// TODO Oliver
+	public void stopGame() {
 		gameRunning = false;
+		renderClass = null;
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * Wird solange das Spiel läuft 60 mal pro Sekunde aufgerufen werden
-	 * und das Spielfeld rendern
-	 * und die gamelogik aufrufen
+	 * Wird solange das Spiel läuft 60 mal pro Sekunde aufgerufen werden und das
+	 * Spielfeld rendern und die gamelogik aufrufen
 	 */
 	public void gameLoop() {
 		long lastLoopTime = System.nanoTime();
@@ -88,10 +104,10 @@ public class Controller implements Runnable {
 
 			if (now >= OPTIMAL_TIME) {
 				lastLoopTime = System.nanoTime();
-				
+
 				// TODO Oliver
-				// render();
-					//System.out.println("loop");
+				renderClass.render();
+
 				// gamelogic();
 			}
 		}
@@ -99,29 +115,38 @@ public class Controller implements Runnable {
 
 	@Override
 	public void run() {
-//		establishConnection();
+		//TODO Michael was macht das hier?
+		// establishConnection();
 		this.spielfeld = new Spielfeld();
+		renderClass = new RenderClass(frame.getPanelSpielfeld().getCanvas());
+		
 		gameLoop();
 	}
-	
+
 	public void spielfedRequestFocus(JPanel panel) {
 		panel.requestFocusInWindow();
 	}
 
 	public void createListener(JPanel panel) {
 		ActionListener aListener;
-		if(panel instanceof FrameLoginScreen) {
-			aListener = new LoginScreenListener();
+		if (panel instanceof FrameLoginScreen) {
+			aListener = new LoginScreenListener(frame);
+			((FrameLoginScreen) panel).getSubmitButton().addActionListener(aListener);
+			((FrameLoginScreen) panel).getNewUserButton().addActionListener(aListener);
+
 		} else if (panel instanceof FrameHauptmenue) {
-			aListener = new HauptmenueListener();
+			System.out.println("cont: " + frame);
+			aListener = new HauptmenueListener(frame);
 			((FrameHauptmenue) panel).getLoginButton().addActionListener(aListener);
 			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(aListener);
+			((FrameHauptmenue) panel).getStartenButton().addActionListener(aListener);
+
 		} else if (panel instanceof FrameSpielfeld) {
-			aListener = new BasicFrameListener();
-			KeyListener kListener = new SpielfeldListener();
+			aListener = new BasicFrameListener(frame);
+			KeyListener kListener = new SpielfeldListener(frame);
 			panel.addKeyListener(kListener);
 		} else if (panel instanceof FrameCreateUser) {
-			aListener = new CreateUserListener();
+			aListener = new CreateUserListener(frame);
 			((FrameCreateUser) panel).getNewUserButton().addActionListener(aListener);
 		} else {
 			// Fehler

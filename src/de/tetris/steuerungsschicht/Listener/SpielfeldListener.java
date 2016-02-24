@@ -1,4 +1,4 @@
-package de.tetris.steuerungsschicht;
+package de.tetris.steuerungsschicht.Listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +10,16 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JOptionPane;
 
+import de.tetris.darstellungsschicht.Frame;
+
 public class SpielfeldListener implements KeyListener{
+
+	private Frame frame;
+		
+	public SpielfeldListener(Frame frame) {
+		super();
+		this.frame = frame;
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {

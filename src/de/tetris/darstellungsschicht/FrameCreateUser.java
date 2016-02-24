@@ -18,7 +18,7 @@ public class FrameCreateUser extends Panel{
 	private JPasswordField passwortField = new JPasswordField();	
 	private JLabel checkPasswortLabel = new JLabel("Passwort: ");
 	private JPasswordField checkPasswortField = new JPasswordField();
-	private JButton newUserButton = new JButton("User anlgegen");
+	private JButton newUserButton = new JButton("User anlegen");
 	
 	private JPanel centerPanel = new JPanel();
 
@@ -56,9 +56,5 @@ public class FrameCreateUser extends Panel{
 
 	public JButton getNewUserButton() {
 		return newUserButton;
-	}
-
-	public void setNewUserButton(JButton newUserButton) {
-		this.newUserButton = newUserButton;
 	}
 }
