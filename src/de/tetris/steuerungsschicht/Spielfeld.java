@@ -91,7 +91,42 @@ public class Spielfeld implements Serializable {
 		this.centerBlock = null;
 		this.spawnBlock();
 	}
+	public void isFullLine() {
 
+		for (int y = 0; y < cubes.length; y++) {
+			boolean fullLine = true;
+			for (int x = 0; x < cubes[y].length; x++) {
+				if (cubes[y][x] == null) {
+					fullLine = false;
+					x = cubes[y].length;
+				}
+			}
+			if (fullLine) {
+				deleteFullLine(y);
+				linePullDown(y);
+			}
+		}
+	}
+
+	public void linePullDown(int y) {
+		while ( y >= 0) {
+			for (int x = 0; x < cubes[y].length; x++) {
+				System.out.println("LINE PULL DOWN");	
+				cubes[y][x] = cubes[y+cubes[y].length][x+1];
+				
+			}
+			y--;
+
+		}
+
+	}
+
+	public void deleteFullLine(int y) {
+		for (int x = 0; x < cubes[y].length; x++) {
+			System.out.println("delete cube");
+			cubes[y][x] = null;
+		}
+	}
 	// Löscht alle Blöcke aus dem Spielfeld
 	private void clearAllCubes(Block[][] blk) {
 		for (int i = 0; i < blk.length; i++) {
