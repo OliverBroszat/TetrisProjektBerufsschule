@@ -23,6 +23,7 @@ public class BasicFrameListener extends BasicActionListener {
 					frame.getCardLayout().show(frame.getBackgroundFrame(),
 							"Spielfeld");
 					frame.getController().setPause(false);
+					frame.getController().spielfedRequestFocus(frame.getPanelSpielfeld());
 				} else {
 					frame.getCardLayout().show(frame.getBackgroundFrame(),
 							"PauseMenue");

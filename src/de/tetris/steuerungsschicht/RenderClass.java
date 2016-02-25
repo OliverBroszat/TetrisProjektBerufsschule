@@ -25,15 +25,15 @@ public class RenderClass {
 	}
 
 	public void render() {
-		if (canvasSpielfeld.getBufferStrategy() == null) {
+		if (strategySpielfeld == null) {
 			canvasSpielfeld.createBufferStrategy(2);
 			strategySpielfeld = canvasSpielfeld.getBufferStrategy();
 		}
-		if (canvasNextBlock.getBufferStrategy() == null) {
+		if (strategyNextBlock == null) {
 			canvasNextBlock.createBufferStrategy(2);
 			strategyNextBlock = canvasNextBlock.getBufferStrategy();
 		}
-		
+		System.out.println("spielfeld: " + canvasSpielfeld);
 		renderSpielfeld(strategySpielfeld.getDrawGraphics());
 		renderNextBlock(strategyNextBlock.getDrawGraphics());
 
