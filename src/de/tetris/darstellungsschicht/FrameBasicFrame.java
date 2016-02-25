@@ -42,8 +42,6 @@ public class FrameBasicFrame extends Panel{
 	public void setCenterFrame(Canvas canvas){
 		canvas.setBounds(10,10, BLOCK_SIZE * FIELD_WIDTH, BLOCK_SIZE * FIELD_HEIGHT);
 		add(canvas);
-		canvas.setFocusable(true);
-		canvas.requestFocusInWindow();
 	}
 
 	public JLabel getScoreLabel() {
