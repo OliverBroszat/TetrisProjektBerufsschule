@@ -20,6 +20,7 @@ public class Rotator implements Rotatable{
 		rotateCount = 0;
 		Block startBlock = formToRotate.blockList.get(0);
 		Block targetStartBlock = new Block();
+		targetStartBlock.setColor(formToRotate.getBlockList().get(0).getColor());
 		rotieren(startBlock, targetStartBlock, targetStartBlock);
 		return copyForm;
 	}
@@ -34,6 +35,7 @@ public class Rotator implements Rotatable{
 			if(currBlock.getNachbarLinks() != null)
 			{
 				Block tempBlock = new Block();
+				tempBlock.setColor(currBlock.getColor());
 				targetBlock.setNachbarOben(tempBlock);
 				copyForm.blockList.add(tempBlock);	
 				System.out.println("ADDED BLOCK OBEN");
@@ -47,6 +49,7 @@ public class Rotator implements Rotatable{
 			{
 				Block tempBlock = new Block();
 				targetBlock.setNachbarLinks(tempBlock);
+				tempBlock.setColor(currBlock.getColor());
 				copyForm.blockList.add(tempBlock);
 				System.out.println("ADDED BLOCK LINKS");
 				rotateCount++;
@@ -59,6 +62,7 @@ public class Rotator implements Rotatable{
 			{
 				Block tempBlock = new Block();
 				targetBlock.setNachbarUnten(tempBlock);
+				tempBlock.setColor(currBlock.getColor());
 				copyForm.blockList.add(tempBlock);
 				System.out.println("ADDED BLOCK UNTEN");
 				rotateCount++;
@@ -71,6 +75,7 @@ public class Rotator implements Rotatable{
 			{
 				Block tempBlock = new Block();
 				targetBlock.setNachbarRechts(tempBlock);
+				tempBlock.setColor(currBlock.getColor());
 				copyForm.blockList.add(tempBlock);
 				System.out.println("ADDED BLOCK RECHTS");
 				rotateCount++;
