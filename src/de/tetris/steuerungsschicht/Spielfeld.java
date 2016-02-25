@@ -109,14 +109,13 @@ public class Spielfeld implements Serializable {
 	}
 
 	public void linePullDown(int y) {
-		while (y >= 0) {
+
+		for (int i = y; i > 0; i--) {
 			for (int x = 0; x < cubes[y].length; x++) {
 				System.out.println("LINE PULL DOWN");
-				cubes[y][x] = cubes[y + cubes[y].length][x + 1];
-
+				cubes[i][x] = cubes[i - 1][x];
+				cubes[i - 1][x] = null;
 			}
-			y--;
-
 		}
 
 	}
@@ -161,6 +160,7 @@ public class Spielfeld implements Serializable {
 			this.setMovingBlocks(centerBlock, this.START_Y, this.START_X, cubes);
 
 			this.cubes[this.getBlockStartY()][this.getBlockStartX()] = this.centerBlock;
+			this.isFullLine();
 		}
 	}
 
