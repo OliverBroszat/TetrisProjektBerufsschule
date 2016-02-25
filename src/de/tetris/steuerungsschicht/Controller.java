@@ -155,6 +155,7 @@ public class Controller implements Runnable {
 			((FrameHauptmenue) panel).getLoginButton().addActionListener(aListener);
 			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(aListener);
 			((FrameHauptmenue) panel).getStartenButton().addActionListener(aListener);
+			((FrameHauptmenue) panel).getLadenButton().addActionListener(aListener);
 
 		} else if (panel instanceof FrameSpielfeld) {
 			KeyListener kListener = new SpielfeldListener(frame, spielfeld);
@@ -166,10 +167,7 @@ public class Controller implements Runnable {
 		
 		} else if (panel instanceof FramePauseMenue) {
 			aListener = new PausemenueListener(frame);
-			((FramePauseMenue) panel).getHauptmenueButton().addActionListener(aListener);
-			((FramePauseMenue) panel).getSpeichernButton().addActionListener(aListener);
-			((FramePauseMenue) panel).getSpeichernButton().addActionListener(aListener);
-		
+
 		} else if (panel instanceof FrameHighscore) {
 			aListener = new HighscoreListener(frame);
 			((FrameHighscore) panel).getZurueck().addActionListener(aListener);
@@ -177,6 +175,8 @@ public class Controller implements Runnable {
 		
 		if (panel instanceof FrameBasicFrame) {
 			aListener = new BasicFrameListener(frame);
+			((FrameBasicFrame) panel).getHauptmenueButton().addActionListener(aListener);
+			((FrameBasicFrame) panel).getSpeichernButton().addActionListener(aListener);
 			((FrameBasicFrame) panel).getPauseButton().addActionListener(aListener);
 		}
 	}

@@ -45,30 +45,46 @@ public class RenderClass {
 
 	private void renderNextBlock(Graphics g) {
 		int size = 30;
+		Color blockColor;
+		Color borderColor;
 		
 		for (int i = 0; i < nextBlock.length; i++) {
 			for (int j = 0; j < nextBlock[i].length; j++) {
 				if (nextBlock[i][j] != null) {
-					g.setColor(nextBlock[i][j].getColor());
+					blockColor = nextBlock[i][j].getColor();
+					borderColor = blockColor.brighter();
 				} else {
-					g.setColor(Color.white);
+					blockColor = Color.white;
+					borderColor = Color.white;
 				}
+				g.setColor(blockColor);
 				g.fillRect(j * size, i * size, size, size);
+			
+				g.setColor(borderColor);
+				g.drawRect(j * size, i * size, size, size);
 			}
 		}
 	}
 
 	private void renderSpielfeld(Graphics g) {
 		int size = FrameBasicFrame.BLOCK_SIZE;
+		Color blockColor;
+		Color borderColor;
 		
 		for (int i = 0; i < spielfeld.length; i++) {
 			for (int j = 0; j < spielfeld[i].length; j++) {
 				if (spielfeld[i][j] != null) {
-					g.setColor(spielfeld[i][j].getColor());
+					blockColor = spielfeld[i][j].getColor();
+					borderColor = blockColor.brighter();
 				} else {
-					g.setColor(Color.white);
+					blockColor = Color.white;
+					borderColor = Color.white;
 				}
+				g.setColor(blockColor);
 				g.fillRect(j * size, i * size, size, size);
+			
+				g.setColor(borderColor);
+				g.drawRect(j * size, i * size, size, size);
 			}
 		}
 

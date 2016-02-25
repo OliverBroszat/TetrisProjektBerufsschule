@@ -15,6 +15,8 @@ public class FrameBasicFrame extends Panel{
 	private Canvas canvasNaechsterBlock = new Canvas();
 	private JLabel scoreLabel = new JLabel("Score: ");
 	private JButton pauseButton = new JButton("Pause");
+	private JButton hauptmenueButton = new JButton("Hauptmenü");
+	private JButton speichernButton = new JButton("Speichern");
 
 	public FrameBasicFrame() {
 	    setLayout(null);
@@ -25,11 +27,17 @@ public class FrameBasicFrame extends Panel{
 	    
 	    pauseButton.setFont(super.font);
 	    scoreLabel.setFont(new Font("Arial", Font.BOLD, 14));
+	    hauptmenueButton.setFont(super.font);
+	    speichernButton.setFont(super.font);;
 		
 	    canvasNaechsterBlock.setBounds(500,10,200,200);
 	    scoreLabel.setBounds(500,220,50,50);  
-	    pauseButton.setBounds(500,300,200,80);  
+	    pauseButton.setBounds(500,300,200,80);
+	    hauptmenueButton.setBounds(500,400,200,80);
+	    speichernButton.setBounds(500,500,200,80);
 
+	    add(hauptmenueButton);
+	    add(speichernButton);
 	    add(pauseButton);
 	    add(scoreLabel);
 	    add(canvasNaechsterBlock);
@@ -58,5 +66,13 @@ public class FrameBasicFrame extends Panel{
 
 	public Canvas getCanvasNaechsterBlock() {
 		return canvasNaechsterBlock;
+	}
+
+	public JButton getHauptmenueButton() {
+		return hauptmenueButton;
+	}
+
+	public JButton getSpeichernButton() {
+		return speichernButton;
 	}
 }

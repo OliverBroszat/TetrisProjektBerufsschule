@@ -2,11 +2,12 @@ package de.tetris.steuerungsschicht.Listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
+
 import de.tetris.darstellungsschicht.Frame;
 
-
-public class HauptmenueListener implements ActionListener{
+public class HauptmenueListener implements ActionListener {
 	private Frame frame;
 
 	public HauptmenueListener(Frame frame) {
@@ -15,18 +16,30 @@ public class HauptmenueListener implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() instanceof JButton) {
-			if(((JButton) e.getSource()).getText().equals("Login")) {
+		if (e.getSource() instanceof JButton) {
+			if (((JButton) e.getSource()).getText().equals("Login")) {
 				frame.getCardLayout().show(frame.getBackgroundFrame(), "Login");
-			}
-			else if(((JButton) e.getSource()).getText().equals("Highscore")) {
-				frame.getCardLayout().show(frame.getBackgroundFrame(), "Highscore");
-			}
-			else if(((JButton) e.getSource()).getText().equals("Spiel starten")) {
-				frame.getCardLayout().show(frame.getBackgroundFrame(), "Spielfeld");
-				frame.getController().spielfedRequestFocus(frame.getPanelSpielfeld());
+			} else if (((JButton) e.getSource()).getText().equals("Highscore")) {
+				frame.getCardLayout().show(frame.getBackgroundFrame(),
+						"Highscore");
+			} else if (((JButton) e.getSource()).getText().equals(
+					"Spiel starten")) {
+				frame.getCardLayout().show(frame.getBackgroundFrame(),
+						"Spielfeld");
+				frame.getController().spielfedRequestFocus(
+						frame.getPanelSpielfeld());
 				frame.getController().setPause(false);
 				frame.getController().startGame();
+			} else if (((JButton) e.getSource()).getText()
+					.equals("Spiel laden")) {
+				frame.getCardLayout().show(frame.getBackgroundFrame(),
+						"Spielfeld");
+				System.out.println("Deserialized");
+				frame.getController().spielfedRequestFocus(
+						frame.getPanelSpielfeld());
+				frame.getController().setPause(false);
+				frame.getController().startGame();
+				frame.getController().getSpielfeld().deSerialize();
 			}
 		}
 	}

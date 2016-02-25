@@ -23,12 +23,21 @@ public class BasicFrameListener extends BasicActionListener {
 					frame.getCardLayout().show(frame.getBackgroundFrame(),
 							"Spielfeld");
 					frame.getController().setPause(false);
-					frame.getController().spielfedRequestFocus(frame.getPanelSpielfeld());
+					frame.getController().spielfedRequestFocus(
+							frame.getPanelSpielfeld());
 				} else {
 					frame.getCardLayout().show(frame.getBackgroundFrame(),
 							"PauseMenue");
 					frame.getController().setPause(true);
 				}
+			}
+			if (((JButton) e.getSource()).getText().equals("Hauptmenü")) {
+				frame.getCardLayout().show(frame.getBackgroundFrame(),
+						"HauptMenue");
+				frame.getController().stopGame();
+			} else if (((JButton) e.getSource()).getText().equals("Speichern")) {
+				frame.getController().getSpielfeld().serialize();
+				System.out.println("save");
 			}
 		}
 	}
