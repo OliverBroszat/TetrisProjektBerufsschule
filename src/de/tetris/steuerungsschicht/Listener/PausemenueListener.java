@@ -21,6 +21,9 @@ public class PausemenueListener extends BasicActionListener {
 						"HauptMenue");
 				frame.getController().stopGame();
 			} else if (((JButton) e.getSource()).getText().equals("Speichern")) {
+				frame.getController().getSpielfeld().serialize();
+				
+			} else if (((JButton) e.getSource()).getText().equals("Laden")) {
 				frame.getController().getSpielfeld().deSerialize();
 			}
 		}

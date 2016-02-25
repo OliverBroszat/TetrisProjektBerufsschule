@@ -34,7 +34,6 @@ public class Spielfeld implements Serializable {
 	private Form rotatedForm = null;
 	private Form nextForm = new FormNormalMode();
 	
-	
 
 	public int getOffsetY() {
 		return offsetY;
@@ -102,16 +101,11 @@ public class Spielfeld implements Serializable {
 	}
 
 	public void spawnBlock() {
-		if(cubes[START_Y][blockStartX] != null){
-			System.out.println("GAME OVER");
-			try {
-				Thread.sleep(1000000000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		this.clearAllCubes(nextCubes);
+		
+		if(nextForm == null){
+			nextForm = new FormNormalMode();
+		}
 		this.rotatedForm = null;
 		this.rotatedForm = nextForm;
 		this.centerBlock = rotatedForm.blockList.get(0);

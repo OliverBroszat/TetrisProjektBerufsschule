@@ -12,6 +12,7 @@ public class FramePauseMenue extends FrameBasicFrame {
 	private Panel panelButton = new Panel();
 	private JButton hauptmenueButton = new JButton("Hauptmenü");
 	private JButton speichernButton = new JButton("Speichern");
+	private JButton ladenButton = new JButton("Laden");
 	private JLabel titelLabel = new JLabel("Pause", SwingConstants.CENTER);
 
 	public FramePauseMenue() {
@@ -21,7 +22,7 @@ public class FramePauseMenue extends FrameBasicFrame {
 		panelButton.add(titelLabel);
 		panelButton.add(new JLabel());
 		panelButton.add(hauptmenueButton);
-		panelButton.add(new JLabel());
+		panelButton.add(ladenButton);
 		panelButton.add(speichernButton);
 
 		panelPause.add(panelButton, BorderLayout.CENTER);
@@ -29,6 +30,10 @@ public class FramePauseMenue extends FrameBasicFrame {
 		titelLabel.setFont(super.HeadlineFont);
 
 		super.setCenterFrame(panelPause);
+	}
+
+	public JButton getLadenButton() {
+		return ladenButton;
 	}
 
 	public JButton getHauptmenueButton() {
