@@ -3,8 +3,11 @@ package de.tetris.steuerungsschicht;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+<<<<<<< HEAD
 import com.sun.xml.internal.bind.v2.util.CollisionCheckStack;
 
+=======
+>>>>>>> Controller
 public class Spielfeld implements Serializable {
 	private static final int FIELD_WIDTH = 20;
 	private static final int FIELD_HEIGHT = 12;
@@ -33,7 +36,6 @@ public class Spielfeld implements Serializable {
 	private int offsetX;
 	private Form rotatedForm = null;
 	private Form nextForm = new FormNormalMode();
-	
 	
 
 	public int getOffsetY() {
@@ -83,25 +85,77 @@ public class Spielfeld implements Serializable {
 	public Spielfeld() {
 		this.rotator = new Rotator();
 	}
+<<<<<<< HEAD
 		
 	public void startSpiel() {
 		this.clearAllCubes(cubes);
 		this.clearAllCubes(nextCubes);
 
+=======
+
+	public void startSpiel() {
+		this.clearAllCubes();
+>>>>>>> Controller
 		this.centerBlock = null;
 		this.spawnBlock();
 	}
 
+<<<<<<< HEAD
 	// Löscht alle Blöcke aus dem Spielfeld
 	private void clearAllCubes(Block[][] blk) {
 		for (int i = 0; i < blk.length; i++) {
 			for (int j = 0; j < blk[0].length; j++) {
 				blk[i][j] = null;
+=======
+	public void isFullLine() {
+
+		for (int y = 0; y < cubes.length; y++) {
+			boolean fullLine = true;
+			for (int x = 0; x < cubes[y].length; x++) {
+				if (cubes[y][x] == null) {
+					fullLine = false;
+					x = cubes[y].length;
+				}
+			}
+			if (fullLine) {
+				deleteFullLine(y);
+				linePullDown(y);
+			}
+		}
+	}
+
+	public void linePullDown(int y) {
+		while ( y >= 0) {
+			for (int x = 0; x < cubes[y].length; x++) {
+				System.out.println("LINE PULL DOWN");	
+				cubes[y][x] = cubes[y+cubes[y].length][x+1];
+				
+			}
+			y--;
+
+		}
+
+	}
+
+	public void deleteFullLine(int y) {
+		for (int x = 0; x < cubes[y].length; x++) {
+			System.out.println("delete cube");
+			cubes[y][x] = null;
+		}
+	}
+
+	// Löscht alle Blöcke aus dem Spielfeld
+	private void clearAllCubes() {
+		for (int i = 0; i < cubes.length; i++) {
+			for (int j = 0; j < cubes[0].length; j++) {
+				cubes[i][j] = null;
+>>>>>>> Controller
 			}
 		}
 	}
 
 	public void spawnBlock() {
+<<<<<<< HEAD
 		if(cubes[START_Y][blockStartX] != null){
 			System.out.println("GAME OVER");
 			try {
@@ -112,19 +166,29 @@ public class Spielfeld implements Serializable {
 			}
 		}
 		this.clearAllCubes(nextCubes);
+=======
+		System.out.println(" SPAWN BLOCK ");
+>>>>>>> Controller
 		this.rotatedForm = null;
 		this.rotatedForm = nextForm;
 		this.centerBlock = rotatedForm.blockList.get(0);
+<<<<<<< HEAD
 		nextForm = new FormNormalMode();
+=======
+>>>>>>> Controller
 
 		this.setBlockStartX(this.START_X);
 		this.setBlockStartY(this.START_Y);
 
+<<<<<<< HEAD
 		
 		this.nextCubes[2][3] = nextForm.blockList.get(0);
 		this.setMovingBlocks(nextCubes[2][3], 2, 3, nextCubes);
 
+=======
+>>>>>>> Controller
 		this.cubes[this.getBlockStartY()][this.getBlockStartX()] = this.centerBlock;
+		this.isFullLine();
 		this.move("down");
 	}
 
@@ -144,6 +208,10 @@ public class Spielfeld implements Serializable {
 		this.delete();
 		rotatedForm = this.rotator.starteRotieren(rotatedForm);
 		this.centerBlock = rotatedForm.blockList.get(0);
+<<<<<<< HEAD
+=======
+		System.out.println("ROTEDED SIZE: " + rotatedForm.blockList.size());
+>>>>>>> Controller
 		this.move();
 		// }
 	}
@@ -153,19 +221,29 @@ public class Spielfeld implements Serializable {
 		borderCollisionRight = false;
 		borderCollisionUp = false;
 		borderCollisionDown = false;
+<<<<<<< HEAD
 		blockCollsionLeft = false;
 		blockCollsionRight = false;
 		blockCollsionDown = false;
+=======
+>>>>>>> Controller
 
 		offsetY = this.getBlockStartY();
 		offsetX = this.getBlockStartX();
 
 		this.checkBorderCollision(this.centerBlock, offsetY, offsetX);
+<<<<<<< HEAD
 		checkBlockCollision(centerBlock, offsetY, offsetX);
 
 		switch (direction) {
 		case "down":
 			if (!borderCollisionDown && !blockCollsionDown) {
+=======
+
+		switch (direction) {
+		case "down":
+			if (!borderCollisionDown) {
+>>>>>>> Controller
 
 				// this.checkBlockCollision(this.centerBlock, offsetY, offsetX);
 				// if(!blockCollsionDown){
@@ -178,7 +256,11 @@ public class Spielfeld implements Serializable {
 			}
 			break;
 		case "right":
+<<<<<<< HEAD
 			if (!borderCollisionRight && !blockCollsionRight) {
+=======
+			if (!borderCollisionRight) {
+>>>>>>> Controller
 				// this.checkBlockCollision(this.centerBlock, offsetY, offsetX);
 				// if(!blockCollsionRight){
 				this.delete();
@@ -190,7 +272,11 @@ public class Spielfeld implements Serializable {
 			}
 			break;
 		case "left":
+<<<<<<< HEAD
 			if (!borderCollisionLeft && !blockCollsionLeft) {
+=======
+			if (!borderCollisionLeft) {
+>>>>>>> Controller
 				// this.checkBlockCollision(this.centerBlock, offsetY, offsetX);
 				// if(!blockCollsionLeft){
 				this.delete();
@@ -212,11 +298,19 @@ public class Spielfeld implements Serializable {
 	}
 
 	private void delete() {
+<<<<<<< HEAD
+=======
+		System.out.println("DELETE");
+>>>>>>> Controller
 		this.deleteMovingBlocks(this.centerBlock, this.offsetY, this.offsetX);
 		this.cubes[this.offsetY][this.offsetX] = null;
 	}
 
 	private void move() {
+<<<<<<< HEAD
+=======
+		System.out.println("SET!");
+>>>>>>> Controller
 		this.cubes[offsetY][offsetX] = this.centerBlock;
 		this.setMovingBlocks(this.centerBlock, offsetY, offsetX, cubes);
 		this.setBlockStartX(offsetX);
@@ -274,6 +368,7 @@ public class Spielfeld implements Serializable {
 
 	private void checkBlockCollision(Block currBlock, int curY, int curX) {
 		// check ob der nächste cube leer ist
+<<<<<<< HEAD
 		if (!borderCollisionLeft) {
 			if (cubes[curY][curX - 1] != null && cubes[curY][curX - 1].getColor() != centerBlock.getColor()) {
 				System.out.println("block collision LEFT");
@@ -304,12 +399,43 @@ public class Spielfeld implements Serializable {
 				if (currBlock.getNachbarUnten() != null) {
 					this.checkBlockCollision(currBlock.getNachbarUnten(), curY + 1, curX);
 				}
+=======
+		if (cubes[curY][curX - 1] != null) {
+			System.out.println("block collision LEFT");
+			blockCollsionLeft = true;
+		} else {
+			if (currBlock.getNachbarLinks() != null) {
+				this.checkBlockCollision(currBlock.getNachbarLinks(), curY, curX - 1);
+			}
+		}
+		// check ob der nächste cube leer ist
+		if (cubes[curY][curX + 1] != null) {
+			System.out.println("block collision RIGHT");
+			blockCollsionRight = true;
+		} else {
+			if (currBlock.getNachbarRechts() != null) {
+				this.checkBlockCollision(currBlock.getNachbarRechts(), curY, curX + 1);
+			}
+		}
+
+		// check ob der nächste cube leer ist
+		if (cubes[curY + 1][curX] != null) {
+			System.out.println("block collision DOWN");
+			blockCollsionDown = true;
+		} else {
+			if (currBlock.getNachbarUnten() != null) {
+				this.checkBorderCollision(currBlock.getNachbarUnten(), curY + 1, curX);
+>>>>>>> Controller
 			}
 		}
 	}
 
 	private void checkBorderCollision(Block currBlock, int curY, int curX) {
 		if (this.isOutOfBounce(curY, curX - 1)) {
+<<<<<<< HEAD
+=======
+			System.out.println("check block links");
+>>>>>>> Controller
 			borderCollisionLeft = true;
 		} else {
 			if (currBlock.getNachbarLinks() != null) {
@@ -318,6 +444,10 @@ public class Spielfeld implements Serializable {
 		}
 
 		if (this.isOutOfBounce(curY, curX + 1)) {
+<<<<<<< HEAD
+=======
+			System.out.println("check block Rechts");
+>>>>>>> Controller
 			borderCollisionRight = true;
 		} else {
 			if (currBlock.getNachbarRechts() != null) {
@@ -326,6 +456,10 @@ public class Spielfeld implements Serializable {
 		}
 
 		if (this.isOutOfBounce(curY - 1, curX)) {
+<<<<<<< HEAD
+=======
+			System.out.println("check block Oben");
+>>>>>>> Controller
 			borderCollisionUp = true;
 		} else {
 			if (currBlock.getNachbarOben() != null) {
@@ -334,7 +468,12 @@ public class Spielfeld implements Serializable {
 		}
 
 		if (this.isOutOfBounce(curY + 1, curX)) {
+<<<<<<< HEAD
 
+=======
+			System.out.println("check block Unten");
+			this.centerBlock = null;
+>>>>>>> Controller
 			borderCollisionDown = true;
 		} else {
 			if (currBlock.getNachbarUnten() != null) {
@@ -343,6 +482,7 @@ public class Spielfeld implements Serializable {
 		}
 	}
 
+<<<<<<< HEAD
 	private Block setMovingBlocks(Block currBlock, int curY, int curX, Block[][] cubes){	
 			int x = curX;
 			int y = curY;
@@ -378,6 +518,45 @@ public class Spielfeld implements Serializable {
 					cubes[y + 1][x] = currBlock.getNachbarUnten();
 					this.setMovingBlocks(currBlock.getNachbarUnten(), y + 1, x, cubes);
 				}}
+=======
+	private Block setMovingBlocks(Block currBlock, int curY, int curX) {
+		int x = curX;
+		int y = curY;
+
+		if (currBlock.getNachbarLinks() != null) {
+			// System.out.println("Setze block links");
+
+			if (cubes[y][x - 1] == null) {
+				cubes[y][x - 1] = currBlock.getNachbarLinks();
+				this.setMovingBlocks(currBlock.getNachbarLinks(), y, x - 1);
+			}
+		}
+
+		if (currBlock.getNachbarRechts() != null) {
+			// System.out.println("Setze block Rechts");
+			if (cubes[y][x + 1] == null) {
+				cubes[y][x + 1] = currBlock.getNachbarRechts();
+				this.setMovingBlocks(currBlock.getNachbarRechts(), y, x + 1);
+			}
+		}
+
+		if (currBlock.getNachbarOben() != null) {
+			// System.out.println("Setze block Oben");
+			if (cubes[y - 1][x] == null) {
+				cubes[y - 1][x] = currBlock.getNachbarOben();
+				this.setMovingBlocks(currBlock.getNachbarOben(), y - 1, x);
+			}
+		}
+
+		if (currBlock.getNachbarUnten() != null) {
+			// System.out.println("Setze block Unten");
+			if (cubes[y + 1][x] == null) {
+				cubes[y + 1][x] = currBlock.getNachbarUnten();
+				this.setMovingBlocks(currBlock.getNachbarUnten(), y + 1, x);
+			}
+		}
+
+>>>>>>> Controller
 		// System.out.println("STACK ENDE");
 		return null;
 	}
