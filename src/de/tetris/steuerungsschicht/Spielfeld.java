@@ -143,7 +143,8 @@ public class Spielfeld implements Serializable {
 		} else {
 
 			this.clearAllCubes(nextCubes);
-
+			offsetY = START_Y;
+			offsetX = START_X;
 			if (nextForm == null) {
 				nextForm = new FormNormalMode();
 			}
@@ -157,6 +158,7 @@ public class Spielfeld implements Serializable {
 
 			this.nextCubes[2][3] = nextForm.blockList.get(0);
 			this.setMovingBlocks(nextCubes[2][3], 2, 3, nextCubes);
+			this.setMovingBlocks(centerBlock, this.START_Y, this.START_X, cubes);
 
 			this.cubes[this.getBlockStartY()][this.getBlockStartX()] = this.centerBlock;
 		}
@@ -171,15 +173,16 @@ public class Spielfeld implements Serializable {
 
 	public void rotate() {
 		this.checkBorderCollision(this.centerBlock, offsetY, offsetX);
-		// if(!borderCollisionDown || !borderCollisionLeft ||
-		// !borderCollisionRight || !borderCollisionUp){
-		// this.checkBlockCollision(centerBlock, offsetY, offsetX);
-		// if(!blockCollsionDown || !blockCollsionLeft || !blockCollsionRight){
-		this.delete();
-		rotatedForm = this.rotator.starteRotieren(rotatedForm);
-		this.centerBlock = rotatedForm.blockList.get(0);
-		this.move();
-		// }
+		if (!borderCollisionDown && !borderCollisionLeft
+				&& !borderCollisionRight && !borderCollisionUp) {
+			this.checkBlockCollision(centerBlock, offsetY, offsetX);
+			if (!blockCollsionDown && !blockCollsionLeft && !blockCollsionRight) {
+				this.delete();
+				rotatedForm = this.rotator.starteRotieren(rotatedForm);
+				this.centerBlock = rotatedForm.blockList.get(0);
+				this.move();
+			}
+		}
 	}
 
 	public void move(String direction) {
@@ -499,5 +502,5 @@ public class Spielfeld implements Serializable {
 	public void setGameover(boolean gameover) {
 		this.gameover = gameover;
 	}
-	
+
 }
