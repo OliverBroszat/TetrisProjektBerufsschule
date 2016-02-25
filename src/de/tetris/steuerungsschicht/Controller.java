@@ -52,6 +52,7 @@ public class Controller implements Runnable {
 	public void startGame() {
 		thread = new Thread(this);
 		thread.start();
+		pause = false;
 	}
 
 	public void establishConnection() {
@@ -154,17 +155,19 @@ public class Controller implements Runnable {
 			((FrameHauptmenue) panel).getLoginButton().addActionListener(aListener);
 			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(aListener);
 			((FrameHauptmenue) panel).getStartenButton().addActionListener(aListener);
+			((FrameHauptmenue) panel).getLadenButton().addActionListener(aListener);
 
 		} else if (panel instanceof FrameSpielfeld) {
 			KeyListener kListener = new SpielfeldListener(frame, spielfeld);
 			panel.addKeyListener(kListener);
+			
 		} else if (panel instanceof FrameCreateUser) {
 			aListener = new CreateUserListener(frame);
 			((FrameCreateUser) panel).getNewUserButton().addActionListener(aListener);
+		
 		} else if (panel instanceof FramePauseMenue) {
 			aListener = new PausemenueListener(frame);
-			((FramePauseMenue) panel).getHauptmenueButton().addActionListener(aListener);
-			((FramePauseMenue) panel).getSpeichernButton().addActionListener(aListener);
+
 		} else if (panel instanceof FrameHighscore) {
 			aListener = new HighscoreListener(frame);
 			((FrameHighscore) panel).getZurueck().addActionListener(aListener);
@@ -172,6 +175,8 @@ public class Controller implements Runnable {
 		
 		if (panel instanceof FrameBasicFrame) {
 			aListener = new BasicFrameListener(frame);
+			((FrameBasicFrame) panel).getHauptmenueButton().addActionListener(aListener);
+			((FrameBasicFrame) panel).getSpeichernButton().addActionListener(aListener);
 			((FrameBasicFrame) panel).getPauseButton().addActionListener(aListener);
 		}
 	}

@@ -16,13 +16,7 @@ public class PausemenueListener extends BasicActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof JButton) {
-			if (((JButton) e.getSource()).getText().equals("Hauptmenü")) {
-				frame.getCardLayout().show(frame.getBackgroundFrame(),
-						"HauptMenue");
-				frame.getController().stopGame();
-			} else if (((JButton) e.getSource()).getText().equals("Speichern")) {
-				frame.getController().getSpielfeld().deSerialize();
-			}
+			
 		}
 	}
 }
