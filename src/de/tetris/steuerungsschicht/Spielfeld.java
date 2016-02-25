@@ -33,7 +33,7 @@ public class Spielfeld implements Serializable {
 	private int offsetX;
 	private Form rotatedForm = null;
 	private Form nextForm = new FormNormalMode();
-	
+	private boolean gameover;
 
 	public int getOffsetY() {
 		return offsetY;
@@ -82,7 +82,7 @@ public class Spielfeld implements Serializable {
 	public Spielfeld() {
 		this.rotator = new Rotator();
 	}
-		
+
 	public void startSpiel() {
 		this.clearAllCubes(cubes);
 		this.clearAllCubes(nextCubes);
@@ -90,6 +90,7 @@ public class Spielfeld implements Serializable {
 		this.centerBlock = null;
 		this.spawnBlock();
 	}
+
 	public void isFullLine() {
 
 		for (int y = 0; y < cubes.length; y++) {
@@ -108,11 +109,11 @@ public class Spielfeld implements Serializable {
 	}
 
 	public void linePullDown(int y) {
-		while ( y >= 0) {
+		while (y >= 0) {
 			for (int x = 0; x < cubes[y].length; x++) {
-				System.out.println("LINE PULL DOWN");	
-				cubes[y][x] = cubes[y+cubes[y].length][x+1];
-				
+				System.out.println("LINE PULL DOWN");
+				cubes[y][x] = cubes[y + cubes[y].length][x + 1];
+
 			}
 			y--;
 
@@ -126,6 +127,7 @@ public class Spielfeld implements Serializable {
 			cubes[y][x] = null;
 		}
 	}
+
 	// Löscht alle Blöcke aus dem Spielfeld
 	private void clearAllCubes(Block[][] blk) {
 		for (int i = 0; i < blk.length; i++) {
@@ -136,25 +138,28 @@ public class Spielfeld implements Serializable {
 	}
 
 	public void spawnBlock() {
-		this.clearAllCubes(nextCubes);
-		
-		if(nextForm == null){
+		if (cubes[START_Y][START_X] != null) {
+			gameover = true;
+		} else {
+
+			this.clearAllCubes(nextCubes);
+
+			if (nextForm == null) {
+				nextForm = new FormNormalMode();
+			}
+			this.rotatedForm = null;
+			this.rotatedForm = nextForm;
+			this.centerBlock = rotatedForm.blockList.get(0);
 			nextForm = new FormNormalMode();
+
+			this.setBlockStartX(this.START_X);
+			this.setBlockStartY(this.START_Y);
+
+			this.nextCubes[2][3] = nextForm.blockList.get(0);
+			this.setMovingBlocks(nextCubes[2][3], 2, 3, nextCubes);
+
+			this.cubes[this.getBlockStartY()][this.getBlockStartX()] = this.centerBlock;
 		}
-		this.rotatedForm = null;
-		this.rotatedForm = nextForm;
-		this.centerBlock = rotatedForm.blockList.get(0);
-		nextForm = new FormNormalMode();
-
-		this.setBlockStartX(this.START_X);
-		this.setBlockStartY(this.START_Y);
-
-		
-		this.nextCubes[2][3] = nextForm.blockList.get(0);
-		this.setMovingBlocks(nextCubes[2][3], 2, 3, nextCubes);
-
-		this.cubes[this.getBlockStartY()][this.getBlockStartX()] = this.centerBlock;
-		this.move("down");
 	}
 
 	// testmethode not in use
@@ -304,34 +309,43 @@ public class Spielfeld implements Serializable {
 	private void checkBlockCollision(Block currBlock, int curY, int curX) {
 		// check ob der nächste cube leer ist
 		if (!borderCollisionLeft) {
-			if (cubes[curY][curX - 1] != null && cubes[curY][curX - 1].getColor() != centerBlock.getColor()) {
+			if (cubes[curY][curX - 1] != null
+					&& cubes[curY][curX - 1].getColor() != centerBlock
+							.getColor()) {
 				System.out.println("block collision LEFT");
 				blockCollsionLeft = true;
 			} else {
 				if (currBlock.getNachbarLinks() != null) {
-					this.checkBlockCollision(currBlock.getNachbarLinks(), curY, curX - 1);
+					this.checkBlockCollision(currBlock.getNachbarLinks(), curY,
+							curX - 1);
 				}
 			}
 		}
 		// check ob der nächste cube leer ist
 		if (!borderCollisionRight) {
-			if (cubes[curY][curX + 1] != null && cubes[curY][curX + 1].getColor() != centerBlock.getColor()) {
+			if (cubes[curY][curX + 1] != null
+					&& cubes[curY][curX + 1].getColor() != centerBlock
+							.getColor()) {
 				System.out.println("block collision RIGHT");
 				blockCollsionRight = true;
 			} else {
 				if (currBlock.getNachbarRechts() != null) {
-					this.checkBlockCollision(currBlock.getNachbarRechts(), curY, curX + 1);
+					this.checkBlockCollision(currBlock.getNachbarRechts(),
+							curY, curX + 1);
 				}
 			}
 		}
 		// check ob der nächste cube leer ist
 		if (!borderCollisionDown) {
-			if (cubes[curY + 1][curX] != null && cubes[curY + 1][curX].getColor() != centerBlock.getColor()) {
+			if (cubes[curY + 1][curX] != null
+					&& cubes[curY + 1][curX].getColor() != centerBlock
+							.getColor()) {
 				System.out.println("block collision DOWN");
 				blockCollsionDown = true;
 			} else {
 				if (currBlock.getNachbarUnten() != null) {
-					this.checkBlockCollision(currBlock.getNachbarUnten(), curY + 1, curX);
+					this.checkBlockCollision(currBlock.getNachbarUnten(),
+							curY + 1, curX);
 				}
 			}
 		}
@@ -342,7 +356,8 @@ public class Spielfeld implements Serializable {
 			borderCollisionLeft = true;
 		} else {
 			if (currBlock.getNachbarLinks() != null) {
-				this.checkBorderCollision(currBlock.getNachbarLinks(), curY, curX - 1);
+				this.checkBorderCollision(currBlock.getNachbarLinks(), curY,
+						curX - 1);
 			}
 		}
 
@@ -350,7 +365,8 @@ public class Spielfeld implements Serializable {
 			borderCollisionRight = true;
 		} else {
 			if (currBlock.getNachbarRechts() != null) {
-				this.checkBorderCollision(currBlock.getNachbarRechts(), curY, curX + 1);
+				this.checkBorderCollision(currBlock.getNachbarRechts(), curY,
+						curX + 1);
 			}
 		}
 
@@ -358,7 +374,8 @@ public class Spielfeld implements Serializable {
 			borderCollisionUp = true;
 		} else {
 			if (currBlock.getNachbarOben() != null) {
-				this.checkBorderCollision(currBlock.getNachbarOben(), curY - 1, curX);
+				this.checkBorderCollision(currBlock.getNachbarOben(), curY - 1,
+						curX);
 			}
 		}
 
@@ -367,46 +384,53 @@ public class Spielfeld implements Serializable {
 			borderCollisionDown = true;
 		} else {
 			if (currBlock.getNachbarUnten() != null) {
-				this.checkBorderCollision(currBlock.getNachbarUnten(), curY + 1, curX);
+				this.checkBorderCollision(currBlock.getNachbarUnten(),
+						curY + 1, curX);
 			}
 		}
 	}
 
-	private Block setMovingBlocks(Block currBlock, int curY, int curX, Block[][] cubes){	
-			int x = curX;
-			int y = curY;
-			
-			if(currBlock.getNachbarLinks() != null){
-				//System.out.println("Setze block links");
-				
-				if(cubes[y][x - 1] == null){
-					cubes[y][x - 1] = currBlock.getNachbarLinks();
-					this.setMovingBlocks(currBlock.getNachbarLinks(), y, x - 1, cubes);
-				}
+	private Block setMovingBlocks(Block currBlock, int curY, int curX,
+			Block[][] cubes) {
+		int x = curX;
+		int y = curY;
+
+		if (currBlock.getNachbarLinks() != null) {
+			// System.out.println("Setze block links");
+
+			if (cubes[y][x - 1] == null) {
+				cubes[y][x - 1] = currBlock.getNachbarLinks();
+				this.setMovingBlocks(currBlock.getNachbarLinks(), y, x - 1,
+						cubes);
 			}
-			
-			if(currBlock.getNachbarRechts() != null){
-				//System.out.println("Setze block Rechts");
-				if(cubes[y][x + 1] == null){
-					cubes[y][x + 1] = currBlock.getNachbarRechts();
-					this.setMovingBlocks(currBlock.getNachbarRechts(), y, x + 1, cubes);
-				}
+		}
+
+		if (currBlock.getNachbarRechts() != null) {
+			// System.out.println("Setze block Rechts");
+			if (cubes[y][x + 1] == null) {
+				cubes[y][x + 1] = currBlock.getNachbarRechts();
+				this.setMovingBlocks(currBlock.getNachbarRechts(), y, x + 1,
+						cubes);
 			}
-			
-			if(currBlock.getNachbarOben() != null){
-				//System.out.println("Setze block Oben");
-				if(cubes[y - 1][x] == null){
-					cubes[y - 1][x] = currBlock.getNachbarOben();
-					this.setMovingBlocks(currBlock.getNachbarOben(), y - 1, x, cubes);
-				}
+		}
+
+		if (currBlock.getNachbarOben() != null) {
+			// System.out.println("Setze block Oben");
+			if (cubes[y - 1][x] == null) {
+				cubes[y - 1][x] = currBlock.getNachbarOben();
+				this.setMovingBlocks(currBlock.getNachbarOben(), y - 1, x,
+						cubes);
 			}
-			
-			if(currBlock.getNachbarUnten() != null){
-				//System.out.println("Setze block Unten");
-				if(cubes[y + 1][x] == null){
-					cubes[y + 1][x] = currBlock.getNachbarUnten();
-					this.setMovingBlocks(currBlock.getNachbarUnten(), y + 1, x, cubes);
-				}}
+		}
+
+		if (currBlock.getNachbarUnten() != null) {
+			// System.out.println("Setze block Unten");
+			if (cubes[y + 1][x] == null) {
+				cubes[y + 1][x] = currBlock.getNachbarUnten();
+				this.setMovingBlocks(currBlock.getNachbarUnten(), y + 1, x,
+						cubes);
+			}
+		}
 		// System.out.println("STACK ENDE");
 		return null;
 	}
@@ -467,4 +491,13 @@ public class Spielfeld implements Serializable {
 	public Block getCenterBlock() {
 		return centerBlock;
 	}
+
+	public boolean isGameover() {
+		return gameover;
+	}
+
+	public void setGameover(boolean gameover) {
+		this.gameover = gameover;
+	}
+	
 }

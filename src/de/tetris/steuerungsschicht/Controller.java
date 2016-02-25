@@ -50,6 +50,7 @@ public class Controller implements Runnable {
 	 * mehrere Spiele starten zu können
 	 */
 	public void startGame() {
+		spielfeld.setGameover(false);
 		thread = new Thread(this);
 		thread.start();
 		pause = false;
@@ -67,7 +68,8 @@ public class Controller implements Runnable {
 		this.persistancestore.createUser("default", "default");
 		this.userData = this.persistancestore.logIn("default", "default");
 
-		System.out.println("LOGGED IS : " + userData.get(0) + " MESSAGE " + userData.get(1));
+		System.out.println("LOGGED IS : " + userData.get(0) + " MESSAGE "
+				+ userData.get(1));
 
 		// persistancestore.update("UPDATE tetrisuser SET Nickname=' + + ' WHERE
 		// Nickname='pro'");
@@ -115,7 +117,11 @@ public class Controller implements Runnable {
 					renderClass.render();
 					anzahlDurchläufe++;
 
-					if (anzahlDurchläufe >= 60) {
+					if (spielfeld.isGameover()) {
+						frame.getCardLayout().show(frame.getBackgroundFrame(),
+								"HauptMenue");
+						stopGame();
+					} else if (anzahlDurchläufe >= 60) {
 						gamelogic();
 						anzahlDurchläufe = 0;
 					}
@@ -146,38 +152,48 @@ public class Controller implements Runnable {
 		ActionListener aListener;
 		if (panel instanceof FrameLoginScreen) {
 			aListener = new LoginScreenListener(frame);
-			((FrameLoginScreen) panel).getSubmitButton().addActionListener(aListener);
-			((FrameLoginScreen) panel).getNewUserButton().addActionListener(aListener);
+			((FrameLoginScreen) panel).getSubmitButton().addActionListener(
+					aListener);
+			((FrameLoginScreen) panel).getNewUserButton().addActionListener(
+					aListener);
 
 		} else if (panel instanceof FrameHauptmenue) {
 			System.out.println("cont: " + frame);
 			aListener = new HauptmenueListener(frame);
-			((FrameHauptmenue) panel).getLoginButton().addActionListener(aListener);
-			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(aListener);
-			((FrameHauptmenue) panel).getStartenButton().addActionListener(aListener);
-			((FrameHauptmenue) panel).getLadenButton().addActionListener(aListener);
+			((FrameHauptmenue) panel).getLoginButton().addActionListener(
+					aListener);
+			((FrameHauptmenue) panel).getHighScoreButton().addActionListener(
+					aListener);
+			((FrameHauptmenue) panel).getStartenButton().addActionListener(
+					aListener);
+			((FrameHauptmenue) panel).getLadenButton().addActionListener(
+					aListener);
 
 		} else if (panel instanceof FrameSpielfeld) {
 			KeyListener kListener = new SpielfeldListener(frame, spielfeld);
 			panel.addKeyListener(kListener);
-			
+
 		} else if (panel instanceof FrameCreateUser) {
 			aListener = new CreateUserListener(frame);
-			((FrameCreateUser) panel).getNewUserButton().addActionListener(aListener);
-		
+			((FrameCreateUser) panel).getNewUserButton().addActionListener(
+					aListener);
+
 		} else if (panel instanceof FramePauseMenue) {
 			aListener = new PausemenueListener(frame);
 
 		} else if (panel instanceof FrameHighscore) {
 			aListener = new HighscoreListener(frame);
 			((FrameHighscore) panel).getZurueck().addActionListener(aListener);
-		} 
-		
+		}
+
 		if (panel instanceof FrameBasicFrame) {
 			aListener = new BasicFrameListener(frame);
-			((FrameBasicFrame) panel).getHauptmenueButton().addActionListener(aListener);
-			((FrameBasicFrame) panel).getSpeichernButton().addActionListener(aListener);
-			((FrameBasicFrame) panel).getPauseButton().addActionListener(aListener);
+			((FrameBasicFrame) panel).getHauptmenueButton().addActionListener(
+					aListener);
+			((FrameBasicFrame) panel).getSpeichernButton().addActionListener(
+					aListener);
+			((FrameBasicFrame) panel).getPauseButton().addActionListener(
+					aListener);
 		}
 	}
 
@@ -188,12 +204,12 @@ public class Controller implements Runnable {
 	public boolean getPause() {
 		return pause;
 	}
-		
+
 	public Thread getThread() {
 		return thread;
 	}
-	
-	public Spielfeld getSpielfeld(){
+
+	public Spielfeld getSpielfeld() {
 		return spielfeld;
 	}
 }
